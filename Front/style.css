@@ -143,3 +143,7 @@ body {
     opacity: 1;
   }
 }
+.imgSweetAlert {
+  width: 10rem;
+  height: auto;
+}

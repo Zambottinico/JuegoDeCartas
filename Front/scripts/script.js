@@ -49,11 +49,14 @@ $(document).ready(function () {
         console.log(Respuesta);
         let url2 = "../../img/" + response.lastCard.character + ".png";
         if (response.characterUnlocked) {
-          Swal.fire(
-            "Felicidades!",
-            "Desbloqueaste nuevos personajes!",
-            "success"
-          );
+          Swal.fire({
+            title: "Felicidades!",
+            text: "Desbloqueaste un nuevo personaje!",
+            imageUrl: "../../img/" + response.unlockableCharacterName + ".png",
+            customClass: {
+              image: "imgSweetAlert",
+            },
+          });
         }
         appendNewCard(url2);
         DrawInfo(response);

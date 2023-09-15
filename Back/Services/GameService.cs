@@ -16,10 +16,11 @@ namespace Juego_Sin_Nombre.Services
             this.cardService = cardService;
         }
 
-        public GameResponse MapperGameToGameResponse(Game game,Boolean characterUnlocked)
+        public GameResponse MapperGameToGameResponse(Game game,Boolean characterUnlocked,String unlockableCharacterName)
         {
             GameResponse gameResponse = new GameResponse();
             gameResponse.characterUnlocked = characterUnlocked;
+            gameResponse.unlockableCharacterName= unlockableCharacterName;
             gameResponse.Id = game.Id;
             gameResponse.Armystate = (int)game.Armystate;
             gameResponse.Populationstate = (int)game.Populationstate;
@@ -49,10 +50,45 @@ namespace Juego_Sin_Nombre.Services
             gameResponse.LastCard = cardResponse;
             return gameResponse;
         }
+        public GameResponse MapperGameToGameResponse(Game game, Boolean characterUnlocked)
+        {
+            GameResponse gameResponse = new GameResponse();
+            gameResponse.characterUnlocked = characterUnlocked;
+            
+            gameResponse.Id = game.Id;
+            gameResponse.Armystate = (int)game.Armystate;
+            gameResponse.Populationstate = (int)game.Populationstate;
+            gameResponse.Economystate = (int)game.Economystate;
+            gameResponse.Magicstate = (int)game.Magicstate;
+            gameResponse.Gamestate = game.Gamestate;
+            gameResponse.Day = (int)game.Day;
+            Usuario user = _context.Usuarios.FirstOrDefault(u => u.Id == game.Userid);
+            gameResponse.UserName = user.Username;
 
+            Card card = _context.Cards.Include(u => u.Character).FirstOrDefault(c => c.Id == game.Lastcardid);
+            CardResponse cardResponse = new CardResponse();
+            cardResponse.Typeid = (int)card.Typeid;
+            cardResponse.Character = card.Character.Name;
+            cardResponse.Description = card.Description;
+
+            Decision decision = _context.Decisions.FirstOrDefault(d => d.Id == card.Decision1);
+            PostDecisionDto decisionResponse1 = new PostDecisionDto();
+            decisionResponse1.Convert(decision);
+            cardResponse.Decision1 = decisionResponse1;
+
+            Decision decision2 = _context.Decisions.FirstOrDefault(d => d.Id == card.Decision2);
+            PostDecisionDto decisionResponse2 = new PostDecisionDto();
+            decisionResponse2.Convert(decision2);
+            cardResponse.Decision2 = decisionResponse2;
+
+            gameResponse.LastCard = cardResponse;
+            return gameResponse;
+        }
         public async Task<GameResponse> Play(Game game, int decision)
         {
             Boolean characterUnlocked = false;
+            string unlockableCharacterName = "";
+
             if (game.Gamestate=="FINISHED")
             {
                 throw new Exception("El Juego esta acabado");
@@ -79,6 +115,7 @@ namespace Juego_Sin_Nombre.Services
                     Character unlockableCharacter = await _context.Characters.FirstOrDefaultAsync(c => c.Id == decision1.unlockable_character);
                     user.Characters.Add(unlockableCharacter);
                     characterUnlocked = true;
+                    unlockableCharacterName = unlockableCharacter.Name;
                 }
             }
 
@@ -144,7 +181,7 @@ namespace Juego_Sin_Nombre.Services
                await _context.SaveChangesAsync();
             }
             await _context.SaveChangesAsync();
-            return MapperGameToGameResponse(game,characterUnlocked);
+            return MapperGameToGameResponse(game,characterUnlocked, unlockableCharacterName);
         }
 
         public async Task<Game> CreateGame(int playerId)

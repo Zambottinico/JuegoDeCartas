@@ -29,14 +29,17 @@ namespace Juego_Sin_Nombre.Bussines.CharacterBussines.Queries
                 {
                     List<CharacterResponse> characterResponses = new List<CharacterResponse>();
                     List<Character> characters = await _context.Characters.ToListAsync();
+                    List<Card> cartasPorPersonaje = await _context.Cards.ToListAsync();
                     if (characters != null)
                     {
                         foreach (Character c in characters)
                         {
+                            int cantidadCartas = cartasPorPersonaje.Where(s => s.CharacterId == c.Id).Count();
                             CharacterResponse characterResponse = new()
                             {
-                                Id=c.Id,
-                                Name=c.Name
+                                Id = c.Id,
+                                Name = c.Name,
+                                CantidadCartas = cantidadCartas
                             };
                             characterResponses.Add(characterResponse);
                         }

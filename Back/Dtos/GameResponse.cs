@@ -20,5 +20,6 @@
 
         public int Day { get; set; }
         public bool characterUnlocked { get; set; } = false;
+        public string unlockableCharacterName { get;set; }
     }
 }
