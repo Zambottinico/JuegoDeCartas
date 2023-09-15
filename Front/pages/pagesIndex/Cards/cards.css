@@ -1,0 +1,11 @@
+.papiro {
+  background-color: #f2eeea; /* Color del pergamino */
+  padding: 1.25rem;
+  border: 1px solid #c0c0c0; /* Borde del pergamino */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Sombra del pergamino */
+  font-family: Georgia, "Times New Roman", Times, serif; /* Fuente similar a la de un pergamino */
+  font-size: 1.125rem;
+  max-width: 50rem; /* Ancho máximo del pergamino */
+  text-align: center;
+  line-height: 1.5;
+}

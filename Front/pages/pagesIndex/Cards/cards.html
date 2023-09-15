@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
+    <link rel="stylesheet" href="../../../style.css" />
+    <link rel="stylesheet" href="cards.css" />
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <style>
+      .table {
+        background-color: transparent !important;
+      }
+
+      /* Anula el fondo de las filas */
+      .table tbody tr {
+        background-color: transparent;
+      }
+
+      /* Anula el fondo y los bordes de las celdas de encabezado */
+      .table th {
+        background-color: transparent;
+      }
+
+      /* Anula el fondo y los bordes de las celdas de datos */
+      .table tbody td {
+        background-color: transparent;
+      }
+    </style>
+    <title>Cartas</title>
+  </head>
+  <body class="bgPattern">
+    <nav class="navbar navbar-expand bg-dark text-white shadow">
+      <div class="container-fluid d-flex justify-content-center">
+        <div class="row">
+          <div class="col active">
+            <a href="../index.html" class="nav-link active">Game</a>
+          </div>
+          <div class="col">
+            <a href="../Players/players.html" class="nav-link active"
+              >Players</a
+            >
+          </div>
+          <div class="col">
+            <a href="../Profile/profile.html" class="nav-link active">Perfil</a>
+          </div>
+          <div class="col lined-bottom">
+            <a href="#" class="nav-link active">Cards</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container papiro paper-left mt-4">
+      <form id="form">
+        <div class="row">
+          <div class="mb-3">
+            <label class="form-label">Descripcion</label>
+            <textarea
+              name="description"
+              id="description"
+              cols="30"
+              rows="3"
+              class="form-control"
+            ></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Personaje</label>
+            <select
+              class="form-select"
+              id="characterId"
+              name="characterId"
+            ></select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="border">
+              <label class="form-label">Decision 1</label>
+              <input
+                type="text"
+                class="form-control"
+                name="decision1-description"
+                id="decision1-description"
+              />
+              <div class="row">
+                <div class="col">
+                  <label for="" class="form-label">Magia</label>
+                  <input
+                    type="number"
+                    name="decision1-magic"
+                    id="decision1-magic"
+                    class="form-control"
+                    value="0"
+                  />
+                </div>
+                <div class="col">
+                  <label for="" class="form-label">Ejercito</label>
+                  <input
+                    type="number"
+                    name="decision1-army"
+                    id="decision1-army"
+                    class="form-control"
+                    value="0"
+                  />
+                </div>
+                <div class="col">
+                  <label for="" class="form-label">Economia</label>
+                  <input
+                    type="number"
+                    name="decision1-economy"
+                    id="decision1-economy"
+                    class="form-control"
+                    value="0"
+                  />
+                </div>
+                <div class="col">
+                  <label for="" class="form-label">Poblacion</label>
+                  <input
+                    type="number"
+                    name="decision1-population"
+                    id="decision1-population"
+                    class="form-control"
+                    value="0"
+                  />
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Personaje Desbloqueable</label>
+                <select
+                  class="form-select"
+                  id="decision1-unlockableCharacter"
+                  name="decision1-unlockableCharacter"
+                >
+                  <option value="NO">No</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="border">
+              <label class="form-label">Decision 2</label>
+              <input
+                type="text"
+                class="form-control"
+                name="decision2-description"
+                id="decision2-description"
+              />
+              <div class="row">
+                <div class="col">
+                  <label for="" class="form-label">Magia</label>
+                  <input
+                    type="number"
+                    name="decision2-magic"
+                    id="decision2-magic"
+                    class="form-control"
+                    value="0"
+                  />
+                </div>
+                <div class="col">
+                  <label for="" class="form-label">Ejercito</label>
+                  <input
+                    type="number"
+                    name="decision2-army"
+                    id="decision2-army"
+                    class="form-control"
+                    value="0"
+                  />
+                </div>
+                <div class="col">
+                  <label for="" class="form-label">Economia</label>
+                  <input
+                    type="number"
+                    name="decision2-economy"
+                    id="decision2-economy"
+                    class="form-control"
+                    value="0"
+                  />
+                </div>
+                <div class="col">
+                  <label for="" class="form-label">Poblacion</label>
+                  <input
+                    type="number"
+                    name="decision2-population"
+                    id="decision2-population"
+                    class="form-control"
+                    value="0"
+                  />
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Personaje Desbloqueable</label>
+                <select
+                  class="form-select"
+                  id="decision2-unlockableCharacter"
+                  name="decision2-unlockableCharacter"
+                >
+                  <option value="NO">No</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="">
+          <input
+            type="submit"
+            value="Crear Carta"
+            class="btn btn-success mt-2"
+          />
+        </div>
+      </form>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script src="Cards.js"></script>
+  </body>
+</html>

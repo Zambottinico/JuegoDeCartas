@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://kit.fontawesome.com/7214dc13e9.js"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      /* Estilos para el contenedor del icono */
+      .icon-container {
+        width: 100px;
+        height: 100px;
+        position: relative;
+        overflow: hidden;
+        background-color: #f0f0f0;
+        border-radius: 50%;
+        user-select: none;
+      }
+
+      /* Estilos para el fondo del icono */
+      .icon-background {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 0%;
+        background-color: #007bff;
+        transition: height 1s ease; /* Controla la velocidad de la animación */
+        user-select: none;
+      }
+
+      /* Estilos para el icono */
+      .icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 48px;
+        color: #fff;
+        user-select: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="icon-container">
+      <div class="icon-background" style="height: 60%"></div>
+      <!-- Ajusta el porcentaje de altura aquí -->
+      <i class="fa-solid fa-hat-wizard icon" style="color: #ffffff"></i>
+      <!-- Utiliza cualquier icono de Font Awesome -->
+    </div>
+  </body>
+</html>

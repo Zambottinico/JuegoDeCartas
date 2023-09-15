@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Juego Sin Nombre.props" />
+</Project>

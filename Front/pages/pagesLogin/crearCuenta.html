@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"></script>
+    <link rel="stylesheet" href="../../style.css" />
+    <title>Crear Cuenta</title>
+  </head>
+  <body class="bgPattern">
+    <div class="container papiro paper-left mt-5">
+      <form action="" id="form">
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Usuario</label>
+          <input
+            type="text"
+            class="form-control"
+            id="username"
+            name="username"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label"
+            >Contraseña</label
+          >
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            name="password"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputPassword2" class="form-label"
+            >Confirmar Contraseña</label
+          >
+          <input
+            type="password"
+            class="form-control"
+            id="password2"
+            name="password2"
+          />
+        </div>
+        <div class="mb-3">
+          <input type="submit" value="Crear Cuenta" class="btn btn-primary" />
+        </div>
+      </form>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      $(document).ready(function () {
+        $("#form").validate({
+          rules: {
+            username: {
+              required: true,
+              maxlength: 50,
+            },
+            password: {
+              required: true,
+              maxlength: 50,
+            },
+            password2: {
+              required: true,
+              maxlength: 50,
+              equalTo: "#password",
+            },
+          },
+
+          errorClass: "is-invalid",
+          successClass: "is-valid",
+          debugger: true,
+        });
+
+        $("#form").submit(function () {
+          if ($("#form").valid()) {
+            event.preventDefault();
+            let login = {};
+            login.username = $("#username").val();
+            login.password = $("#password").val();
+            console.log(JSON.stringify(login));
+            $.ajax({
+              url: "https://localhost:7116/api/User/Post",
+              method: "POST",
+              dataType: "json",
+              contentType: "application/json",
+              data: JSON.stringify(login),
+              success: function (response) {
+                console.log(response);
+
+                window.location = "login.html";
+              },
+              error: function (error) {
+                console.log(error);
+              },
+            });
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
