@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Card Game</title>
+    <title>Juego</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <link
@@ -59,9 +59,12 @@
         color: #fff;
         user-select: none;
       }
-
-    
     </style>
+    <link
+      rel="shortcut icon"
+      href="../../img/favicon.ico"
+      type="image/x-icon"
+    />
   </head>
 
   <body>
@@ -69,24 +72,35 @@
       <div class="container-fluid d-flex justify-content-center">
         <div class="row">
           <div class="col active lined-bottom">
-            <a href="#" class="nav-link active">Game</a>
+            <a href="#" class="nav-link active">Juego</a>
           </div>
           <div class="col">
-            <a href="Players/players.html" class="nav-link active">Players</a>
+            <a href="Players/players.html" class="nav-link active">Jugadores</a>
           </div>
           <div class="col">
             <a href="Profile/profile.html" class="nav-link active">Perfil</a>
           </div>
-          <div class="col">
-            <a href="Cards/cards.html" class="nav-link active">Cards</a>
+          <div class="col-auto">
+            <a
+              href="Acerca de/AcercaDe.html"
+              class="nav-link active"
+              id="NavCards"
+              >Acerca de</a
+            >
           </div>
         </div>
       </div>
     </nav>
-    <main>
-      <div class="container center-vertically justify-content-center">
+    <main class="min-vh-100">
+      <div class="container center-vertically justify-content-center navSticky">
         <div class="row bg-dark text-white rounded-bottom shadow">
-          <div class="p-2 col" id="magicState">
+          <div
+            class="p-2 col"
+            id="magicState"
+            data-toggle="tooltip"
+            data-bs-placement="left"
+            title="Representa tu porcentaje de Magia"
+          >
             <div class="icon-container">
               <div
                 class="icon-background"
@@ -98,7 +112,13 @@
               <!-- Utiliza cualquier icono de Font Awesome -->
             </div>
           </div>
-          <div class="p-2 col" id="armyState">
+          <div
+            class="p-2 col"
+            id="armyState"
+            data-toggle="tooltip"
+            data-bs-placement="bottom"
+            title="Representa la fuerza de tu Ejercito"
+          >
             <div class="icon-container">
               <div
                 class="icon-background"
@@ -113,7 +133,13 @@
               <!-- Utiliza cualquier icono de Font Awesome -->
             </div>
           </div>
-          <div class="p-2 col" id="economyState">
+          <div
+            class="p-2 col"
+            id="economyState"
+            data-toggle="tooltip"
+            data-bs-placement="bottom"
+            title="Representa tu poder economico"
+          >
             <div class="icon-container">
               <div
                 class="icon-background"
@@ -128,7 +154,13 @@
               <!-- Utiliza cualquier icono de Font Awesome -->
             </div>
           </div>
-          <div class="p-2 col" id="populationState">
+          <div
+            class="p-2 col"
+            id="populationState"
+            data-toggle="tooltip"
+            data-bs-placement="right"
+            title="Representa la moral/felicidad de tu Poblacion"
+          >
             <div class="icon-container">
               <div
                 class="icon-background"
@@ -145,16 +177,23 @@
 
       <nav class="navbar navbar-expand navbar-white">
         <div class="container-fluid d-flex justify-content-center">
-          <div id="description" class="text-center pt-2 pb-2 papiro paper-left">
+          <div
+            id="description"
+            class="text-center pt-2 pb-2 papiro paper-left enchanted"
+          >
             cargando...
           </div>
         </div>
       </nav>
 
-      <div class="">
+      <div class="container">
         <div class="row mt-4">
           <div class="col-3 col-sm-3">
-            <div id="decision1" name="heart-dislike" class="papiro paper-left"></div>
+            <div
+              id="decision1"
+              name="heart-dislike"
+              class="papiro paper-left enchanted"
+            ></div>
           </div>
           <div class="col-6 col-sm-6">
             <div class="swipperContainer">
@@ -162,15 +201,16 @@
             </div>
           </div>
           <div class="col-3 col-sm-3">
-            <div id="decision2" class="papiro paper-left" name="heart"></div>
+            <div
+              id="decision2"
+              class="papiro paper-left enchanted"
+              name="heart"
+            ></div>
           </div>
         </div>
       </div>
-      <div class="row">
-        <strong><div id="days" class="text-center p-2 paper-left"></div>
-         
-          </div></strong
-        >
+      <div class="row bottomSticky">
+        <div id="days" class="text-center p-2 enchanted"></div>
       </div>
     </main>
     <script src="../../scripts/drawInfo.js"></script>

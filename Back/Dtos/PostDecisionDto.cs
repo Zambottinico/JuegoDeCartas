@@ -24,7 +24,7 @@ namespace Juego_Sin_Nombre.Dtos
             Army = decision.Army;
             Economy = decision.Economy;
             Magic = decision.Magic;
-            UnlockableCharacter=decision.unlockable_character;
+            UnlockableCharacter=decision.UnlockableCharacter;
         }
     }
 }

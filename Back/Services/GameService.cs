@@ -108,11 +108,11 @@ namespace Juego_Sin_Nombre.Services
             }
 
             //Comprobar si desbloquea Personaje
-            if (decision1.unlockable_character!=null)
+            if (decision1.UnlockableCharacter!=null)
             {
-                if (!charactersId.Contains((int)decision1.unlockable_character))
+                if (!charactersId.Contains((int)decision1.UnlockableCharacter))
                 {
-                    Character unlockableCharacter = await _context.Characters.FirstOrDefaultAsync(c => c.Id == decision1.unlockable_character);
+                    Character unlockableCharacter = await _context.Characters.FirstOrDefaultAsync(c => c.Id == decision1.UnlockableCharacter);
                     user.Characters.Add(unlockableCharacter);
                     characterUnlocked = true;
                     unlockableCharacterName = unlockableCharacter.Name;

@@ -32,12 +32,8 @@ namespace Juego_Sin_Nombre.Bussines.UserBussines.Commands
             //private readonly SaveSocioCommandValidation _validator;
             public async Task<UserResponseDto> Handle(CreateUserCommand request, CancellationToken cancellationToken)
             {
-                List<Usuario> user1 = await _context.Usuarios.Where(u=>u.Username==request.Username).ToListAsync();
-                if (user1.Count>0)
-                {
-                    throw new InvalidOperationException("El nombre de usuario ya existe.");
-                }
-                _validator.ValidateAsync(request);
+                
+                await _validator.ValidateAsync(request);
                 try
                 {
                     Usuario user = new Usuario();

@@ -21,6 +21,11 @@
     <link rel="stylesheet" href="../../../style.css" />
     <link rel="stylesheet" href="Profile.css" />
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <link
+      rel="shortcut icon"
+      href="../../../img/favicon.ico"
+      type="image/x-icon"
+    />
     <title>Perfil</title>
   </head>
   <body class="bgPattern">
@@ -28,18 +33,23 @@
       <div class="container-fluid d-flex justify-content-center">
         <div class="row">
           <div class="col active">
-            <a href="../index.html" class="nav-link active">Game</a>
+            <a href="../index.html" class="nav-link active">Juego</a>
           </div>
           <div class="col">
             <a href="../Players/players.html" class="nav-link active"
-              >Players</a
+              >Jugadores</a
             >
           </div>
           <div class="col lined-bottom">
             <a href="#" class="nav-link active">Perfil</a>
           </div>
-          <div class="col">
-            <a href="../Cards/cards.html" class="nav-link active">Cards</a>
+          <div class="col-auto">
+            <a
+              href="../Acerca de/AcercaDe.html"
+              class="nav-link active"
+              id="NavCards"
+              >Acerca de</a
+            >
           </div>
         </div>
       </div>
@@ -47,7 +57,13 @@
     <div class="container mt-5 papiro2 paper-left">
       <div class="container">
         <div class="row justify-content-between">
-          <div class="col"><p id="username" class="h1"></p></div>
+          <div class="col">
+            <div
+              id="username"
+              class="h1 d-inline-block px-3 bg-success rounded enchanted"
+              style="font-size: 80px"
+            ></div>
+          </div>
           <div class="col-auto">
             <input
               type="button"
@@ -60,7 +76,7 @@
       </div>
       <div class="container">
         <p class="h2">Cartas Desbloqueadas:</p>
-        <p>total de personajes:31</p>
+        <p id="totalCharacters">0/31</p>
         <div class="row" id="cards-container"></div>
       </div>
     </div>

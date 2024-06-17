@@ -10,6 +10,8 @@ namespace Juego_Sin_Nombre.Bussines.CardBussines
     {
         public class PostCardCommand:IRequest<CardResponse>
         {
+            public int PlayerId { get; set; }
+            public string Clave { get; set; }
             public int Typeid { get; set; }
 
             public string Description { get; set; }
@@ -34,6 +36,16 @@ namespace Juego_Sin_Nombre.Bussines.CardBussines
                 {
                     try
                     {
+                        //validacion
+                        Usuario usuario = await _context.Usuarios.Where(u => u.Id == request.PlayerId).FirstOrDefaultAsync();
+                        if (request.Clave != usuario.Clave)
+                        {
+                            throw new InvalidOperationException("La contraseña es incorrecta");
+                        }
+                        if (usuario.Rol!="Admin")
+                        {
+                            throw new Exception("El Usuario con id: "+request.PlayerId+" no tiene permisos de Administrador");
+                        }
                         // GUARDAR DECISIONES
                         Decision decision1 = new Decision
                         {
@@ -42,7 +54,7 @@ namespace Juego_Sin_Nombre.Bussines.CardBussines
                             Army = request.decision1.Army,
                             Economy = request.decision1.Economy,
                             Magic = request.decision1.Magic,
-                            unlockable_character = request.decision1.UnlockableCharacter
+                            UnlockableCharacter = request.decision1.UnlockableCharacter
                         };
 
                         Decision decision2 = new Decision
@@ -52,7 +64,7 @@ namespace Juego_Sin_Nombre.Bussines.CardBussines
                             Army = request.decision2.Army,
                             Economy = request.decision2.Economy,
                             Magic = request.decision2.Magic,
-                            unlockable_character = request.decision2.UnlockableCharacter
+                            UnlockableCharacter = request.decision2.UnlockableCharacter
                         };
 
                         await _context.Decisions.AddRangeAsync(decision1, decision2);

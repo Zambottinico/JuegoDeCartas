@@ -81,6 +81,7 @@ $(document).ready(function () {
       event.preventDefault();
       // Obtener los valores del formulario
       var typeid = 1;
+
       var description = $("#description").val();
       var characterId = $("#characterId").val();
       var decision1 = {
@@ -110,8 +111,11 @@ $(document).ready(function () {
         decision2.unlockableCharacter = null;
       }
       // Construir el objeto JSON
+      const valor1 = JSON.parse(Cookies.get("claveSeguridad"));
       var jsonData = {
         typeid: parseInt(typeid),
+        playerId: valor1.id,
+        clave: valor1.clave,
         description: description,
         characterId: parseInt(characterId),
         decision1: decision1,

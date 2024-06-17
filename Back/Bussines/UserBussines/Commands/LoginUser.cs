@@ -39,6 +39,10 @@ namespace Juego_Sin_Nombre.Bussines.UserBussines.Commands
                     loginResponse.Clave = clave;
                     loginResponse.Username = user.Username;
                     loginResponse.id = user.Id;
+                    if (user.Rol!=null)
+                    {
+                        loginResponse.Rol = user.Rol;
+                    }
                     loginResponse.Ok = true;
                     return loginResponse;
                 }

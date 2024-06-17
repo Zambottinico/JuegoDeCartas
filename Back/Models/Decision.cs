@@ -16,7 +16,8 @@ public partial class Decision
     public int? Economy { get; set; }
 
     public int? Magic { get; set; }
-    public int? unlockable_character { get; set; }
+
+    public int? UnlockableCharacter { get; set; }
 
     public virtual ICollection<Card> CardDecision1Navigations { get; set; } = new List<Card>();
 

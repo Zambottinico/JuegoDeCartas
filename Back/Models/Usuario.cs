@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 
 namespace Juego_Sin_Nombre.Models;
@@ -14,6 +14,8 @@ public partial class Usuario
     public int? Maxdays { get; set; }
 
     public string? Clave { get; set; }
+
+    public string? Rol { get; set; }
 
     public virtual ICollection<Game> Games { get; set; } = new List<Game>();
 

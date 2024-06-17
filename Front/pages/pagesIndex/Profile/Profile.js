@@ -1,4 +1,11 @@
 $(document).ready(function () {
+  //Cambiar links cartas/acerca de
+  const valor1 = JSON.parse(Cookies.get("claveSeguridad"));
+  if (valor1.rol === "Admin") {
+    $("#NavCards").attr("href", "../Cards/cards.html");
+    $("#NavCards").text("Cartas");
+  }
+
   $("#btn-CerrarSesion").click(function () {
     Swal.fire({
       title: "Confirmar",
@@ -16,8 +23,6 @@ $(document).ready(function () {
 
   const username = Cookies.get("username");
 
-  const valor1 = JSON.parse(Cookies.get("claveSeguridad"));
-
   $("#username").text(username);
   $.ajax({
     url:
@@ -31,17 +36,17 @@ $(document).ready(function () {
       console.log(error);
     },
   });
-
+  let contadorCartas = 0;
   function showData(data) {
     const content = $("#cards-container");
-    let contadorCartas = 0;
+
     let TotalCartas = 31;
     for (let i = 0; i < data.length; i++) {
       contadorCartas++;
       const user = data[i];
       var row = `
-      <div class="col-md-2">
-      <div class="div-contenedor">
+      <div class="col-md-2 col-sm-4 ">
+      <div class="div-contenedor d-flex justify-content-center">
         <img
           src="../../../img/${data[i].name}.png"
           alt="Tu Imagen"
@@ -55,10 +60,10 @@ $(document).ready(function () {
     //Agregar cartas en blanco
     for (let i = 0; i < TotalCartas - contadorCartas; i++) {
       var row = `
-      <div class="col-md-2">
-      <div class="div-contenedor">
+      <div class="col-md-2 col-sm-4">
+      <div class="div-contenedor d-flex justify-content-center">
         <img
-          src="../../../img/Block.png"
+          src="../../../img/block.png"
           alt="Tu Imagen"
           class="img-fluid card-shadow "
         />
@@ -66,6 +71,12 @@ $(document).ready(function () {
     </div>
         `;
       content.append(row);
+    }
+    let TotalCartasElement = document.getElementById("totalCharacters");
+
+    TotalCartasElement.textContent = contadorCartas + "/31";
+    if (contadorCartas == 31) {
+      TotalCartasElement.classList.add("text-success");
     }
   }
 });

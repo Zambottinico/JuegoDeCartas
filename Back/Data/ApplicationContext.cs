@@ -29,8 +29,7 @@ public partial class ApplicationContext : DbContext
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseNpgsql("Host=localhost;Database=GameDatabase;Username=postgres;Password=234598");
+        => optionsBuilder.UseNpgsql("Name=ConnectionString");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -89,6 +88,7 @@ public partial class ApplicationContext : DbContext
             entity.Property(e => e.Economy).HasColumnName("economy");
             entity.Property(e => e.Magic).HasColumnName("magic");
             entity.Property(e => e.Population).HasColumnName("population");
+            entity.Property(e => e.UnlockableCharacter).HasColumnName("unlockable_character");
         });
 
         modelBuilder.Entity<Game>(entity =>
@@ -144,6 +144,7 @@ public partial class ApplicationContext : DbContext
             entity.Property(e => e.Password)
                 .HasMaxLength(255)
                 .HasColumnName("password");
+            entity.Property(e => e.Rol).HasMaxLength(50);
             entity.Property(e => e.Username)
                 .HasMaxLength(255)
                 .HasColumnName("username");
@@ -167,6 +168,7 @@ public partial class ApplicationContext : DbContext
                         j.IndexerProperty<int>("CharacterId").HasColumnName("character_id");
                     });
         });
+        modelBuilder.HasSequence("games_id_seq");
 
         OnModelCreatingPartial(modelBuilder);
     }

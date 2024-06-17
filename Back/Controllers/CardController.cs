@@ -33,5 +33,12 @@ namespace Juego_Sin_Nombre.Controllers
         {
             return await _mediator.Send(new GetCardsCommand());
         }
+
+        [HttpGet]
+        [Route("Ping")]
+        public string PingPong()
+        {
+            return "pong";
+        }
     }
 }

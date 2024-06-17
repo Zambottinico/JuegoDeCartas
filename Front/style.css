@@ -147,3 +147,41 @@ body {
   width: 10rem;
   height: auto;
 }
+.fraseRandom {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-size: 1.4rem;
+  color: yellow;
+}
+
+@font-face {
+  font-family: Land;
+  src: url("fonts/Enchanted\ Land.otf");
+  font-style: normal;
+  font-weight: 900;
+}
+
+.enchanted {
+  font-family: Land;
+  font-size: 25px;
+}
+
+.navSticky {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+.bottomSticky {
+  position: sticky;
+  bottom: 0;
+  top: 0;
+  z-index: 999;
+}
+
+@media (max-width: 380px) {
+  #decision2 {
+    padding: 0px;
+  }
+  #decision1 {
+    padding: 0px;
+  }
+}

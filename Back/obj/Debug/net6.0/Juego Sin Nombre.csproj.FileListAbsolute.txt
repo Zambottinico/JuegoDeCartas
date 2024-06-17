@@ -230,3 +230,4 @@ D:\programacion\JuegoDeCartas\Back\obj\Debug\net6.0\refint\Juego Sin Nombre.dll
 D:\programacion\JuegoDeCartas\Back\obj\Debug\net6.0\Juego Sin Nombre.pdb
 D:\programacion\JuegoDeCartas\Back\obj\Debug\net6.0\Juego Sin Nombre.genruntimeconfig.cache
 D:\programacion\JuegoDeCartas\Back\obj\Debug\net6.0\ref\Juego Sin Nombre.dll
+D:\programacion\JuegoDeCartas\Back\obj\Debug\net6.0\Juego Sin Nombre.sourcelink.json

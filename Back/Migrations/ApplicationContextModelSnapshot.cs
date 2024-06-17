@@ -22,6 +22,8 @@ namespace Juego_Sin_Nombre.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.HasSequence("games_id_seq");
+
             modelBuilder.Entity("Juego_Sin_Nombre.Models.Card", b =>
                 {
                     b.Property<int>("Id")
@@ -117,6 +119,10 @@ namespace Juego_Sin_Nombre.Migrations
                     b.Property<int?>("Population")
                         .HasColumnType("integer")
                         .HasColumnName("population");
+
+                    b.Property<int?>("UnlockableCharacter")
+                        .HasColumnType("integer")
+                        .HasColumnName("unlockable_character");
 
                     b.HasKey("Id")
                         .HasName("decision_pkey");
@@ -218,6 +224,10 @@ namespace Juego_Sin_Nombre.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)")
                         .HasColumnName("password");
+
+                    b.Property<string>("Rol")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<string>("Username")
                         .HasMaxLength(255)
