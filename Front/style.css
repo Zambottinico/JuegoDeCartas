@@ -185,3 +185,9 @@ body {
     padding: 0px;
   }
 }
+.logo {
+  transition: transform 0.5s ease;
+}
+.logo:active {
+  transform: rotate(360deg);
+}

@@ -46,11 +46,12 @@ $(document).ready(function () {
       const user = data[i];
       var row = `
       <div class="col-md-2 col-sm-4 ">
-      <div class="div-contenedor d-flex justify-content-center">
+      <div class=" d-flex justify-content-center">
         <img
           src="../../../img/${data[i].name}.png"
           alt="Tu Imagen"
-          class="img-fluid card-shadow "
+          class="img-fluid card-shadow cardImage"
+          onclick="showInfo(${data[i].id}, '${data[i].name}')";
         />
       </div>
     </div>
@@ -61,11 +62,12 @@ $(document).ready(function () {
     for (let i = 0; i < TotalCartas - contadorCartas; i++) {
       var row = `
       <div class="col-md-2 col-sm-4">
-      <div class="div-contenedor d-flex justify-content-center">
+      <div class="d-flex justify-content-center">
         <img
           src="../../../img/block.png"
           alt="Tu Imagen"
-          class="img-fluid card-shadow "
+          class="img-fluid card-shadow cardImage"
+          onclick="showInfoNoCard(${i})";
         />
       </div>
     </div>
@@ -80,3 +82,47 @@ $(document).ready(function () {
     }
   }
 });
+
+function showInfo(id, name) {
+  Swal.fire({
+    html: `
+    <div class="row">
+      <div class=" col-sm-6">
+        <img
+          src="../../../img/${name}.png"
+          alt="Tu Imagen"
+          class="img-fluid card-shadow "
+        />
+      </div>
+      <div class=" col-sm-6">
+        <h2>${name}</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem sunt, exercitationem temporibus dicta esse aspernatur nisi, ipsam excepturi illo libero reprehenderit saepe dignissimos beatae fuga placeat error nesciunt, ab perferendis?</p>
+      </div>
+    </div>
+    
+    `,
+    showConfirmButton: false,
+  });
+}
+
+function showInfoNoCard(i) {
+  Swal.fire({
+    html: `
+    <div class="row">
+      <div class=" col-sm-6">
+        <img
+          src="../../../img/block.png"
+          alt="Tu Imagen"
+          class="img-fluid card-shadow "
+        />
+      </div>
+      <div class=" col-sm-6">
+        <h2 class="text-danger">Bloqueado</h2>
+        <p>Sigue jugando para desbloquear esta carta</p>
+      </div>
+    </div>
+    
+    `,
+    showConfirmButton: false,
+  });
+}

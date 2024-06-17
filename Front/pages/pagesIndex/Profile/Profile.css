@@ -18,3 +18,7 @@
 
   margin-bottom: 15px;
 }
+.cardImage:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}

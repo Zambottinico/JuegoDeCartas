@@ -1,0 +1,19 @@
+.papiro-acerca-de {
+  background-color: #f2eeea !important;
+  padding: 1.25rem;
+  border: 1px solid #c0c0c0;
+
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 1.125rem;
+  line-height: 1.5;
+}
+.icons-container a {
+  text-decoration: none;
+}
+
+.logo {
+  transition: transform 0.5s ease;
+}
+.logo:active {
+  transform: rotate(360deg);
+}
