@@ -43,9 +43,32 @@ const DrawInfo = (game) => {
   decision1.text(game.lastCard.decision1.description);
   decision2.text(game.lastCard.decision2.description);
   description.text(game.lastCard.description);
-  days.text("Day: " + game.day);
+  days.text(`🖤${game.lives} 🥇${game.gold}  💎${game.diamonds}📕Dia: ${game.day}`);
   DrawStates(game);
 };
-const DrawError = () => {
-  description.text("Error al cargar, Porfavor Ingresar con una cuenta");
+const DrawError = (error) => {
+  description.text(error.responseJSON.details);
+  decision1.text("Seguir esperando...");
+  decision2.text("Comprar vidas");
+  appendNotLivesCard("../../img/Harverter.png",error);
 };
+function appendNotLivesCard(url,error) {
+  const card = new Card({
+    imageUrl: url,
+    // onDismiss: appendNewCard,
+    onLike: () => {
+      console.log("decision 2");
+      window.location.href = "http://127.0.0.1:5501/pages/pagesIndex/Profile/profile.html"
+      
+    },
+    onDislike: () => {
+      console.log("decision 1");
+      DrawError(error);
+    },
+  });
+  swiper.append(card.element);
+  const cards = swiper.querySelectorAll(".card:not(.dismissing)");
+  cards.forEach((card, index) => {
+    card.style.setProperty("--i", index);
+  });
+}

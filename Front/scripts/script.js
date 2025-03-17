@@ -36,8 +36,9 @@ $(document).ready(function () {
         appendNewCard(url);
       },
       error: function (error) {
-        console.log(error);
-        DrawError();
+       
+        
+        DrawError(error);
       },
     });
 
@@ -58,6 +59,7 @@ $(document).ready(function () {
           Respuesta = response;
           console.log(Respuesta);
           let url2 = "../../img/" + response.lastCard.character + ".png";
+         
           if (response.characterUnlocked) {
             Swal.fire({
               title: "Felicidades!",
@@ -76,7 +78,8 @@ $(document).ready(function () {
           }
         },
         error: function (error) {
-          console.log(error);
+          console.log(error.responseJSON);
+          DrawError(error);
         },
       });
     };
@@ -111,5 +114,7 @@ $(document).ready(function () {
         card.style.setProperty("--i", index);
       });
     }
+
+    
   });
 });

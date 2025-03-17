@@ -171,11 +171,13 @@ body {
   z-index: 999;
 }
 .bottomSticky {
-  position: sticky;
+  position: fixed;
   bottom: 0;
-  top: 0;
+  left: 50%;
+  transform: translateX(-50%); /* Esto ajusta el elemento para que quede centrado */
   z-index: 999;
 }
+
 
 @media (max-width: 380px) {
   #decision2 {
@@ -190,4 +192,11 @@ body {
 }
 .logo:active {
   transform: rotate(360deg);
+}
+
+
+#days{
+  background-color: #000000b0;
+  color: #c0c0c0;
+  border-radius: 20px;
 }

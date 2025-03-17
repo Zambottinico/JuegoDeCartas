@@ -23,6 +23,45 @@ $(document).ready(function () {
 
   const username = Cookies.get("username");
 
+  $.ajax({
+    url: "https://localhost:7116/api/User/GetUserById/" + valor1.id,
+    method: "GET",
+    dataType: "json",
+    success: function (response) {
+      showUserInfo(response);
+    },
+    error: function (error) {
+      console.log(error);
+    },
+  });
+
+  function showUserInfo(data) {
+    console.log(data);
+    const pCoins = $("#coins");
+    pCoins.append(`🥇 ${data.gold} 💎 ${data.diamonds}`);
+    const pLifes = $("#lives");
+    pLifes.append(`🖤 ${data.lives} de ${data.maxLives} Vidas`);
+
+    if (data.maxLives != data.lives) {
+      const pNextLive = $("#nextLive");
+      const date = new Date(data.lastLifeRecharge); // Convierte el string en un objeto Date
+    
+      // Sumar 30 minutos a la fecha
+      date.setMinutes(date.getMinutes() + 30);
+    
+      // Formato para mostrar solo la hora
+      const formattedTime = date.toLocaleTimeString("es-AR", {
+        hour: "2-digit",    // Hora en formato de 2 dígitos
+        minute: "2-digit",  // Minutos en formato de 2 dígitos
+        second: "2-digit",  // Segundos en formato de 2 dígitos
+      });
+    
+      // Muestra solo la hora formateada
+      pNextLive.append(formattedTime + " para la siguiente vida");
+    }
+    
+  }
+
   $("#username").text(username);
   $.ajax({
     url:
@@ -49,9 +88,9 @@ $(document).ready(function () {
       <div class=" d-flex justify-content-center">
         <img
           src="../../../img/${data[i].name}.png"
-          alt="Tu Imagen"
+          alt="Imagen del personaje ${data[i].name}"
           class="img-fluid card-shadow cardImage"
-          onclick="showInfo(${data[i].id}, '${data[i].name}')";
+          onclick="showInfo(${data[i].id}, '${data[i].name}','${data[i].lore}')";
         />
       </div>
     </div>
@@ -83,7 +122,7 @@ $(document).ready(function () {
   }
 });
 
-function showInfo(id, name) {
+function showInfo(id, name, lore) {
   Swal.fire({
     html: `
     <div class="row">
@@ -96,7 +135,7 @@ function showInfo(id, name) {
       </div>
       <div class=" col-sm-6">
         <h2>${name}</h2>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem sunt, exercitationem temporibus dicta esse aspernatur nisi, ipsam excepturi illo libero reprehenderit saepe dignissimos beatae fuga placeat error nesciunt, ab perferendis?</p>
+        <p>${lore}</p>
       </div>
     </div>
     

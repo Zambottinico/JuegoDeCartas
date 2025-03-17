@@ -19,6 +19,9 @@
         public CardResponse LastCard { get; set; }
 
         public int Day { get; set; }
+        public int? Gold { get; set; }
+        public int? Diamonds { get; set; }
+        public int? Lives { get; set; }
         public bool characterUnlocked { get; set; } = false;
         public string unlockableCharacterName { get;set; }
     }

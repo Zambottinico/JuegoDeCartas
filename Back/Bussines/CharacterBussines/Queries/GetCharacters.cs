@@ -39,6 +39,7 @@ namespace Juego_Sin_Nombre.Bussines.CharacterBussines.Queries
                             {
                                 Id = c.Id,
                                 Name = c.Name,
+                                Lore= c.Lore,
                                 CantidadCartas = cantidadCartas
                             };
                             characterResponses.Add(characterResponse);

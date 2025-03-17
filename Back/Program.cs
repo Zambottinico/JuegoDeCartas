@@ -1,4 +1,5 @@
 using FluentValidation.AspNetCore;
+using Juego_Sin_Nombre.config;
 using Juego_Sin_Nombre.Data;
 using Juego_Sin_Nombre.Services;
 using Microsoft.AspNetCore.Builder;
@@ -49,7 +50,7 @@ builder.Services.AddFluentValidation(config =>
 //Scaffold-DbContext "Name=ConnectionString" Npgsql.EntityFrameworkCore.PostgreSQL -OutputDir Models -ContextDir Data -Context ApplicationContext -Force
 
 var app = builder.Build();
-
+app.UseMiddleware<ErrorHandlingMiddleware>();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsProduction())
 {

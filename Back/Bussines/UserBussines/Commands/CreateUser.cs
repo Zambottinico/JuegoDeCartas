@@ -36,6 +36,12 @@ namespace Juego_Sin_Nombre.Bussines.UserBussines.Commands
                 await _validator.ValidateAsync(request);
                 try
                 {
+                    //Validar que no exista un usuario con el mismo username
+                    if (_context.Usuarios.Any(c=> c.Username==request.Username))
+                    {
+                        // El usuario ya existe, manejar el error
+                        throw new InvalidOperationException("El nombre de usuario ya está en uso.");
+                    }
                     Usuario user = new Usuario();
                     List<Character> characters = await _context.Characters
                          .Where(c => c.Id >= 1 && c.Id <= 5)  // Filtrar por IDs 1 a 5
@@ -44,6 +50,13 @@ namespace Juego_Sin_Nombre.Bussines.UserBussines.Commands
                     user.Characters =characters;
                     user.Username = request.Username;
                     user.Password = request.Password;
+                    //se asignan en 0 el oro y los diamantes
+                    user.Gold = 0;
+                    user.Diamonds = 0;
+                    //Se asignan vidas en 5
+                    user.MaxLives = 5;
+                    user.Lives = 5;
+
                     await _context.Usuarios.AddAsync(user);
                     await _context.SaveChangesAsync();
                     UserResponseDto userResponse = new UserResponseDto();

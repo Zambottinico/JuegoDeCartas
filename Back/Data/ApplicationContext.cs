@@ -74,6 +74,8 @@ public partial class ApplicationContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .HasColumnName("name");
+            entity.Property(e => e.Lore)
+                .HasColumnName("lore");
         });
 
         modelBuilder.Entity<Decision>(entity =>
@@ -141,6 +143,15 @@ public partial class ApplicationContext : DbContext
                 .HasMaxLength(250)
                 .HasColumnName("clave");
             entity.Property(e => e.Maxdays).HasColumnName("maxdays");
+            entity.Property(e => e.Gold).HasColumnName("gold");
+            entity.Property(e => e.Diamonds).HasColumnName("diamonds");
+            entity.Property(e => e.MaxLives).HasColumnName("maxlives");
+            entity.Property(e => e.LastLifeRecharge)
+              .HasColumnName("last_life_recharge") // Nombre en la base de datos
+              .HasColumnType("timestamp with time zone") // Define el tipo TIMESTAMP WITH TIME ZONE en PostgreSQL
+              .IsRequired(false);
+
+            entity.Property(e => e.Lives).HasColumnName("lives");
             entity.Property(e => e.Password)
                 .HasMaxLength(255)
                 .HasColumnName("password");

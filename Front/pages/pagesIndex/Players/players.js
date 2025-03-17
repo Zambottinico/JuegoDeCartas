@@ -34,10 +34,10 @@ $(document).ready(function () {
       const user = data[i];
 
       if (user.username == Cookies.get("username")) {
-        var row = `<tbody class="bg-success enchanted">
+        var row = `<tbody class="bg-success enchanted" id="localPlayer">
       <th>${i + 1}</th>
       <td>${user.username}</td>
-      <td>${user.maxDays} Dias</td>
+      <td>${user.maxDays}  ${user.maxDays === 1 ? "Día" : "Días"}</td>
 
 
      </tbody>
@@ -46,7 +46,7 @@ $(document).ready(function () {
         var row = `<tbody class=" enchanted">
       <th>${i + 1}</th>
       <td>${user.username}</td>
-      <td>${user.maxDays} Dias</td>
+      <td>${user.maxDays}  ${user.maxDays === 1 ? "Día" : "Días"}</td>
 
 
      </tbody>

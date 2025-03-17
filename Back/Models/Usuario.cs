@@ -12,6 +12,11 @@ public partial class Usuario
     public string? Password { get; set; }
 
     public int? Maxdays { get; set; }
+    public int? MaxLives { get; set; }
+    public int? Lives { get; set; }
+    public DateTime? LastLifeRecharge { get; set; }  // Última vez que se regeneró una vida
+    public int? Gold { get; set; }
+    public int? Diamonds { get; set; }
 
     public string? Clave { get; set; }
 

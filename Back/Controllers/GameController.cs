@@ -28,7 +28,7 @@ namespace Juego_Sin_Nombre.Controllers
         [Route("Play")]
         public async Task<GameResponse> PostGame([FromBody] PlayGameCommand playGameCommand)
         {
-            return await _mediator.Send(playGameCommand);
+             return await _mediator.Send(playGameCommand); 
         }
 
     }

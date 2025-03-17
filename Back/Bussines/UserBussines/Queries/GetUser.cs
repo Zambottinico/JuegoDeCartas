@@ -31,6 +31,11 @@ namespace Juego_Sin_Nombre.Bussines.UserBussines.Queries
                         UserResponseDto dto = new UserResponseDto();
                         dto.Username = user.Username;
                         dto.MaxDays = (int)user.Maxdays;
+                        dto.Gold = (int)user.Gold;
+                        dto.Diamonds = (int)user.Diamonds;
+                        dto.MaxLives = (int)user.MaxLives;
+                        dto.Lives = (int)user.Lives;
+                        dto.LastLifeRecharge = user.LastLifeRecharge;
                         return dto;
                     }
                     throw new Exception();

@@ -12,6 +12,12 @@ namespace Juego_Sin_Nombre.Controllers
     };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        [HttpGet("throw-error")]
+        public IActionResult ThrowError()
+        {
+            // Lanza una excepción intencionalmente
+            throw new Exception("Este es un error de prueba.");
+        }
 
         public WeatherForecastController(ILogger<WeatherForecastController> logger)
         {

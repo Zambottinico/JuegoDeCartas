@@ -36,7 +36,8 @@ namespace Juego_Sin_Nombre.Bussines.CharacterBussines.Queries
                             CharacterResponse characterResponse = new()
                             {
                                 Id = c.Id,
-                                Name = c.Name
+                                Name = c.Name,
+                                Lore = c.Lore
                             };
                             characterResponses.Add(characterResponse);
                         }

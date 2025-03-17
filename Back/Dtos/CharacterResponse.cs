@@ -4,6 +4,8 @@
     {
         public long Id { get; set; }
         public string Name { get; set; }
+        public string Lore { get; set; }
+
         public int CantidadCartas { get; set; }
     }
 }

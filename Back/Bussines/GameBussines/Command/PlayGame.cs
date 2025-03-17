@@ -31,11 +31,15 @@ namespace Juego_Sin_Nombre.Bussines.GameBussines.Command
             {
                 try
                 {
-                    //validacion
+                    //validar usuario 
                     Usuario usuario = await _context.Usuarios.Where(u => u.Id == request.Userid).FirstOrDefaultAsync();
                     if (request.clave != usuario.Clave)
                     {
                         throw new InvalidOperationException("La contraseña es incorrecta");
+                    }
+                    if (usuario.Lives < 1)
+                    {
+                        throw new InvalidOperationException("No tiene vidas suficientes");
                     }
 
                     Game game = await _context.Games.FirstOrDefaultAsync(g => g.Userid == request.Userid && g.Gamestate!= "FINISHED");

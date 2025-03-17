@@ -2,6 +2,7 @@
 using Juego_Sin_Nombre.Dtos;
 using Juego_Sin_Nombre.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Numerics;
 
 namespace Juego_Sin_Nombre.Services
 {
@@ -30,6 +31,9 @@ namespace Juego_Sin_Nombre.Services
             gameResponse.Day = (int)game.Day;
             Usuario user = _context.Usuarios.FirstOrDefault(u => u.Id == game.Userid);
             gameResponse.UserName = user.Username;
+            gameResponse.Gold = user.Gold;
+            gameResponse.Diamonds = user.Diamonds;
+            gameResponse.Lives = user.Lives;
 
             Card card = _context.Cards.Include(u => u.Character).FirstOrDefault(c => c.Id == game.Lastcardid);
             CardResponse cardResponse = new CardResponse();
@@ -52,6 +56,10 @@ namespace Juego_Sin_Nombre.Services
         }
         public GameResponse MapperGameToGameResponse(Game game, Boolean characterUnlocked)
         {
+            
+
+
+
             GameResponse gameResponse = new GameResponse();
             gameResponse.characterUnlocked = characterUnlocked;
             
@@ -62,8 +70,20 @@ namespace Juego_Sin_Nombre.Services
             gameResponse.Magicstate = (int)game.Magicstate;
             gameResponse.Gamestate = game.Gamestate;
             gameResponse.Day = (int)game.Day;
+
             Usuario user = _context.Usuarios.FirstOrDefault(u => u.Id == game.Userid);
             gameResponse.UserName = user.Username;
+            gameResponse.Gold = user.Gold;
+            gameResponse.Diamonds = user.Diamonds;
+            gameResponse.Lives = user.Lives;
+
+            UpdateLives(user);
+            _context.SaveChanges();
+
+            if (user.Lives < 1)
+            {
+                throw new ArgumentException("No tiene suficientes vidas para jugar");
+            }
 
             Card card = _context.Cards.Include(u => u.Character).FirstOrDefault(c => c.Id == game.Lastcardid);
             CardResponse cardResponse = new CardResponse();
@@ -94,6 +114,14 @@ namespace Juego_Sin_Nombre.Services
                 throw new Exception("El Juego esta acabado");
             }
             Usuario user = await _context.Usuarios.Include(u=>u.Characters).FirstOrDefaultAsync(u => u.Id == game.Userid);
+            UpdateLives(user);
+            _context.SaveChanges();
+
+            if (user.Lives < 1)
+            {
+                throw new ArgumentException("No tiene suficientes vidas para jugar");
+            }
+
             List<int> charactersId = user.Characters.Select(c => c.Id).ToList();
 
             Card card = await _context.Cards.FirstOrDefaultAsync(c=>c.Id==game.Lastcardid);
@@ -128,23 +156,28 @@ namespace Juego_Sin_Nombre.Services
             if (game.Populationstate < 1)
             {
                 game.Gamestate = "FINISHED";
+                
             }
             else if (game.Economystate < 1)
             {
                 game.Gamestate = "FINISHED";
+               
             }
             else if (game.Armystate < 1)
             {
                 game.Gamestate = "FINISHED";
+               
             }
             else if (game.Magicstate < 1)
             {
                 game.Gamestate = "FINISHED";
+                
             }
             else
             {
                 game.Day += 1;
-                
+                //TODO
+                user.Gold += 1;
                 if (game.Day > user.Maxdays ||user.Maxdays==null)
                 {
                     user.Maxdays = game.Day;
@@ -175,7 +208,9 @@ namespace Juego_Sin_Nombre.Services
             // TOODO PROBAR
             if (game.Gamestate == "FINISHED")
             {
-              //  Card cardGameOver= await _context.Cards.Where(c => c.Id== 666).FirstOrDefaultAsync();
+                //  Card cardGameOver= await _context.Cards.Where(c => c.Id== 666).FirstOrDefaultAsync();
+
+                user.Lives--;
                 game.Lastcardid = 6;//carta de Game over
                  _context.Games.Remove(game);
                await _context.SaveChangesAsync();
@@ -186,7 +221,15 @@ namespace Juego_Sin_Nombre.Services
 
         public async Task<Game> CreateGame(int playerId)
         {
-            
+            Usuario user = await _context.Usuarios.Include(u => u.Characters).FirstOrDefaultAsync(u => u.Id == playerId);
+
+            UpdateLives(user);
+            _context.SaveChanges();
+            if (user.Lives < 1)
+            {
+                throw new InvalidOperationException("No tiene vidas suficientes");
+            }
+
             Game game = new Game();
             game.Armystate = 50;
             game.Gamestate = "Playing";
@@ -195,10 +238,10 @@ namespace Juego_Sin_Nombre.Services
             game.Economystate = 50;
             game.Populationstate = 50;
 
-            Usuario user = await _context.Usuarios.Include(u => u.Characters).FirstOrDefaultAsync(u=>u.Id==playerId);
             List<int> charactersId = user.Characters.Select(c => c.Id).ToList();
 
             game.Lastcardid = await cardService.TakeCard(charactersId);
+
 
             //game.Lastcardid = await cardService.TakeCard((int)game.Day);
 
@@ -214,5 +257,47 @@ namespace Juego_Sin_Nombre.Services
             }
 
         }
+
+
+        private const int LifeRechargeTimeMinutes = 30;
+
+        public void UpdateLives(Usuario player)
+        {
+            if (player.Lives < 0)
+            {
+                player.Lives = 0;  
+            }
+
+            if (player.Lives >= player.MaxLives) {
+
+                player.LastLifeRecharge = DateTime.UtcNow;
+                return; // No necesita más vidas
+            } 
+            
+
+            if (player.LastLifeRecharge == null)
+            {
+                player.LastLifeRecharge = DateTime.UtcNow;
+                return;
+            }
+
+            TimeSpan timeElapsed = DateTime.UtcNow - player.LastLifeRecharge.Value;
+            int livesToAdd = (int)(timeElapsed.TotalMinutes / LifeRechargeTimeMinutes);
+
+            if (livesToAdd > 0)
+            {
+                player.Lives += livesToAdd;
+
+                // Asegurar que no supere el máximo de 5 vidas
+                if (player.Lives > 5)
+                {
+                    player.Lives = 5;
+                }
+
+                player.LastLifeRecharge = DateTime.UtcNow; // Reiniciar el tiempo de regeneración
+            }
+        }
+
+
     }
 }

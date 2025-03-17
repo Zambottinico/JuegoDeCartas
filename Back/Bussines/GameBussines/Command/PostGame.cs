@@ -4,6 +4,7 @@ using Juego_Sin_Nombre.Models;
 using Juego_Sin_Nombre.Services;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Numerics;
 
 namespace Juego_Sin_Nombre.Bussines.GameBussines.Command
 {
@@ -35,11 +36,13 @@ namespace Juego_Sin_Nombre.Bussines.GameBussines.Command
                     {
                         throw new InvalidOperationException("La contraseña es incorrecta");
                     }
+                    
 
                     Game gameSaved = await _context.Games.Where(g=>g.Gamestate!= "FINISHED").FirstOrDefaultAsync(g=>g.Userid==request.Userid);          
 
                     if (gameSaved!=null && gameSaved.Gamestate!= "FINISHED")
-                    { 
+                    {
+                        
                         return gameService.MapperGameToGameResponse(gameSaved,false);
                     }
                     else

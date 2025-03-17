@@ -27,27 +27,47 @@ namespace Juego_Sin_Nombre.Bussines.UserBussines.Commands
 
             public async Task<LoginResponse> Handle(LoginUserCommand request, CancellationToken cancellationToken)
             {
-                Usuario user = await _context.Usuarios.Where(u=>u.Username==request.Username && u.Password==request.Password)
-                    .FirstOrDefaultAsync();
-                LoginResponse loginResponse = new LoginResponse();
-                if (user != null)
+                try
                 {
-                    string clave = ClaveGenerator();
-                    user.Clave = clave;
-                    await _context.SaveChangesAsync();
-                    
-                    loginResponse.Clave = clave;
-                    loginResponse.Username = user.Username;
-                    loginResponse.id = user.Id;
-                    if (user.Rol!=null)
+                    Usuario user = await _context.Usuarios
+                        .Where(u => u.Username == request.Username && u.Password == request.Password)
+                        .FirstOrDefaultAsync();
+
+                    LoginResponse loginResponse = new LoginResponse();
+
+                    if (user != null)
                     {
-                        loginResponse.Rol = user.Rol;
+                        string clave = ClaveGenerator();
+                        user.Clave = clave;
+                        await _context.SaveChangesAsync();
+
+                        loginResponse.Clave = clave;
+                        loginResponse.Username = user.Username;
+                        loginResponse.id = user.Id;
+
+                        if (user.Rol != null)
+                        {
+                            loginResponse.Rol = user.Rol;
+                        }
+
+                        loginResponse.Ok = true;
+                        return loginResponse;
                     }
-                    loginResponse.Ok = true;
+
+                    loginResponse.Ok = false;
                     return loginResponse;
                 }
-                loginResponse.Ok = false;
-                return loginResponse;
+                catch (Exception ex)
+                {
+                    // Manejo de la excepción
+                    // Aquí puedes loguear el error, devolver un mensaje apropiado, etc.
+                    return new LoginResponse
+                    {
+                        Ok = false,
+                        
+                    };
+                }
+
             }
 
             public string ClaveGenerator()
