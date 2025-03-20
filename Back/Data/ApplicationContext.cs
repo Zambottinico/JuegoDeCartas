@@ -15,7 +15,8 @@ public partial class ApplicationContext : DbContext
         : base(options)
     {
     }
-
+    public DbSet<DiamondOfert> DiamondOfert { get; set; }
+    public DbSet<Invoice> Invoices { get; set; }
     public virtual DbSet<Card> Cards { get; set; }
     public virtual DbSet<CardOfert> CardOferts { get; set; }
 
@@ -34,6 +35,10 @@ public partial class ApplicationContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Invoice>()
+            .HasOne(i => i.DiamondOfert)
+            .WithMany(d => d.Invoices) // Cambio en la relación
+            .HasForeignKey(i => i.DiamondOfferId);
         modelBuilder.Entity<Card>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("card_pkey");

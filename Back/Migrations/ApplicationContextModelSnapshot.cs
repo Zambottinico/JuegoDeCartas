@@ -82,6 +82,10 @@ namespace Juego_Sin_Nombre.Migrations
                     b.Property<int>("CharacterId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("CharacterName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int>("DiamondPrice")
                         .HasColumnType("integer");
 
@@ -156,6 +160,29 @@ namespace Juego_Sin_Nombre.Migrations
                     b.ToTable("decision", (string)null);
                 });
 
+            modelBuilder.Entity("Juego_Sin_Nombre.Models.DiamondOfert", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("MontoDeDiamantes")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("PrecioEnPesos")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DiamondOfert");
+                });
+
             modelBuilder.Entity("Juego_Sin_Nombre.Models.Game", b =>
                 {
                     b.Property<int>("Id")
@@ -206,6 +233,27 @@ namespace Juego_Sin_Nombre.Migrations
                     b.HasIndex("Userid");
 
                     b.ToTable("games", (string)null);
+                });
+
+            modelBuilder.Entity("Juego_Sin_Nombre.Models.Invoice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("DiamondOfferId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DiamondOfferId");
+
+                    b.ToTable("Invoices");
                 });
 
             modelBuilder.Entity("Juego_Sin_Nombre.Models.Type", b =>
@@ -352,6 +400,17 @@ namespace Juego_Sin_Nombre.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Juego_Sin_Nombre.Models.Invoice", b =>
+                {
+                    b.HasOne("Juego_Sin_Nombre.Models.DiamondOfert", "DiamondOfert")
+                        .WithMany("Invoices")
+                        .HasForeignKey("DiamondOfferId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DiamondOfert");
+                });
+
             modelBuilder.Entity("PlayerCharacter", b =>
                 {
                     b.HasOne("Juego_Sin_Nombre.Models.Character", null)
@@ -382,6 +441,11 @@ namespace Juego_Sin_Nombre.Migrations
                     b.Navigation("CardDecision1Navigations");
 
                     b.Navigation("CardDecision2Navigations");
+                });
+
+            modelBuilder.Entity("Juego_Sin_Nombre.Models.DiamondOfert", b =>
+                {
+                    b.Navigation("Invoices");
                 });
 
             modelBuilder.Entity("Juego_Sin_Nombre.Models.Type", b =>
