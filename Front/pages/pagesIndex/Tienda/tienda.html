@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
+    <link rel="stylesheet" href="../../../style.css" />
+    <link rel="stylesheet" href="tienda.css" />
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <link
+      rel="shortcut icon"
+      href="../../../img/favicon.ico"
+      type="image/x-icon"
+    />
+    <title>Tienda</title>
+  </head>
+  <body class="bgPattern">
+    <nav class="navbar navbar-expand bg-dark text-white shadow">
+      <div class="container-fluid d-flex justify-content-center">
+        <div class="row">
+          <div class="col active">
+            <a href="../index.html" class="nav-link active">Juego</a>
+          </div>
+          <div class="col">
+            <a href="../Players/players.html" class="nav-link active"
+              >Jugadores</a
+            >
+          </div>
+          <div class="col">
+            <a href="../Profile/profile.html" class="nav-link active">Perfil</a>
+          </div>
+          <div class="col lined-bottom">
+            <a href="#" class="nav-link active">Tienda</a>
+          </div>
+          <div class="col-auto">
+            <a
+              href="../Acerca de/AcercaDe.html"
+              class="nav-link active"
+              id="NavCards"
+              >Acerca de</a
+            >
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="container mt-5 papiro2 paper-left">
+      <div class="container">
+        <h1 id="title" class="enchanted h1">Tienda</h1>
+        <div class="row">
+          <p class="enchanted m-0" id="lives">
+            <img src="../../../img/items/vida.png" alt="" style="width: 30px;">
+           
+          </p>
+          <p class="enchanted text-secondary m-0" id="nextLive"></p>
+        </div>
+        <div class="row">
+          <p class="enchanted" id="coins"></p>
+        </div>
+        <div class="row enchanted">
+          <div class="col-auto">
+            <div class="border p-2">
+              <img
+                src="../../../img/items/vida.png"
+                alt=""
+                style="width: 100px"
+              />
+              <p>Rellenar vidas</p>
+              <button id="rechargeLives" class="w-100">
+                <img
+                  src="../../../img/items/gold.png"
+                  style="width: 30px"
+                  alt=""
+                />
+                1000
+              </button>
+            </div>
+          </div>
+          <div class="col-auto">
+            <div class="border p-2">
+              <img
+                src="../../../img/items/vida.png"
+                alt=""
+                style="width: 100px"
+              />
+              <p>Aumentar vida maxima</p>
+              <button class="w-100">
+                <img
+                  src="../../../img/items/gold.png"
+                  style="width: 30px"
+                  alt=""
+                />
+                5000
+              </button>
+            </div>
+          </div>
+        </div>
+       
+        <div class="row" id="cardOferts"></div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script src="tienda.js"></script>
+  </body>
+</html>

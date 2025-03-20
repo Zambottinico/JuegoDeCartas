@@ -71,6 +71,28 @@ namespace Juego_Sin_Nombre.Migrations
                     b.ToTable("card", (string)null);
                 });
 
+            modelBuilder.Entity("Juego_Sin_Nombre.Models.CardOfert", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CharacterId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("DiamondPrice")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("GoldPrice")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CardOferts");
+                });
+
             modelBuilder.Entity("Juego_Sin_Nombre.Models.Character", b =>
                 {
                     b.Property<int>("Id")
@@ -81,7 +103,8 @@ namespace Juego_Sin_Nombre.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Lore")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("lore");
 
                     b.Property<string>("Name")
                         .HasMaxLength(255)
@@ -218,6 +241,26 @@ namespace Juego_Sin_Nombre.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("character varying(250)")
                         .HasColumnName("clave");
+
+                    b.Property<int?>("Diamonds")
+                        .HasColumnType("integer")
+                        .HasColumnName("diamonds");
+
+                    b.Property<int?>("Gold")
+                        .HasColumnType("integer")
+                        .HasColumnName("gold");
+
+                    b.Property<DateTime?>("LastLifeRecharge")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_life_recharge");
+
+                    b.Property<int?>("Lives")
+                        .HasColumnType("integer")
+                        .HasColumnName("lives");
+
+                    b.Property<int?>("MaxLives")
+                        .HasColumnType("integer")
+                        .HasColumnName("maxlives");
 
                     b.Property<int?>("Maxdays")
                         .HasColumnType("integer")

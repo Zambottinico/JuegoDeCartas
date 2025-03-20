@@ -38,9 +38,9 @@ $(document).ready(function () {
   function showUserInfo(data) {
     console.log(data);
     const pCoins = $("#coins");
-    pCoins.append(`🥇 ${data.gold} 💎 ${data.diamonds}`);
+    pCoins.append(` <img src="../../../img/items/gold.png" alt="" style="width: 35px;"> ${data.gold} <img src="../../../img/items/diamond.png" alt="" style="width: 30px;"> ${data.diamonds}`);
     const pLifes = $("#lives");
-    pLifes.append(`🖤 ${data.lives} de ${data.maxLives} Vidas`);
+    pLifes.append(`${data.lives} de ${data.maxLives} Vidas`);
 
     if (data.maxLives != data.lives) {
       const pNextLive = $("#nextLive");

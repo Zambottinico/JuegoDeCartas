@@ -37,7 +37,7 @@ $(document).ready(function () {
         var row = `<tbody class="bg-success enchanted" id="localPlayer">
       <th>${i + 1}</th>
       <td>${user.username}</td>
-      <td>${user.maxDays}  ${user.maxDays === 1 ? "Día" : "Días"}</td>
+      <td><img src="../../../img/items/day.png" alt="" style="width: 30px;"> ${user.maxDays}  ${user.maxDays === 1 ? "Día" : "Días"}</td>
 
 
      </tbody>
@@ -46,7 +46,7 @@ $(document).ready(function () {
         var row = `<tbody class=" enchanted">
       <th>${i + 1}</th>
       <td>${user.username}</td>
-      <td>${user.maxDays}  ${user.maxDays === 1 ? "Día" : "Días"}</td>
+      <td> <img src="../../../img/items/day.png" alt="" style="width: 30px;"> ${user.maxDays}  ${user.maxDays === 1 ? "Día" : "Días"}</td>
 
 
      </tbody>

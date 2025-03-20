@@ -167,7 +167,7 @@ function llenarSelect(selectElement, data) {
   for (var i = 0; i < data.length; i++) {
     var option = document.createElement("option");
     option.value = data[i].id;
-    option.text = data[i].name + " | " + data[i].cantidadCartas + " cartas";
+    option.text = data[i].name + " | " + data[i].cantidadCartas + " cartas" ;
     select.appendChild(option);
   }
 }

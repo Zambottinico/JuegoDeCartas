@@ -17,6 +17,7 @@ public partial class ApplicationContext : DbContext
     }
 
     public virtual DbSet<Card> Cards { get; set; }
+    public virtual DbSet<CardOfert> CardOferts { get; set; }
 
     public virtual DbSet<Character> Characters { get; set; }
 

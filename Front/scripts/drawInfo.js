@@ -43,23 +43,26 @@ const DrawInfo = (game) => {
   decision1.text(game.lastCard.decision1.description);
   decision2.text(game.lastCard.decision2.description);
   description.text(game.lastCard.description);
-  days.text(`🖤${game.lives} 🥇${game.gold}  💎${game.diamonds}📕Dia: ${game.day}`);
+  days.empty();
+  days.append(
+    ` <img src="../../../img/items/vida.png" alt="" style="width: 30px;"> ${game.lives} <img src="../../../img/items/gold.png" alt="" style="width: 30px;">${game.gold}  <img src="../../../img/items/diamond.png" alt="" style="width: 30px;">${game.diamonds}<img class="ms-2" src="../../../img/items/day.png" alt="" style="width: 30px;">Dia: ${game.day}`
+  );
   DrawStates(game);
 };
 const DrawError = (error) => {
   description.text(error.responseJSON.details);
   decision1.text("Seguir esperando...");
   decision2.text("Comprar vidas");
-  appendNotLivesCard("../../img/Harverter.png",error);
+  appendNotLivesCard("../../img/Harverter.png", error);
 };
-function appendNotLivesCard(url,error) {
+function appendNotLivesCard(url, error) {
   const card = new Card({
     imageUrl: url,
     // onDismiss: appendNewCard,
     onLike: () => {
       console.log("decision 2");
-      window.location.href = "http://127.0.0.1:5501/pages/pagesIndex/Profile/profile.html"
-      
+      window.location.href =
+        "http://127.0.0.1:5501/pages/pagesIndex/Profile/profile.html";
     },
     onDislike: () => {
       console.log("decision 1");

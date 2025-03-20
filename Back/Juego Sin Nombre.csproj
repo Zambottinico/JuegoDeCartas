@@ -28,6 +28,7 @@
   <ItemGroup>
     <Folder Include="Bussines\CharacterBussines\Command\" />
     <Folder Include="Bussines\GameBussines\Queries\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

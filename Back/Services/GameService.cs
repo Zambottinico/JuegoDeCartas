@@ -1,4 +1,5 @@
-﻿using Juego_Sin_Nombre.Data;
+﻿using Juego_Sin_Nombre.Controllers;
+using Juego_Sin_Nombre.Data;
 using Juego_Sin_Nombre.Dtos;
 using Juego_Sin_Nombre.Models;
 using Microsoft.EntityFrameworkCore;
@@ -289,15 +290,35 @@ namespace Juego_Sin_Nombre.Services
                 player.Lives += livesToAdd;
 
                 // Asegurar que no supere el máximo de 5 vidas
-                if (player.Lives > 5)
+                if (player.Lives > player.MaxLives)
                 {
-                    player.Lives = 5;
+                    player.Lives = player.MaxLives;
                 }
 
                 player.LastLifeRecharge = DateTime.UtcNow; // Reiniciar el tiempo de regeneración
             }
         }
 
-
+        internal async Task RechargeAsync(RechargeLivesRequest request)
+        {
+            //validar usuario 
+            Usuario usuario = await _context.Usuarios.Where(u => u.Id == request.Userid).FirstOrDefaultAsync();
+            if (request.clave != usuario.Clave)
+            {
+                throw new InvalidOperationException("La contraseña es incorrecta");
+            }
+            if (usuario.MaxLives==usuario.Lives)
+            {
+                throw new InvalidOperationException("Ya tienes la vida al maximo");
+            }
+            if (usuario.Gold<1000)
+            {
+                throw new InvalidOperationException("No tienes suficiente oro para realizar la compra");
+            }
+            usuario.Gold = usuario.Gold - 1000;
+            usuario.Lives = usuario.MaxLives;
+            _context.SaveChanges();
+            return;
+        }
     }
 }

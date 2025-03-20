@@ -35,7 +35,9 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 // Registra las clases con sus dependencias
 builder.Services.AddScoped<PlayGameHandler>();
 builder.Services.AddScoped<GameService>();
+builder.Services.AddScoped<TiendaService>();
 builder.Services.AddScoped<CardService>();
+
 
 
 builder.Services.AddMediatR(config =>
