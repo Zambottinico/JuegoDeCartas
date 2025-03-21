@@ -2,6 +2,7 @@ using FluentValidation.AspNetCore;
 using Juego_Sin_Nombre.config;
 using Juego_Sin_Nombre.Data;
 using Juego_Sin_Nombre.Services;
+using Juego_Sin_Nombre.Services.interfacez;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -37,6 +38,8 @@ builder.Services.AddScoped<PlayGameHandler>();
 builder.Services.AddScoped<GameService>();
 builder.Services.AddScoped<TiendaService>();
 builder.Services.AddScoped<CardService>();
+builder.Services.AddScoped<IDiamondOfertService, DiamondOfertService>();
+
 
 
 

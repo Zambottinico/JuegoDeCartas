@@ -16,5 +16,7 @@ namespace Juego_Sin_Nombre.Models
         // Relación con Factura (Una oferta puede estar en varias facturas)
         public List<Invoice> Invoices { get; set; } = new();
         public string Nombre { get; set;}
+
+        public bool IsDeleted { get; set; } = false;
     }
 }
