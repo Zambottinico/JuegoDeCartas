@@ -43,6 +43,19 @@
       .table tbody td {
         background-color: transparent;
       }
+      #goToMyPosition {
+        color: white !important;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        color: white;
+        padding: 5px;
+        border-radius: 5px;
+        z-index: 9999;
+      }
+      #goToMyPosition a {
+        text-decoration: none;
+      }
     </style>
     <title>Jugadores</title>
   </head>
@@ -75,7 +88,17 @@
         </div>
       </div>
     </nav>
-    <h1><a href="#localPlayer">ir a mi posicion</a></h1>
+    <h1
+      class=""
+      id="goToMyPosition"
+      data-toggle="tooltip"
+      data-bs-placement="left"
+      title="Representa tu porcentaje de Magia"
+    >
+      <a class="bg-success p-2 text-white rounded" href="#localPlayer"
+        ><i class="fa fa-location-arrow"></i
+      ></a>
+    </h1>
     <div class="container papiro paper-left mt-5">
       <table id="table" class="table"></table>
     </div>

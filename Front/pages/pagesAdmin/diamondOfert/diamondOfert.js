@@ -2,7 +2,7 @@ let ofertsList;
  // Construir el objeto JSON
  const valor1 = JSON.parse(Cookies.get("claveSeguridad"));
  if (valor1.rol === "Admin") {
-  $("#NavCards").attr("href", "../Cards/cards.html");
+  $("#NavCards").attr("href", "../../pagesIndex/Cards/cards.html");
   $("#NavCards").text("Cartas");
 }
 $(document).ready(function () {
