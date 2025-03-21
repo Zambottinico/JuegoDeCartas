@@ -32,6 +32,57 @@ $(document).ready(function () {
     pLifes.append(`${data.lives} de ${data.maxLives} Vidas`);
   }
 
+  $(document).ready(function () {
+
+    $.ajax({
+      url: "https://localhost:7116/api/DiamondOfert",
+      method: "GET",
+      dataType: "json",
+      success: function (response) {
+        console.log(response);
+        llenarOferts(response);
+      },
+      error: function (error) {
+        console.log(error);
+      },
+    });
+
+});
+
+function llenarOferts(data) {
+  var divCardOferts = document.getElementById("diamondOferts");
+
+  // Limpiar contenido previo
+  divCardOferts.innerHTML = "";
+
+  for (var i = 0; i < data.length; i++) {
+    var oferta = data[i];
+
+    // Crear el contenedor de la oferta
+    var ofertaDiv = document.createElement("div");
+    ofertaDiv.classList.add("p-3", "mb-2","row");
+
+    // Contenido de la oferta
+    ofertaDiv.innerHTML = `
+      <div class="col-4 shadow-sm">
+        <img src="../../../img/oferts/${oferta.nombre}.png" 
+             alt="Imagen de ${oferta.nombre}" 
+             class="img-fluid" style="width: 50px; height: 70px; margin-right: 10px;">
+        <div>
+          <h5 class="mb-1">${oferta.nombre}</h5>
+          <p>${oferta.montoDeDiamantes}</p>
+          <p class="mb-1">$ ${oferta.precioEnPesos}</p>
+        </div>
+      </div>
+    `;
+
+    // Agregar al contenedor principal
+    divCardOferts.appendChild(ofertaDiv);
+  }
+}
+
+
+
   $("#rechargeLives").click(function () {
     $.ajax({
       url: "https://localhost:7116/api/lives/recharge",
