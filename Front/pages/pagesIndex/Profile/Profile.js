@@ -45,20 +45,23 @@ $(document).ready(function () {
     if (data.maxLives != data.lives) {
       const pNextLive = $("#nextLive");
       const date = new Date(data.lastLifeRecharge); // Convierte el string en un objeto Date
+       // Sumar 30 minutos a la fecha
+       date.setMinutes(date.getMinutes() + 30);
+      // Si hay segundos, sumar un minuto
+      if (date.getSeconds() !== 0) {
+        date.setMinutes(date.getMinutes() + 1); // Suma 1 minuto
+      }
     
-      // Sumar 30 minutos a la fecha
-      date.setMinutes(date.getMinutes() + 30);
-    
-      // Formato para mostrar solo la hora
+      // Formato para mostrar solo la hora y los minutos
       const formattedTime = date.toLocaleTimeString("es-AR", {
         hour: "2-digit",    // Hora en formato de 2 dígitos
         minute: "2-digit",  // Minutos en formato de 2 dígitos
-        second: "2-digit",  // Segundos en formato de 2 dígitos
       });
     
       // Muestra solo la hora formateada
-      pNextLive.append(formattedTime + " para la siguiente vida");
+      pNextLive.append(formattedTime + " obtienes una vida");
     }
+    
     
   }
 

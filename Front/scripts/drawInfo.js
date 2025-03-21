@@ -62,7 +62,7 @@ function appendNotLivesCard(url, error) {
     onLike: () => {
       console.log("decision 2");
       window.location.href =
-        "http://127.0.0.1:5501/pages/pagesIndex/Profile/profile.html";
+        "http://127.0.0.1:5501/pages/pagesIndex/Tienda/tienda.html";
     },
     onDislike: () => {
       console.log("decision 1");
