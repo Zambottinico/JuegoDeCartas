@@ -143,7 +143,7 @@ namespace Juego_Sin_Nombre.Services
             return true;
         }
 
-        public async Task<bool> DeleteCardOfertAsync(int id, DeleteRequest request)
+        public async Task<bool> DeleteCardOfertAsync(int id, UserCredentials request)
         {
             var user = await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == request.UserId);
             if (user == null)

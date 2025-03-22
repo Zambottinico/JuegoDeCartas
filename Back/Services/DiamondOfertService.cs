@@ -65,7 +65,7 @@ namespace Juego_Sin_Nombre.Services
         .ToListAsync();
         }
 
-        public async Task<bool> SoftDeleteDiamondOfertAsync(DeleteRequest request,int id)
+        public async Task<bool> SoftDeleteDiamondOfertAsync(UserCredentials request,int id)
         {
             Usuario usuario = await _context.Usuarios.Where(u => u.Id == request.UserId).FirstOrDefaultAsync();
             if (request.Clave != usuario.Clave)

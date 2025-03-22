@@ -62,7 +62,7 @@ namespace Juego_Sin_Nombre.Controllers
             return Ok(ofertas);
         }
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDiamondOfert(int id, [FromBody] DeleteRequest request)
+        public async Task<IActionResult> DeleteDiamondOfert(int id, [FromBody] UserCredentials request)
         {
             var deleted = await _diamondOfertService.SoftDeleteDiamondOfertAsync(request,id);
             if (!deleted)

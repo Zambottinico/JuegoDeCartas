@@ -1,3 +1,4 @@
+let diamodOfertList = [];
 $(document).ready(function () {
   //Cambiar links cartas/acerca de
   const valor1 = JSON.parse(Cookies.get("claveSeguridad"));
@@ -51,7 +52,7 @@ $(document).ready(function () {
 
 function llenarOferts(data) {
   var divCardOferts = document.getElementById("diamondOferts");
-
+  diamodOfertList = data;
   // Limpiar contenido previo
   divCardOferts.innerHTML = "";
 
@@ -72,6 +73,7 @@ function llenarOferts(data) {
           <h5 class="mb-1">${oferta.nombre}</h5>
           <p>${oferta.montoDeDiamantes}</p>
           <p class="mb-1">$ ${oferta.precioEnPesos}</p>
+          <button class="btn btn-success" onclick="crearPreferencia(${oferta.id})">Obtener</button>
         </div>
       </div>
     `;
@@ -217,3 +219,47 @@ function llenarOferts(data) {
     });
   }
 });
+
+
+function crearPreferencia(id) {
+  const valor1 = JSON.parse(Cookies.get("claveSeguridad"));
+  requestData = {
+    userId: valor1.id,
+    clave: valor1.clave
+  }
+  ofert = diamodOfertList.find((ofert) => ofert.id === id);
+  $.ajax({
+    url: "https://localhost:7116/api/MercadoPago/crear-preferencia/"+ofert.id, // Endpoint en tu backend
+    type: "POST", // Método HTTP
+    contentType: "application/json", // Tipo de contenido JSON
+    data: JSON.stringify(requestData), // Convertimos el objeto a JSON
+    success: function (response) {
+      console.log(response);
+      console.log("lista de ofertas "+diamodOfertList);
+      Swal.fire({
+        title: ofert.nombre,
+        text: `Pagar ${ofert.precioEnPesos} ARS por ${ofert.montoDeDiamantes} diamantes`,
+        imageUrl: "../../../img/oferts/" + ofert.nombre + ".png", // Asegúrate de que esta imagen existe
+        customClass: {
+          image: "imgSweetAlert",
+        },
+        showCancelButton: true,
+        confirmButtonText: "Pagar con Mercado Pago",
+        cancelButtonText: "Cancelar"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = response.initPoint; 
+        }
+      });
+    },
+    error: function (error) {
+      console.log(error);
+      console.error("Error al realizar la compra:", error);
+      Swal.fire({
+        icon: "error",
+        title: "¡Error!",
+        text: error.responseJSON.details,
+      });
+    },
+  });
+  }

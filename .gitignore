@@ -1,0 +1,48 @@
+# Build Folders (usually automatically generated)
+Back/bin/
+Back/obj/
+
+# User-specific files
+Back/*.user
+Back/*.vspscc
+Back/.vs/
+Back/.vscode/
+Back/*.suo
+Back/*.userosscache
+Back/*.sln.docstates
+
+# ASP.NET Core files
+Back/appsettings.Development.json
+Back/secrets.json
+
+# Dependency directories
+Back/packages/
+Back/node_modules/
+
+# IDEs and other tools
+Back.vscode/
+Back.idea/
+
+# ASP.NET Core logs and other artifacts
+Back/*.log
+
+# NPM logs
+Back/npm-debug.log
+Back/yarn-debug.log
+
+# VS Code directories
+Back/.vscode/
+
+# Build results
+Back/TestResults/
+/Back/.vs
+Back/.vs/Juego Sin Nombre/FileContentIndex/01cfe286-9766-4854-af29-47f7b4d96f74.vsidx
+Back/.vs/Juego Sin Nombre/DesignTimeBuild/.dtbcache.v2
+/Back/bin
+
+Back/.vs/Juego Sin Nombre/DesignTimeBuild/.dtbcache.v2
+Back/.vs/Juego Sin Nombre/FileContentIndex/01cfe286-9766-4854-af29-47f7b4d96f74.vsidx
+Back/.vs/Juego Sin Nombre/FileContentIndex/13707de7-450d-4918-8762-37cac1bffd02.vsidx
+Back/.vs/Juego Sin Nombre/FileContentIndex/b85303c9-0c76-414a-8713-858ab54f4f3c.vsidx
+Back/.vs/Juego Sin Nombre/v17/.suo
+Back/appsettings.json

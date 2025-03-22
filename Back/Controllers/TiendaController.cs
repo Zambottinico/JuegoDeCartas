@@ -60,7 +60,7 @@ namespace Juego_Sin_Nombre.Controllers {
             }
         }
         [HttpDelete("api/tienda/deleteCardOfert/{id}")]
-        public async Task<IActionResult> DeleteCardOfert(int id, [FromBody] DeleteRequest request)
+        public async Task<IActionResult> DeleteCardOfert(int id, [FromBody] UserCredentials request)
         {
             try
             {
