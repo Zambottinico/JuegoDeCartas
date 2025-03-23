@@ -3,6 +3,8 @@ using Juego_Sin_Nombre.config;
 using Juego_Sin_Nombre.Data;
 using Juego_Sin_Nombre.Services;
 using Juego_Sin_Nombre.Services.interfacez;
+using MercadoPago.Client.MerchantOrder;
+using MercadoPago.Client.Payment;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -41,6 +43,8 @@ builder.Services.AddScoped<CardService>();
 builder.Services.AddScoped<MercadoPagoService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<InvoiceService>();
+builder.Services.AddScoped<MerchantOrderClient>();
+builder.Services.AddScoped<PaymentClient>();
 builder.Services.AddScoped<IDiamondOfertService, DiamondOfertService>();
 
 builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);

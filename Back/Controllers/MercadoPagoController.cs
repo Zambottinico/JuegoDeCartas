@@ -1,5 +1,7 @@
 ﻿using Juego_Sin_Nombre.Dtos;
 using Juego_Sin_Nombre.Services;
+using MercadoPago.Client.MerchantOrder;
+using MercadoPago.Client.Payment;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
@@ -13,12 +15,17 @@ namespace Juego_Sin_Nombre.Controllers
         private readonly MercadoPagoService _mercadoPagoService;
         private readonly UserService _userService;
         private readonly InvoiceService _invoiceService;
-
-        public MercadoPagoController(MercadoPagoService mercadoPagoService, UserService userService, InvoiceService invoiceService)
+        private readonly MerchantOrderClient _merchantOrderClient;
+        private readonly PaymentClient _paymentClient;
+        private readonly TiendaService _tiendaService;
+        public MercadoPagoController(MercadoPagoService mercadoPagoService, UserService userService, InvoiceService invoiceService, MerchantOrderClient merchantOrderClient, PaymentClient paymentClient, TiendaService tiendaService)
         {
             _mercadoPagoService = mercadoPagoService;
             _userService = userService;
             _invoiceService = invoiceService;
+            _merchantOrderClient = merchantOrderClient;
+            _paymentClient = paymentClient;
+            _tiendaService = tiendaService;
         }
 
         [HttpPost("crear-preferencia/{diamondOfertId}")]
@@ -40,31 +47,47 @@ namespace Juego_Sin_Nombre.Controllers
             return Ok(new { preferenceId = preference.Id, initPoint = preference.InitPoint });
         }
 
-        [HttpPost("webhook")]
-        public async Task<IActionResult> Webhook([FromBody] JsonElement payload)
+
+        [HttpPost("webhook/{diamondOfertId}")]
+        public async Task<IActionResult> Webhook([FromBody] JsonElement payload, int diamondOfertId)
         {
+            Console.WriteLine($"🔔 Webhook recibido: {payload}");
+
             try
             {
-                Console.WriteLine($"🔔 Notificación recibida: {payload}");
-
-                // Extraer datos importantes
-                string type = payload.GetProperty("type").GetString();
-                string action = payload.GetProperty("action").GetString();
-                string id = payload.GetProperty("data").GetProperty("id").GetString();
-
-                Console.WriteLine($"📢 Tipo: {type}, Acción: {action}, ID: {id}");
-
-                if (type == "payment" && action == "payment.created")
+                if (payload.TryGetProperty("topic", out var topic))
                 {
-                    // Obtener detalles del pago
-                    var payment = await _invoiceService.ObtenerPagoPorIdAsync(id);
+                    string topicValue = topic.GetString();
 
-                    
-                    
-                        await _invoiceService.MarcarComoPagado(payment.PreferenceId);
-                        Console.WriteLine("✅ Pago confirmado y actualizado en la base de datos.");
-                    
+                    if (topicValue == "merchant_order")
+                    {
+                        // Extraer el ID desde "resource"
+                        string resource = payload.GetProperty("resource").GetString();
+                        string orderId = resource.Split('/').Last();
+
+                        var merchantOrder = await _merchantOrderClient.GetAsync(long.Parse(orderId));
+                        Console.WriteLine($"📦 Merchant Order ID: {merchantOrder.Id}");
+                    }
+                    else if (topicValue == "payment")
+                    {
+                        // Extraer el ID del pago desde "resource"
+                        string paymentId = payload.GetProperty("resource").GetString();
+                        var payment = await _paymentClient.GetAsync(long.Parse(paymentId));
+                        _tiendaService.CompleteDiamondCompleteDiamondPurchaseAsync(payment.ExternalReference, payment.Status);
+
+                        Console.WriteLine($"💰 Pago recibido - ID: {payment.Id}, Estado: {payment.Status}");
+                    }
                 }
+                else if (payload.TryGetProperty("type", out var type) && type.GetString() == "payment")
+                {
+                    // Otra estructura de webhook, extraer ID desde "data.id"
+                    string paymentId = payload.GetProperty("data").GetProperty("id").GetString();
+                    var payment = await _paymentClient.GetAsync(long.Parse(paymentId));
+
+                    _tiendaService.CompleteDiamondCompleteDiamondPurchaseAsync(payment.ExternalReference, payment.Status);
+                    Console.WriteLine($"💰 Pago recibido - ID: {payment.Id}, Estado: {payment.Status}");
+                }
+
 
                 return Ok();
             }

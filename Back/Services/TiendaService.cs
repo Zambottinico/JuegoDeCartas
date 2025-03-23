@@ -164,5 +164,20 @@ namespace Juego_Sin_Nombre.Services
             return true;
         }
 
+
+
+        public async Task<bool> CompleteDiamondCompleteDiamondPurchaseAsync(string invoiceId, string status)
+        {
+            Invoice invoice = await _context.Invoices.FirstOrDefaultAsync(i => i.Id.ToString() == invoiceId);
+            if (invoice == null)
+            {
+
+            }
+            if (invoice.Status ==InvoiceStatus.Paid)
+            {
+                
+            }
+            return true;
+        }
     }
 }

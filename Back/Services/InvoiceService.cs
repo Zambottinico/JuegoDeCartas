@@ -14,35 +14,32 @@ namespace Juego_Sin_Nombre.Services
             _context = context;
         }
 
-        public async Task CreateInvoiceAsync(string preferenceId,InvoiceStatus status,int diamondOfertId)
+        public async Task<Invoice> CreateInvoiceAsync(InvoiceStatus status, int diamondOfertId)
         {
-            try { 
-            DiamondOfert diamondOfert = await _context.DiamondOfert.FirstOrDefaultAsync(d => d.Id == diamondOfertId);
-            Invoice invoice = new Invoice(preferenceId,status,diamondOfertId,diamondOfert);
-            await _context.Invoices.AddAsync(invoice);
-            await _context.SaveChangesAsync();
-            }catch(Exception ex)
+            try
+            {
+                DiamondOfert diamondOfert = await _context.DiamondOfert.FirstOrDefaultAsync(d => d.Id == diamondOfertId);
+                if (diamondOfert == null)
+                {
+                    throw new Exception("Oferta de diamantes no encontrada.");
+                }
+
+                Invoice invoice = new Invoice(status, diamondOfertId, diamondOfert);
+                await _context.Invoices.AddAsync(invoice);
+                await _context.SaveChangesAsync();
+
+                return invoice; // Devuelve la invoice ya con ID
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine($"Error al guardar cambios: {ex.InnerException?.Message}");
                 throw;
             }
         }
 
-        public async Task<Invoice> ObtenerPagoPorIdAsync(string preferenceId)
-        {
-            return await _context.Invoices.FirstOrDefaultAsync(i => i.PreferenceId == preferenceId);
-        }
 
-        public async Task MarcarComoPagado(string preferenceId)
-        {
-            var invoice = await _context.Invoices.FirstOrDefaultAsync(i => i.PreferenceId == preferenceId);
 
-            if (invoice != null)
-            {
-                invoice.Status = InvoiceStatus.Paid; // Enum
-                invoice.PaidAt = DateTime.UtcNow;
-                await _context.SaveChangesAsync();
-            }
-        }
+
+
     }
 }

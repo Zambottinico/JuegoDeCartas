@@ -21,6 +21,7 @@ namespace Juego_Sin_Nombre.Services
             _context = context;
             _configuration = configuration;
             MercadoPagoConfig.AccessToken = _configuration["MercadoPagoSettings:AccessToken"];
+            MercadoPagoConfig.IntegratorId = "dev_24c65fb163bf11ea96500242ac130004";
         }
 
         public async Task<Preference> CrearPreferenciaAsync()
@@ -53,6 +54,7 @@ namespace Juego_Sin_Nombre.Services
         internal async Task<Preference> CrearPreferenciaAsync(int diamondOfertId, UserCredentials userCredentials)
         {
             DiamondOfert diamondOfert = await _context.DiamondOfert.FirstOrDefaultAsync(d => d.Id == diamondOfertId);
+            Invoice invoice =  await _invoiceService.CreateInvoiceAsync(InvoiceStatus.Pending, diamondOfertId);
             string webhookUrl = _configuration["MercadoPagoSettings:WebhookUrl"];
             var request = new PreferenceRequest
             {
@@ -73,12 +75,13 @@ namespace Juego_Sin_Nombre.Services
                     Pending = "https://tu-sitio.com/pending"
                 },
                 AutoReturn = "approved",
-                NotificationUrl = webhookUrl
+                NotificationUrl = webhookUrl,
+                ExternalReference = invoice.Id.ToString()
             };
 
             var client = new PreferenceClient();
             Preference preference = await client.CreateAsync(request);
-            await _invoiceService.CreateInvoiceAsync(preference.Id,InvoiceStatus.Pending,diamondOfertId);
+            
             return preference;
         }
     }
