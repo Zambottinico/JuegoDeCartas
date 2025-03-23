@@ -16,7 +16,7 @@ namespace Juego_Sin_Nombre.Services
             _context = context;
         }
 
-        public async Task<bool> ValidateCredentialsAsync(UserCredentials credentials)
+        public async Task<Usuario> ValidateCredentialsAsync(UserCredentials credentials)
         {
             Usuario usuario = await _context.Usuarios.Where(u => u.Id == credentials.UserId).FirstOrDefaultAsync();
             if (usuario ==null)
@@ -27,7 +27,7 @@ namespace Juego_Sin_Nombre.Services
             {
                 throw new InvalidOperationException("La contraseña es incorrecta");
             }
-            return true;
+            return usuario;
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Juego_Sin_Nombre.Services
             _context = context;
         }
 
-        public async Task<Invoice> CreateInvoiceAsync(InvoiceStatus status, int diamondOfertId)
+        public async Task<Invoice> CreateInvoiceAsync(InvoiceStatus status, int diamondOfertId,Usuario usuario)
         {
             try
             {
@@ -24,7 +24,7 @@ namespace Juego_Sin_Nombre.Services
                     throw new Exception("Oferta de diamantes no encontrada.");
                 }
 
-                Invoice invoice = new Invoice(status, diamondOfertId, diamondOfert);
+                Invoice invoice = new Invoice(status, diamondOfertId, diamondOfert,usuario);
                 await _context.Invoices.AddAsync(invoice);
                 await _context.SaveChangesAsync();
 

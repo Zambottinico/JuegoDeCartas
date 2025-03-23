@@ -37,7 +37,7 @@ namespace Juego_Sin_Nombre.Bussines.UserBussines.Queries
                             dto.Username = u.Username;
                             if (u.Maxdays!=null)
                             {
-                                dto.MaxDays = (int)u.Maxdays;
+                                dto.MaxDays = u.Maxdays;
                             }
                             usersResponse.Add(dto);
                         }

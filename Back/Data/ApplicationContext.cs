@@ -40,7 +40,13 @@ public partial class ApplicationContext : DbContext
         entity.Property(i => i.CreatedAt)
               .HasColumnType("timestamp with time zone")
               .HasConversion(v => v.ToUniversalTime(), v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
-    
+        entity.Property(i => i.PaidAt)
+       .HasColumnType("timestamp with time zone")
+       .HasConversion(
+           v => v.HasValue ? v.Value.ToUniversalTime() : (DateTime?)null, // Aplica ToUniversalTime solo si no es nulo
+           v => v.HasValue ? DateTime.SpecifyKind(v.Value, DateTimeKind.Utc) : (DateTime?)null); // Igual para la conversión inversa
+
+
 
         entity.HasOne(i => i.DiamondOfert)
               .WithMany(d => d.Invoices)

@@ -30,7 +30,7 @@ namespace Juego_Sin_Nombre.Bussines.UserBussines.Queries
                     {
                         UserResponseDto dto = new UserResponseDto();
                         dto.Username = user.Username;
-                        dto.MaxDays = (int)user.Maxdays;
+                        dto.MaxDays = user.Maxdays;
                         dto.Gold = (int)user.Gold;
                         dto.Diamonds = (int)user.Diamonds;
                         dto.MaxLives = (int)user.MaxLives;

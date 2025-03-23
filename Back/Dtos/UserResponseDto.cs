@@ -5,7 +5,7 @@
         
 
         public string Username { get; set; }
-        public int MaxDays { get; set; }
+        public int? MaxDays { get; set; }
         public int Gold { get; set; }
         public int Diamonds { get; set; }
         public int? MaxLives { get; set; }

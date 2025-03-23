@@ -168,16 +168,55 @@ namespace Juego_Sin_Nombre.Services
 
         public async Task<bool> CompleteDiamondCompleteDiamondPurchaseAsync(string invoiceId, string status)
         {
-            Invoice invoice = await _context.Invoices.FirstOrDefaultAsync(i => i.Id.ToString() == invoiceId);
+            Invoice invoice = await _context.Invoices
+                .Include(i => i.Usuario)      
+                .Include(i => i.DiamondOfert) 
+                .FirstOrDefaultAsync(i => i.Id.ToString() == invoiceId);
             if (invoice == null)
             {
+                // Manejar el caso cuando no se encuentra la factura
+                return false;
+            }
 
-            }
-            if (invoice.Status ==InvoiceStatus.Paid)
+            // Verificar el estado del pago recibido desde Mercado Pago
+            if (status == "approved")
             {
-                
+                if (invoice.Status==InvoiceStatus.Paid)
+                {
+                    //La Factura ya estaba en estado PAID
+                    return true;
+                }
+                else
+                {
+                    try
+                    {
+                        // Actualizar el estado de la factura a 'Paid'
+                        invoice.Status = InvoiceStatus.Paid;
+                        invoice.Usuario.Diamonds += invoice.DiamondOfert.MontoDeDiamantes;
+                        invoice.PaidAt = DateTime.Now;
+                        await _context.SaveChangesAsync();
+
+                    }
+                    catch(Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                    }
+                }
             }
+            else if (status == "rejected" || status == "cancelled")
+            {
+                invoice.Status = InvoiceStatus.Rejected;
+                await _context.SaveChangesAsync();
+            }
+            else if (status == "pending" || status == "in_process")
+            {
+                // El pago está pendiente, no hacer cambios en el estado de la factura
+                invoice.Status = InvoiceStatus.Pending;
+                await _context.SaveChangesAsync();
+            }
+
             return true;
         }
+
     }
 }

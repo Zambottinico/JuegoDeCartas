@@ -5,9 +5,10 @@ namespace Juego_Sin_Nombre.Models
 {
     public class Invoice
     {
-        public Invoice(InvoiceStatus status, int diamondOfferId, DiamondOfert diamondOfert)
+        public Invoice(InvoiceStatus status, int diamondOfferId, DiamondOfert diamondOfert,Usuario usuario)
         {
-            
+            Usuario = usuario;
+            UsuarioId = usuario.Id;
             Status = status;
             DiamondOfferId = diamondOfferId;
             DiamondOfert = diamondOfert;

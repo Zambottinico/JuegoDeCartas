@@ -31,10 +31,8 @@ namespace Juego_Sin_Nombre.Controllers
         [HttpPost("crear-preferencia/{diamondOfertId}")]
         public async Task<IActionResult> CrearPreferencia(int diamondOfertId, [FromBody] UserCredentials userCredentials)
         {
-            if (!await _userService.ValidateCredentialsAsync(userCredentials))
-            {
-                return BadRequest(new { message = "Las credenciales del usuario son requeridas." });
-            }
+            await _userService.ValidateCredentialsAsync(userCredentials);
+           
 
             // Llamar al servicio para crear la preferencia con el ID de la oferta y las credenciales
             var preference = await _mercadoPagoService.CrearPreferenciaAsync(diamondOfertId, userCredentials);
@@ -48,8 +46,8 @@ namespace Juego_Sin_Nombre.Controllers
         }
 
 
-        [HttpPost("webhook/{diamondOfertId}")]
-        public async Task<IActionResult> Webhook([FromBody] JsonElement payload, int diamondOfertId)
+        [HttpPost("webhook")]
+        public async Task<IActionResult> Webhook([FromBody] JsonElement payload)
         {
             Console.WriteLine($"🔔 Webhook recibido: {payload}");
 
@@ -73,7 +71,7 @@ namespace Juego_Sin_Nombre.Controllers
                         // Extraer el ID del pago desde "resource"
                         string paymentId = payload.GetProperty("resource").GetString();
                         var payment = await _paymentClient.GetAsync(long.Parse(paymentId));
-                        _tiendaService.CompleteDiamondCompleteDiamondPurchaseAsync(payment.ExternalReference, payment.Status);
+                        await _tiendaService.CompleteDiamondCompleteDiamondPurchaseAsync(payment.ExternalReference, payment.Status);
 
                         Console.WriteLine($"💰 Pago recibido - ID: {payment.Id}, Estado: {payment.Status}");
                     }
@@ -84,7 +82,7 @@ namespace Juego_Sin_Nombre.Controllers
                     string paymentId = payload.GetProperty("data").GetProperty("id").GetString();
                     var payment = await _paymentClient.GetAsync(long.Parse(paymentId));
 
-                    _tiendaService.CompleteDiamondCompleteDiamondPurchaseAsync(payment.ExternalReference, payment.Status);
+                    await _tiendaService.CompleteDiamondCompleteDiamondPurchaseAsync(payment.ExternalReference, payment.Status);
                     Console.WriteLine($"💰 Pago recibido - ID: {payment.Id}, Estado: {payment.Status}");
                 }
 

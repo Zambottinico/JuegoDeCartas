@@ -13,8 +13,9 @@ namespace Juego_Sin_Nombre.Services
         private readonly Data.ApplicationContext _context;
         private readonly InvoiceService _invoiceService;
         private readonly IConfiguration _configuration;
+        private readonly UserService _userService;
 
-        public MercadoPagoService(Data.ApplicationContext context, IConfiguration configuration,InvoiceService invoiceService)
+        public MercadoPagoService(Data.ApplicationContext context, IConfiguration configuration,InvoiceService invoiceService, UserService userService)
         {
 
             _invoiceService = invoiceService;
@@ -22,6 +23,7 @@ namespace Juego_Sin_Nombre.Services
             _configuration = configuration;
             MercadoPagoConfig.AccessToken = _configuration["MercadoPagoSettings:AccessToken"];
             MercadoPagoConfig.IntegratorId = "dev_24c65fb163bf11ea96500242ac130004";
+            _userService = userService;
         }
 
         public async Task<Preference> CrearPreferenciaAsync()
@@ -53,8 +55,10 @@ namespace Juego_Sin_Nombre.Services
 
         internal async Task<Preference> CrearPreferenciaAsync(int diamondOfertId, UserCredentials userCredentials)
         {
+            Usuario user = await _userService.ValidateCredentialsAsync(userCredentials);
+
             DiamondOfert diamondOfert = await _context.DiamondOfert.FirstOrDefaultAsync(d => d.Id == diamondOfertId);
-            Invoice invoice =  await _invoiceService.CreateInvoiceAsync(InvoiceStatus.Pending, diamondOfertId);
+            Invoice invoice =  await _invoiceService.CreateInvoiceAsync(InvoiceStatus.Pending, diamondOfertId,user);
             string webhookUrl = _configuration["MercadoPagoSettings:WebhookUrl"];
             var request = new PreferenceRequest
             {
