@@ -11,12 +11,13 @@ namespace Juego_Sin_Nombre.Services
         
     {
         private readonly Data.ApplicationContext _context;
+        private readonly InvoiceService _invoiceService;
         private readonly IConfiguration _configuration;
 
-        public MercadoPagoService(Data.ApplicationContext context, IConfiguration configuration)
+        public MercadoPagoService(Data.ApplicationContext context, IConfiguration configuration,InvoiceService invoiceService)
         {
-            
-            
+
+            _invoiceService = invoiceService;
             _context = context;
             _configuration = configuration;
             MercadoPagoConfig.AccessToken = _configuration["MercadoPagoSettings:AccessToken"];
@@ -56,15 +57,15 @@ namespace Juego_Sin_Nombre.Services
             var request = new PreferenceRequest
             {
                 Items = new List<PreferenceItemRequest>
-            {
-                new PreferenceItemRequest
                 {
-                    Title = diamondOfert.Nombre,
-                    Quantity = 1,
-                    CurrencyId = "ARS",
-                    UnitPrice = diamondOfert.PrecioEnPesos
-                }
-            },
+                    new PreferenceItemRequest
+                    {
+                        Title = diamondOfert.Nombre,
+                        Quantity = 1,
+                        CurrencyId = "ARS",
+                        UnitPrice = diamondOfert.PrecioEnPesos
+                    }
+                },
                 BackUrls = new PreferenceBackUrlsRequest
                 {
                     Success = "https://tu-sitio.com/success",
@@ -76,7 +77,9 @@ namespace Juego_Sin_Nombre.Services
             };
 
             var client = new PreferenceClient();
-            return await client.CreateAsync(request);
+            Preference preference = await client.CreateAsync(request);
+            await _invoiceService.CreateInvoiceAsync(preference.Id,InvoiceStatus.Pending,diamondOfertId);
+            return preference;
         }
     }
     }

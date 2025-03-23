@@ -40,6 +40,7 @@ builder.Services.AddScoped<TiendaService>();
 builder.Services.AddScoped<CardService>();
 builder.Services.AddScoped<MercadoPagoService>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<InvoiceService>();
 builder.Services.AddScoped<IDiamondOfertService, DiamondOfertService>();
 
 builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);

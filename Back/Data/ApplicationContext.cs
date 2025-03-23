@@ -35,10 +35,19 @@ public partial class ApplicationContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Invoice>()
-            .HasOne(i => i.DiamondOfert)
-            .WithMany(d => d.Invoices) // Cambio en la relación
-            .HasForeignKey(i => i.DiamondOfferId);
+      modelBuilder.Entity<Invoice>(entity =>
+    {
+        entity.Property(i => i.CreatedAt)
+              .HasColumnType("timestamp with time zone")
+              .HasConversion(v => v.ToUniversalTime(), v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
+    
+
+        entity.HasOne(i => i.DiamondOfert)
+              .WithMany(d => d.Invoices)
+              .HasForeignKey(i => i.DiamondOfferId)
+              .OnDelete(DeleteBehavior.Cascade); // Opcional, define el comportamiento de eliminación
+    });
+
         modelBuilder.Entity<Card>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("card_pkey");

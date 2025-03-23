@@ -50,7 +50,11 @@ const DrawInfo = (game) => {
   DrawStates(game);
 };
 const DrawError = (error) => {
-  description.text(error.responseJSON.details);
+  if (error.responseJSON == undefined) {
+    description.text("A ocurrido un error inesperado");
+  }else{
+    description.text(error.responseJSON.details);
+  }
   decision1.text("Seguir esperando...");
   decision2.text("Comprar vidas");
   appendNotLivesCard("../../img/Harverter.png", error);
