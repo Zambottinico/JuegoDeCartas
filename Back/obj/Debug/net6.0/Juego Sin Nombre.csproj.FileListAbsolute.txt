@@ -232,3 +232,11 @@ D:\programacion\JuegoDeCartas\Back\bin\Debug\net6.0\runtimes\unix\lib\net6.0\Sys
 D:\programacion\JuegoDeCartas\Back\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 D:\programacion\JuegoDeCartas\Back\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 D:\programacion\JuegoDeCartas\Back\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+D:\programacion\JuegoDeCartas\Back\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\programacion\JuegoDeCartas\Back\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll
+D:\programacion\JuegoDeCartas\Back\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\programacion\JuegoDeCartas\Back\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
+D:\programacion\JuegoDeCartas\Back\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.dll
+D:\programacion\JuegoDeCartas\Back\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\programacion\JuegoDeCartas\Back\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
+D:\programacion\JuegoDeCartas\Back\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll

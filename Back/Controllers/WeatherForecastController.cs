@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Juego_Sin_Nombre.Controllers
@@ -6,6 +7,21 @@ namespace Juego_Sin_Nombre.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
+
+
+        [HttpGet("user")]
+        [Authorize(Policy = "UserOnly")]
+        public IActionResult UserEndpoint()
+        {
+            return Ok("Este endpoint es solo para usuarios.");
+        }
+
+        [HttpGet("admin")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult AdminEndpoint()
+        {
+            return Ok("Este endpoint es solo para administradores.");
+        }
         private static readonly string[] Summaries = new[]
         {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"

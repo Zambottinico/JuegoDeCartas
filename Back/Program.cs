@@ -5,13 +5,17 @@ using Juego_Sin_Nombre.Services;
 using Juego_Sin_Nombre.Services.interfacez;
 using MercadoPago.Client.MerchantOrder;
 using MercadoPago.Client.Payment;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Reflection;
+using System.Text;
 using static Juego_Sin_Nombre.Bussines.GameBussines.Command.PlayGame;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +24,37 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Mi API", Version = "v1" });
+
+    // ?? Configurar autenticación JWT en Swagger
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Ingrese el token en formato: Bearer {token}"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
 
 //builder.Services.AddAuthentication(JwtBearerDefaults.Authentic)
 
@@ -46,6 +80,8 @@ builder.Services.AddScoped<InvoiceService>();
 builder.Services.AddScoped<MerchantOrderClient>();
 builder.Services.AddScoped<PaymentClient>();
 builder.Services.AddScoped<IDiamondOfertService, DiamondOfertService>();
+builder.Services.AddSingleton<JwtService>();
+
 
 builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
@@ -62,7 +98,36 @@ builder.Services.AddFluentValidation(config =>
 
 //Scaffold-DbContext "Name=ConnectionString" Npgsql.EntityFrameworkCore.PostgreSQL -OutputDir Models -ContextDir Data -Context ApplicationContext -Force
 
+// Configurar autenticación JWT
+var key = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]);
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(key)
+        };
+    });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("UserOnly", policy => policy.RequireRole("User"));
+});
+
+
+
+
 var app = builder.Build();
+
+
 app.UseMiddleware<ErrorHandlingMiddleware>();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsProduction())
@@ -79,6 +144,7 @@ app.UseCors(c =>
 });
 
 app.UseHttpsRedirection();
+app.UseAuthentication();  
 app.UseAuthorization();
 app.MapControllers();
 
