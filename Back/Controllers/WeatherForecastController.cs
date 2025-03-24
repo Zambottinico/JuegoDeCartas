@@ -16,8 +16,8 @@ namespace Juego_Sin_Nombre.Controllers
             return Ok("Este endpoint es solo para usuarios.");
         }
 
-        [HttpGet("admin")]
-        [Authorize(Roles = "Admin")]
+        [HttpGet("user")]
+        [Authorize(Policy = "AdminOnly")]
         public IActionResult AdminEndpoint()
         {
             return Ok("Este endpoint es solo para administradores.");
