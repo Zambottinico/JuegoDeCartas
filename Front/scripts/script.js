@@ -27,6 +27,9 @@ $(document).ready(function () {
       dataType: "json",
       contentType: "application/json",
       data: JSON.stringify(postRequest),
+      headers: {
+        "Authorization": "Bearer " + valor1.token 
+      },
       success: function (response) {
         Respuesta = response;
         console.log(Respuesta);
@@ -55,6 +58,9 @@ $(document).ready(function () {
         dataType: "json",
         contentType: "application/json",
         data: JSON.stringify(playRequest),
+        headers: {
+          "Authorization": "Bearer " + valor1.token 
+        },
         success: function (response) {
           Respuesta = response;
           console.log(Respuesta);

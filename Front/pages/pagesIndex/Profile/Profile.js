@@ -27,6 +27,9 @@ $(document).ready(function () {
     url: "https://localhost:7116/api/User/GetUserById/" + valor1.id,
     method: "GET",
     dataType: "json",
+    headers: {
+      "Authorization": "Bearer " + valor1.token 
+    },
     success: function (response) {
       showUserInfo(response);
     },

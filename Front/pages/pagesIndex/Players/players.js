@@ -10,6 +10,9 @@ $(document).ready(function () {
     url: "https://localhost:7116/api/User/GetUsers",
     method: "GET",
     dataType: "json",
+    headers: {
+      "Authorization": "Bearer " + valor1.token 
+    },
     success: function (response) {
       console.log(response);
       showData(response);

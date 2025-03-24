@@ -1,6 +1,7 @@
 ﻿using Juego_Sin_Nombre.Dtos;
 using Juego_Sin_Nombre.Services;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,6 +35,7 @@ namespace Juego_Sin_Nombre.Controllers {
         }
 
         [HttpPost("api/tienda/createCardOfert")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> createCardOfert([FromBody] CreateCardOfertRequest request)
         {
             try
@@ -47,6 +49,7 @@ namespace Juego_Sin_Nombre.Controllers {
             }
         }
         [HttpPut("api/tienda/updateCardOfert")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> updateCardOfert([FromBody] UpdateCardOfertRequest request)
         {
             try
@@ -60,6 +63,7 @@ namespace Juego_Sin_Nombre.Controllers {
             }
         }
         [HttpDelete("api/tienda/deleteCardOfert/{id}")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> DeleteCardOfert(int id, [FromBody] UserCredentials request)
         {
             try

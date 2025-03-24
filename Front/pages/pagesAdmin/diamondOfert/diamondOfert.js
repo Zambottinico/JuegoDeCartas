@@ -11,6 +11,9 @@ $(document).ready(function () {
         url: "https://localhost:7116/api/DiamondOfert",
         method: "GET",
         dataType: "json",
+        headers: {
+          "Authorization": "Bearer " + valor1.token 
+        },
         success: function (response) {
           console.log(response);
           ofertsList = response;

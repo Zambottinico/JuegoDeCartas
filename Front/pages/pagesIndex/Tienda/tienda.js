@@ -16,6 +16,9 @@ $(document).ready(function () {
     url: "https://localhost:7116/api/User/GetUserById/" + valor1.id,
     method: "GET",
     dataType: "json",
+    headers: {
+      "Authorization": "Bearer " + valor1.token 
+    },
     success: function (response) {
       showUserInfo(response);
     },
@@ -39,6 +42,9 @@ $(document).ready(function () {
       url: "https://localhost:7116/api/DiamondOfert",
       method: "GET",
       dataType: "json",
+      headers: {
+        "Authorization": "Bearer " + valor1.token 
+      },
       success: function (response) {
         console.log(response);
         llenarOferts(response);
@@ -92,6 +98,9 @@ function llenarOferts(data) {
       dataType: "json",
       contentType: "application/json",
       data: JSON.stringify(jsonData),
+      headers: {
+        "Authorization": "Bearer " + valor1.token 
+      },
       success: function (response) {
         console.log(response);
         Swal.fire("Exito", "Se a realizado la compra", "success").then(
@@ -115,6 +124,9 @@ function llenarOferts(data) {
     url: "https://localhost:7116/api/cardoferts", // URL del endpoint
     type: "GET", // Método HTTP
     data: { userId: valor1.id }, // Parámetros de consulta
+    headers: {
+      "Authorization": "Bearer " + valor1.token 
+    },
     success: function (response) {
       const content = $("#cardOferts");
       if (response.length > 0) {
@@ -192,6 +204,9 @@ function llenarOferts(data) {
       type: "POST", // Método HTTP
       contentType: "application/json", // Tipo de contenido JSON
       data: JSON.stringify(requestData), // Convertimos el objeto a JSON
+      headers: {
+        "Authorization": "Bearer " + valor1.token 
+      },
       success: function (response) {
         console.log("Personaje desbloqueado con éxito:", response);
         Swal.fire({
@@ -233,6 +248,9 @@ function crearPreferencia(id) {
     type: "POST", // Método HTTP
     contentType: "application/json", // Tipo de contenido JSON
     data: JSON.stringify(requestData), // Convertimos el objeto a JSON
+    headers: {
+      "Authorization": "Bearer " + valor1.token 
+    },
     success: function (response) {
       console.log(response);
       console.log("lista de ofertas "+diamodOfertList);
