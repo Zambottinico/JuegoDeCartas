@@ -50,6 +50,7 @@ namespace Juego_Sin_Nombre.Bussines.UserBussines.Commands
                     user.Characters =characters;
                     user.Username = request.Username;
                     user.Password = request.Password;
+                    user.Rol = "User";
                     //se asignan en 0 el oro y los diamantes
                     user.Gold = 0;
                     user.Diamonds = 0;

@@ -34,7 +34,7 @@ namespace Juego_Sin_Nombre.Services
                 _issuer,
                 _audience,
                 claims,
-                expires: DateTime.UtcNow.AddHours(1),
+                expires: DateTime.UtcNow.AddDays(30),
                 signingCredentials: credentials
             );
 

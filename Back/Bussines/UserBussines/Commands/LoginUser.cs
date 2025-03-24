@@ -1,6 +1,7 @@
 ﻿using Juego_Sin_Nombre.Data;
 using Juego_Sin_Nombre.Dtos;
 using Juego_Sin_Nombre.Models;
+using Juego_Sin_Nombre.Services;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
@@ -19,10 +20,12 @@ namespace Juego_Sin_Nombre.Bussines.UserBussines.Commands
         public class LoginUserHandler : IRequestHandler<LoginUserCommand, LoginResponse>
         {
             private readonly Data.ApplicationContext _context;
+            private readonly JwtService _jwtService;
 
-            public LoginUserHandler(Data.ApplicationContext context)
+            public LoginUserHandler(Data.ApplicationContext context, JwtService jwtService)
             {
                 _context = context;
+                _jwtService = jwtService;
             }
 
             public async Task<LoginResponse> Handle(LoginUserCommand request, CancellationToken cancellationToken)
@@ -40,7 +43,8 @@ namespace Juego_Sin_Nombre.Bussines.UserBussines.Commands
                         string clave = ClaveGenerator();
                         user.Clave = clave;
                         await _context.SaveChangesAsync();
-
+                        var token = _jwtService.GenerateToken(user.Username,user.Rol);
+                        loginResponse.Token = token;
                         loginResponse.Clave = clave;
                         loginResponse.Username = user.Username;
                         loginResponse.id = user.Id;
