@@ -23,6 +23,7 @@ $(document).ready(function () {
   });
 
   function showData(data) {
+    console.log(data);
     const content = $("#table");
     $("#table ").html("");
     content.append(`<thead class="enchanted" style="font-size: 30px">
@@ -36,7 +37,7 @@ $(document).ready(function () {
     for (let i = 0; i < data.length; i++) {
       const user = data[i];
 
-      if (user.username == Cookies.get("username")) {
+      if (user.username == cookieUser.username) {
         var row = `<tbody class="bg-success enchanted" id="localPlayer">
       <th>${i + 1}</th>
       <td>${user.username}</td>

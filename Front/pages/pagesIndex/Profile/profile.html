@@ -69,18 +69,18 @@
             <div id="emailUser" class="text-secondary">email</div>
           </div>
           <div class="col-auto">
-            <input
-              type="button"
-              value="Cerrar Sesion"
+            <button
               class="btn btn-danger"
               id="btn-CerrarSesion"
-            />
+              onclick="logout()"
+            >
+              <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+            </button>
           </div>
         </div>
         <div class="row">
           <p class="enchanted m-0" id="lives">
-            <img src="../../../img/items/vida.png" alt="" style="width: 30px;">
-           
+            <img src="../../../img/items/vida.png" alt="" style="width: 30px" />
           </p>
           <p class="enchanted text-secondary m-0" id="nextLive"></p>
         </div>
