@@ -10,14 +10,14 @@ namespace Juego_Sin_Nombre.Controllers
 
 
         [HttpGet("user")]
-        [Authorize(Policy = "UserOnly")]
+        [Authorize(Policy = "UserOrAdmin")]
         public IActionResult UserEndpoint()
         {
-            return Ok("Este endpoint es solo para usuarios.");
+            return Ok("Este endpoint es solo para usuarios y admins xd.");
         }
 
         [HttpGet("admin")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "AdminOnly")]
         public IActionResult AdminEndpoint()
         {
             return Ok("Este endpoint es solo para administradores.");
