@@ -83,7 +83,7 @@ body {
   position: relative;
 }
 
-.card {
+.cardClass {
   width: 100%;
   height: 100%;
 
@@ -98,7 +98,7 @@ body {
   transition: transform 0.5s;
 }
 
-.card img {
+.cardClass img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -174,10 +174,11 @@ body {
   position: fixed;
   bottom: 0;
   left: 50%;
-  transform: translateX(-50%); /* Esto ajusta el elemento para que quede centrado */
+  transform: translateX(
+    -50%
+  ); /* Esto ajusta el elemento para que quede centrado */
   z-index: 999;
 }
-
 
 @media (max-width: 380px) {
   #decision2 {
@@ -194,8 +195,7 @@ body {
   transform: rotate(360deg);
 }
 
-
-#days{
+#days {
   background-color: #000000b0;
   color: #c0c0c0;
   border-radius: 20px;

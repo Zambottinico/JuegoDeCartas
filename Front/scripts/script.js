@@ -113,7 +113,7 @@ $(document).ready(function () {
       swiper.append(card.element);
       cardCount++;
 
-      const cards = swiper.querySelectorAll(".card:not(.dismissing)");
+      const cards = swiper.querySelectorAll(".cardClass:not(.dismissing)");
       cards.forEach((card, index) => {
         card.style.setProperty("--i", index);
       });

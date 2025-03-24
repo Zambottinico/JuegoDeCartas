@@ -1,3 +1,24 @@
+//ajustar tamaño del slider
+const swiperEl = document.querySelector("swiper-container");
+
+function checkScreenSize() {
+  if (window.innerWidth < 700) {
+    swiperEl.setAttribute("slides-per-view", "1");
+  } else if (window.innerWidth < 920) {
+    swiperEl.setAttribute("slides-per-view", "2");
+  } else if (window.innerWidth < 1400) {
+    swiperEl.setAttribute("slides-per-view", "3");
+  } else {
+    swiperEl.setAttribute("slides-per-view", "4");
+  }
+}
+
+// Ejecutar la función cuando la página se carga
+window.addEventListener("load", checkScreenSize);
+
+// Ejecutar la función cada vez que se cambia el tamaño de la ventana
+window.addEventListener("resize", checkScreenSize);
+
 let diamodOfertList = [];
 $(document).ready(function () {
   //Cambiar links cartas/acerca de
@@ -64,24 +85,27 @@ $(document).ready(function () {
       var oferta = data[i];
 
       // Crear el contenedor de la oferta
-      var ofertaDiv = document.createElement("div");
-      ofertaDiv.classList.add("p-3", "mb-2", "row");
+      var ofertaDiv = document.createElement("swiper-slide");
+      ofertaDiv.classList.add("d-flex", "justify-content-center");
 
-      // Contenido de la oferta
+      
+
       ofertaDiv.innerHTML = `
-      <div class="col-4 shadow-sm">
-        <img src="../../../img/oferts/${oferta.nombre}.png" 
-             alt="Imagen de ${oferta.nombre}" 
-             class="img-fluid" style="width: 50px; height: 70px; margin-right: 10px;">
-        <div>
-          <h5 class="mb-1">${oferta.nombre}</h5>
-          <p>${oferta.montoDeDiamantes}</p>
-          <p class="mb-1">$ ${oferta.precioEnPesos}</p>
-          <button class="btn btn-success" onclick="crearPreferencia(${oferta.id})">Obtener</button>
-        </div>
-      </div>
-    `;
-
+            <div class="card" style="width: 18rem">
+              <img
+                src="../../../img/items/vida.png"
+                class="card-img-top img-fluid"
+                width="100px"
+                alt="..."
+              />
+              <div class="card-body">
+                <h5 class="card-title">${oferta.nombre}</h5>
+                <p>${oferta.montoDeDiamantes}</p>
+                <p class="mb-1">$ ${oferta.precioEnPesos}</p>
+                <button class="btn btn-success" onclick="crearPreferencia(${oferta.id})">Obtener</button>
+              </div>
+            </div>
+  `;
       // Agregar al contenedor principal
       divCardOferts.appendChild(ofertaDiv);
     }

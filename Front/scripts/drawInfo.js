@@ -74,7 +74,7 @@ function appendNotLivesCard(url, error) {
     },
   });
   swiper.append(card.element);
-  const cards = swiper.querySelectorAll(".card:not(.dismissing)");
+  const cards = swiper.querySelectorAll(".cardClass:not(.dismissing)");
   cards.forEach((card, index) => {
     card.style.setProperty("--i", index);
   });

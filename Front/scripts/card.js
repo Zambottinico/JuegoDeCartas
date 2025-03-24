@@ -25,7 +25,7 @@ class Card {
 
   #init = () => {
     const card = document.createElement('div');
-    card.classList.add('card');
+    card.classList.add('cardClass');
 
     const img = document.createElement('img');
     img.src = this.imageUrl;

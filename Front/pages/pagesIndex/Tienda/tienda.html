@@ -3,6 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--  Link Swiper's CSS\-->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <link
@@ -58,60 +63,90 @@
       </div>
     </nav>
     <div class="container mt-5 papiro2 paper-left">
-      
-      <div class="container">
-        <h1 id="title" class="enchanted h1">Tienda</h1>
-        <div class="row">
-          <p class="enchanted m-0" id="lives">
-            <img src="../../../img/items/vida.png" alt="" style="width: 30px" />
-          </p>
-          <p class="enchanted text-secondary m-0" id="nextLive"></p>
-        </div>
-        <div class="row">
-          <p class="enchanted" id="coins"></p>
-        </div>
-        <div class="" id="diamondOferts"></div>
-        <div class="row enchanted">
-          <div class="col-auto">
-            <div class="border p-2">
-              <img
-                src="../../../img/items/vida.png"
-                alt=""
-                style="width: 100px"
-              />
-              <p>Rellenar vidas</p>
-              <button id="rechargeLives" class="w-100">
-                <img
-                  src="../../../img/items/gold.png"
-                  style="width: 30px"
-                  alt=""
-                />
-                1000
-              </button>
-            </div>
-          </div>
-          <div class="col-auto">
-            <div class="border p-2">
-              <img
-                src="../../../img/items/vida.png"
-                alt=""
-                style="width: 100px"
-              />
-              <p>Aumentar vida maxima</p>
-              <button class="w-100">
-                <img
-                  src="../../../img/items/gold.png"
-                  style="width: 30px"
-                  alt=""
-                />
-                5000
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div class="row" id="cardOferts"></div>
+      <h1 id="title" class="enchanted h1">Tienda</h1>
+      <div class="row">
+        <p class="enchanted m-0" id="lives">
+          <img src="../../../img/items/vida.png" alt="" style="width: 30px" />
+        </p>
+        <p class="enchanted text-secondary m-0" id="nextLive"></p>
       </div>
+      <div class="row">
+        <p class="enchanted" id="coins"></p>
+      </div>
+
+      <section id="cardOfertsSection" class="container-fluid mt-5">
+        <h1 class="text-center pb-5 enchanted" style="font-size: 50px">
+          Paquetes de Diamantes
+        </h1>
+        <swiper-container
+          class="swiper-container mySwiper d-flex justify-content-center"
+          id="diamondOferts"
+          pagination="true"
+          pagination-clickable="true"
+          centered-slides="true"
+          space-between="10"
+          grab-cursor="true"
+          keyboard="true"
+          initial-slide="2"
+          loop="true"
+        >
+          <swiper-slide class="d-flex justify-content-center">
+            <div class="card" style="width: 18rem">
+              <img
+                src="../../../img/items/vida.png"
+                class="card-img-top img-fluid"
+                width="100px"
+                alt="..."
+              />
+              <div class="card-body">
+                <h5 class="card-title">DreamDuckVevo</h5>
+                <p class="card-text">Contenido y videos de minecraft</p>
+                <a href="#" class="btn">Visitar</a>
+              </div>
+            </div>
+          </swiper-slide>
+        </swiper-container>
+      </section>
+      <div class="row enchanted">
+        <div class="col-auto">
+          <div class="border p-2">
+            <img
+              src="../../../img/items/vida.png"
+              alt=""
+              style="width: 100px"
+            />
+            <p>Rellenar vidas</p>
+            <button id="rechargeLives" class="w-100">
+              <img
+                src="../../../img/items/gold.png"
+                style="width: 30px"
+                alt=""
+              />
+              1000
+            </button>
+          </div>
+        </div>
+        <div class="col-auto">
+          <div class="border p-2">
+            <img
+              src="../../../img/items/vida.png"
+              alt=""
+              style="width: 100px"
+            />
+            <p>Aumentar vida maxima</p>
+            <button class="w-100">
+              <img
+                src="../../../img/items/gold.png"
+                style="width: 30px"
+                alt=""
+              />
+              5000
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" id="cardOferts"></div>
     </div>
 
     <script
@@ -120,7 +155,11 @@
       crossorigin="anonymous"
     ></script>
     <script src="https://sdk.mercadopago.com/js/v2"></script>
-
+    <script
+      src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"
+      defer
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
     <script src="tienda.js"></script>
   </body>
 </html>
