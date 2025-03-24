@@ -14,6 +14,7 @@ namespace Juego_Sin_Nombre.Bussines.UserBussines.Commands
         public class CreateUserCommand : IRequest<UserResponseDto>
         {
             public string Username { get; set; }
+            public string Email { get; set; }
 
             public string Password { get; set; }
         }
@@ -37,7 +38,7 @@ namespace Juego_Sin_Nombre.Bussines.UserBussines.Commands
                 try
                 {
                     //Validar que no exista un usuario con el mismo username
-                    if (_context.Usuarios.Any(c=> c.Username==request.Username))
+                    if (_context.Usuarios.Any(c=> c.Email==request.Username))
                     {
                         // El usuario ya existe, manejar el error
                         throw new InvalidOperationException("El nombre de usuario ya está en uso.");
@@ -48,8 +49,9 @@ namespace Juego_Sin_Nombre.Bussines.UserBussines.Commands
                          .Take(5)  
                          .ToListAsync();
                     user.Characters =characters;
-                    user.Username = request.Username;
+                    user.Email = request.Email;
                     user.Password = request.Password;
+                    user.Username = request.Username;
                     user.Rol = "User";
                     //se asignan en 0 el oro y los diamantes
                     user.Gold = 0;
@@ -61,7 +63,7 @@ namespace Juego_Sin_Nombre.Bussines.UserBussines.Commands
                     await _context.Usuarios.AddAsync(user);
                     await _context.SaveChangesAsync();
                     UserResponseDto userResponse = new UserResponseDto();
-                    userResponse.Username = user.Username;
+                    userResponse.Username = user.Email;
 
                     if (userResponse != null)
                     {

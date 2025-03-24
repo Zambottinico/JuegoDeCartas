@@ -12,7 +12,7 @@ namespace Juego_Sin_Nombre.Bussines.UserBussines.Commands
     {
         public class LoginUserCommand : IRequest<LoginResponse>
         {
-            public string? Username { get; set; }
+            public string? Email { get; set; }
 
             public string? Password { get; set; }
             
@@ -33,7 +33,7 @@ namespace Juego_Sin_Nombre.Bussines.UserBussines.Commands
                 try
                 {
                     Usuario user = await _context.Usuarios
-                        .Where(u => u.Username == request.Username && u.Password == request.Password)
+                        .Where(u => u.Email == request.Email && u.Password == request.Password)
                         .FirstOrDefaultAsync();
 
                     LoginResponse loginResponse = new LoginResponse();
@@ -43,10 +43,10 @@ namespace Juego_Sin_Nombre.Bussines.UserBussines.Commands
                         string clave = ClaveGenerator();
                         user.Clave = clave;
                         await _context.SaveChangesAsync();
-                        var token = _jwtService.GenerateToken(user.Username,user.Rol);
+                        var token = _jwtService.GenerateToken(user.Email,user.Rol);
                         loginResponse.Token = token;
                         loginResponse.Clave = clave;
-                        loginResponse.Username = user.Username;
+                        loginResponse.Username = user.Email;
                         loginResponse.id = user.Id;
 
                         if (user.Rol != null)

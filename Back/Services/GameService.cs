@@ -31,7 +31,7 @@ namespace Juego_Sin_Nombre.Services
             gameResponse.Gamestate = game.Gamestate;
             gameResponse.Day = (int)game.Day;
             Usuario user = _context.Usuarios.FirstOrDefault(u => u.Id == game.Userid);
-            gameResponse.UserName = user.Username;
+            gameResponse.UserName = user.Email;
             gameResponse.Gold = user.Gold;
             gameResponse.Diamonds = user.Diamonds;
             gameResponse.Lives = user.Lives;
@@ -73,7 +73,7 @@ namespace Juego_Sin_Nombre.Services
             gameResponse.Day = (int)game.Day;
 
             Usuario user = _context.Usuarios.FirstOrDefault(u => u.Id == game.Userid);
-            gameResponse.UserName = user.Username;
+            gameResponse.UserName = user.Email;
             gameResponse.Gold = user.Gold;
             gameResponse.Diamonds = user.Diamonds;
             gameResponse.Lives = user.Lives;

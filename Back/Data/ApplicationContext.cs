@@ -177,9 +177,12 @@ public partial class ApplicationContext : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("password");
             entity.Property(e => e.Rol).HasMaxLength(50);
+            entity.Property(e => e.Email)
+                .HasMaxLength(255)
+                .HasColumnName("Email");
             entity.Property(e => e.Username)
                 .HasMaxLength(255)
-                .HasColumnName("username");
+                .HasColumnName("Username");
 
             entity.HasMany(d => d.Characters).WithMany(p => p.Players)
                 .UsingEntity<Dictionary<string, object>>(

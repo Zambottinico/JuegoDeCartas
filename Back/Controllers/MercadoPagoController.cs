@@ -2,6 +2,7 @@
 using Juego_Sin_Nombre.Services;
 using MercadoPago.Client.MerchantOrder;
 using MercadoPago.Client.Payment;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
@@ -29,6 +30,7 @@ namespace Juego_Sin_Nombre.Controllers
         }
 
         [HttpPost("crear-preferencia/{diamondOfertId}")]
+        [Authorize(Policy = "UserOrAdmin")]
         public async Task<IActionResult> CrearPreferencia(int diamondOfertId, [FromBody] UserCredentials userCredentials)
         {
             await _userService.ValidateCredentialsAsync(userCredentials);

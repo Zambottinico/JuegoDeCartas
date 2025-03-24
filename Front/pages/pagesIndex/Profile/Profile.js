@@ -1,6 +1,7 @@
 $(document).ready(function () {
   //Cambiar links cartas/acerca de
   const valor1 = JSON.parse(Cookies.get("claveSeguridad"));
+  console.log(valor1);
   if (valor1.rol === "Admin") {
     $("#NavCards").attr("href", "../Cards/cards.html");
     $("#NavCards").text("Cartas");
@@ -16,12 +17,13 @@ $(document).ready(function () {
       cancelButtonText: "Cancelar",
       preConfirm: () => {
         Cookies.remove("claveSeguridad");
+        Cookies.remove("username");
         window.location = "../../pagesLogin/login.html";
       },
     });
   });
 
-  const username = Cookies.get("username");
+
 
   $.ajax({
     url: "https://localhost:7116/api/User/GetUserById/" + valor1.id,
@@ -68,7 +70,7 @@ $(document).ready(function () {
     
   }
 
-  $("#username").text(username);
+  $("#username").text(valor1.username);
   $.ajax({
     url:
       "https://localhost:7116/api/Character/GetCharactersByUserId/" + valor1.id,

@@ -1,5 +1,6 @@
 ﻿using Juego_Sin_Nombre.Dtos;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using static Juego_Sin_Nombre.Bussines.GameBussines.Command.PlayGame;
@@ -20,12 +21,14 @@ namespace Juego_Sin_Nombre.Controllers
 
         [HttpPost]
         [Route("Post")]
+        [Authorize(Policy = "UserOrAdmin")]
         public async Task<GameResponse> PostGame([FromBody] PostGameCommand postGameCommand)
         {
             return await _mediator.Send(postGameCommand);
         }
         [HttpPut]
         [Route("Play")]
+        [Authorize(Policy = "UserOrAdmin")]
         public async Task<GameResponse> PostGame([FromBody] PlayGameCommand playGameCommand)
         {
              return await _mediator.Send(playGameCommand); 

@@ -34,7 +34,7 @@ namespace Juego_Sin_Nombre.Bussines.UserBussines.Queries
                         foreach (Usuario u in users)
                         {
                             UserResponseDto dto = new UserResponseDto();
-                            dto.Username = u.Username;
+                            dto.Username = u.Email;
                             if (u.Maxdays!=null)
                             {
                                 dto.MaxDays = u.Maxdays;

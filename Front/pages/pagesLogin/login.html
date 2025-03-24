@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin" />
+    <meta http-equiv="Cross-Origin-Embedder-Policy" content="require-corp" />
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
@@ -11,9 +14,8 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
     <link rel="stylesheet" href="../../style.css" />
     <link
       rel="shortcut icon"
@@ -26,96 +28,122 @@
     <h1 class="text-center mt-3 enchanted h1" style="font-size: 90px">
       Baraja Real
     </h1>
-
     <div class="container papiro paper-left mt-5">
-      <form action="" id="form">
+      <form id="form">
         <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label">Usuario</label>
+          <label for="username" class="form-label">Usuario</label>
           <input
             type="text"
             class="form-control"
             id="username"
             name="username"
+            required
+            maxlength="50"
           />
         </div>
         <div class="mb-3">
-          <label for="exampleInputPassword1" class="form-label">Contraseña</label>
+          <label for="password" class="form-label">Contraseña</label>
           <input
             type="password"
             class="form-control"
             id="password"
             name="password"
+            required
+            maxlength="50"
           />
         </div>
         <div class="mb-3">
-          <button type="submit" class="btn btn-primary" id="btn">Submit</button>
+          <button type="submit" class="btn btn-primary">Ingresar</button>
           <br />
-          <a href="../pagesLogin/crearCuenta.html" class="">No tengo cuenta</a>
+          <a href="../pagesLogin/crearCuenta.html">No tengo cuenta</a>
         </div>
+        <button onclick="oauthSignIn()" class="btn btn-danger">
+          Iniciar sesión con Google
+        </button>
       </form>
     </div>
-    <a href="https://twitter.com/intent/tweet?text=¡Hola!%20Mira%20este%20contenido%20&url=https://tupagina.com" target="_blank">
-      <button>Compartir en Twitter</button>
-    </a>
-    
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-      crossorigin="anonymous"
-    ></script>
+
     <script>
       $(document).ready(function () {
-        $("#form").validate({
-          rules: {
-            username: {
-              required: true,
-              maxlength: 50,
+        const token = getAccessTokenFromUrl();
+        console.log(token);
+        if (token) sendTokenToBackend(token);
+
+        $("#form").validate();
+
+        $("#form").submit(function (event) {
+          event.preventDefault();
+          if (!$("#form").valid()) return;
+
+          let login = {
+            Email: $("#username").val(),
+            Password: $("#password").val(),
+          };
+
+          $.ajax({
+            url: "https://localhost:7116/api/User/Login",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(login),
+            success: function (response) {
+              Cookies.set("claveSeguridad", JSON.stringify(response), {
+                expires: 30,
+              });
+              Cookies.set("username", login.Username, { expires: 30 });
+              window.location = "../pagesIndex/index.html";
             },
-            password: {
-              required: true,
-              maxlength: 50,
+            error: function (error) {
+              console.error("Error en login:", error.responseText);
             },
-          },
-
-          errorClass: "is-invalid",
-          successClass: "is-valid",
-          debugger: true,
-        });
-
-        $("#form").submit(function () {
-          if ($("#form").valid()) {
-            event.preventDefault();
-            console.log($("#form").valid());
-            let login = {};
-            login.Username = $("#username").val();
-            login.Password = $("#password").val();
-
-            $.ajax({
-              url: "https://localhost:7116/api/User/Login",
-              method: "POST",
-              dataType: "json",
-              contentType: "application/json",
-              data: JSON.stringify(login),
-              success: function (response) {
-                console.log(response);
-                let responseJson = JSON.stringify(response);
-                Cookies.set("claveSeguridad", responseJson, { expires: 30 }); // La cookie expirará después de 7 días
-                Cookies.set("username", login.Username, { expires: 30 });
-                // Para obtener una cookie
-                const valor = Cookies.get("claveSeguridad");
-                console.log(valor);
-                console.log(response.ok);
-                if (response.ok) {
-                  window.location = "../pagesIndex/index.html";
-                }
-              },
-              error: function (error) {
-                console.log(error);
-              },
-            });
-          }
+          });
         });
       });
+
+      function oauthSignIn() {
+        var oauth2Endpoint = "https://accounts.google.com/o/oauth2/v2/auth";
+
+        var params = {
+          client_id:
+            "935997935229-35qgapv1bibg8frh82mh31besh0jk3c6.apps.googleusercontent.com",
+          redirect_uri: "http://localhost:8080/pages/pagesLogin/login.html",
+          response_type: "id_token", // 🔥 Pedimos el ID Token en lugar del Access Token
+          scope: "openid email profile", // 🔥 Asegura que obtenemos email y perfil
+          nonce: "random_nonce_value", // 🔒 Protección contra ataques de repetición
+        };
+
+        var url = oauth2Endpoint + "?" + new URLSearchParams(params).toString();
+        window.location.href = url; // 🔄 Redirigir directamente
+      }
+
+      function getAccessTokenFromUrl() {
+        return new URLSearchParams(window.location.hash.substring(1)).get(
+          "id_token"
+        );
+      }
+
+      function sendTokenToBackend(accessToken) {
+        if (!accessToken) return;
+
+        $.ajax({
+          url: "https://localhost:7116/api/User/google",
+          method: "POST",
+          contentType: "application/json",
+          data: JSON.stringify({ token: accessToken }),
+          success: function (response) {
+            Cookies.set("claveSeguridad", JSON.stringify(response), {
+              expires: 30,
+            });
+            
+            window.location = "../pagesIndex/index.html";
+          },
+          error: function (error) {
+            console.error(
+              "Error al enviar token al backend:",
+              error.responseText
+            );
+          },
+        });
+      }
     </script>
   </body>
 </html>
