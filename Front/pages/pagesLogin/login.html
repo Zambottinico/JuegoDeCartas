@@ -57,10 +57,10 @@
           <br />
           <a href="../pagesLogin/crearCuenta.html">No tengo cuenta</a>
         </div>
-        <button onclick="oauthSignIn()" class="btn btn-danger">
-          Iniciar sesión con Google
-        </button>
       </form>
+      <button onclick="oauthSignIn()" class="btn btn-danger">
+        Iniciar sesión con Google
+      </button>
     </div>
 
     <script>
@@ -133,7 +133,7 @@
             Cookies.set("claveSeguridad", JSON.stringify(response), {
               expires: 30,
             });
-            
+
             window.location = "../pagesIndex/index.html";
           },
           error: function (error) {

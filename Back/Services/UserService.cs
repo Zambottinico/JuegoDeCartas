@@ -48,7 +48,7 @@ namespace Juego_Sin_Nombre.Services
                 createUserCommand.Password = payload.JwtId;
                 UserResponseDto userResponse = await _mediator.Send(createUserCommand);
                 LoginUserCommand loginUser = new LoginUserCommand();
-                loginUser.Email = userResponse.Username;
+                loginUser.Email = userResponse.Email;
                 loginUser.Password = payload.JwtId;
                 return await _mediator.Send(loginUser);
             }

@@ -1,23 +1,23 @@
 let diamodOfertList = [];
 $(document).ready(function () {
   //Cambiar links cartas/acerca de
-  const valor1 = JSON.parse(Cookies.get("claveSeguridad"));
-  if (valor1.rol === "Admin") {
+  const cookieUser = JSON.parse(Cookies.get("claveSeguridad"));
+  if (cookieUser.rol === "Admin") {
     $("#NavCards").attr("href", "../Cards/cards.html");
     $("#NavCards").text("Cartas");
   }
 
   var jsonData = {
-    userid: valor1.id,
-    clave: valor1.clave,
+    userid: cookieUser.id,
+    clave: cookieUser.clave,
   };
   console.log(jsonData);
   $.ajax({
-    url: "https://localhost:7116/api/User/GetUserById/" + valor1.id,
+    url: "https://localhost:7116/api/User/GetUserById/" + cookieUser.id,
     method: "GET",
     dataType: "json",
     headers: {
-      "Authorization": "Bearer " + valor1.token 
+      Authorization: "Bearer " + cookieUser.token,
     },
     success: function (response) {
       showUserInfo(response);
@@ -37,13 +37,12 @@ $(document).ready(function () {
   }
 
   $(document).ready(function () {
-
     $.ajax({
       url: "https://localhost:7116/api/DiamondOfert",
       method: "GET",
       dataType: "json",
       headers: {
-        "Authorization": "Bearer " + valor1.token 
+        Authorization: "Bearer " + cookieUser.token,
       },
       success: function (response) {
         console.log(response);
@@ -53,24 +52,23 @@ $(document).ready(function () {
         console.log(error);
       },
     });
+  });
 
-});
+  function llenarOferts(data) {
+    var divCardOferts = document.getElementById("diamondOferts");
+    diamodOfertList = data;
+    // Limpiar contenido previo
+    divCardOferts.innerHTML = "";
 
-function llenarOferts(data) {
-  var divCardOferts = document.getElementById("diamondOferts");
-  diamodOfertList = data;
-  // Limpiar contenido previo
-  divCardOferts.innerHTML = "";
+    for (var i = 0; i < data.length; i++) {
+      var oferta = data[i];
 
-  for (var i = 0; i < data.length; i++) {
-    var oferta = data[i];
+      // Crear el contenedor de la oferta
+      var ofertaDiv = document.createElement("div");
+      ofertaDiv.classList.add("p-3", "mb-2", "row");
 
-    // Crear el contenedor de la oferta
-    var ofertaDiv = document.createElement("div");
-    ofertaDiv.classList.add("p-3", "mb-2","row");
-
-    // Contenido de la oferta
-    ofertaDiv.innerHTML = `
+      // Contenido de la oferta
+      ofertaDiv.innerHTML = `
       <div class="col-4 shadow-sm">
         <img src="../../../img/oferts/${oferta.nombre}.png" 
              alt="Imagen de ${oferta.nombre}" 
@@ -84,12 +82,10 @@ function llenarOferts(data) {
       </div>
     `;
 
-    // Agregar al contenedor principal
-    divCardOferts.appendChild(ofertaDiv);
+      // Agregar al contenedor principal
+      divCardOferts.appendChild(ofertaDiv);
+    }
   }
-}
-
-
 
   $("#rechargeLives").click(function () {
     $.ajax({
@@ -99,7 +95,7 @@ function llenarOferts(data) {
       contentType: "application/json",
       data: JSON.stringify(jsonData),
       headers: {
-        "Authorization": "Bearer " + valor1.token 
+        Authorization: "Bearer " + cookieUser.token,
       },
       success: function (response) {
         console.log(response);
@@ -123,9 +119,9 @@ function llenarOferts(data) {
   $.ajax({
     url: "https://localhost:7116/api/cardoferts", // URL del endpoint
     type: "GET", // Método HTTP
-    data: { userId: valor1.id }, // Parámetros de consulta
+    data: { userId: cookieUser.id }, // Parámetros de consulta
     headers: {
-      "Authorization": "Bearer " + valor1.token 
+      Authorization: "Bearer " + cookieUser.token,
     },
     success: function (response) {
       const content = $("#cardOferts");
@@ -180,7 +176,7 @@ function llenarOferts(data) {
           characterName: $(this).data("charactername"),
           goldPrice: $(this).data("goldprice"),
           diamondPrice: $(this).data("diamondprice"),
-          userId: valor1.id,
+          userId: cookieUser.id,
         };
         handleButtonClick($(this).data("id"));
       });
@@ -194,8 +190,8 @@ function llenarOferts(data) {
 
   function handleButtonClick(response) {
     const requestData = {
-      userId: valor1.id,
-      clave: valor1.clave,
+      userId: cookieUser.id,
+      clave: cookieUser.clave,
       idCardOfert: response,
     };
 
@@ -205,7 +201,7 @@ function llenarOferts(data) {
       contentType: "application/json", // Tipo de contenido JSON
       data: JSON.stringify(requestData), // Convertimos el objeto a JSON
       headers: {
-        "Authorization": "Bearer " + valor1.token 
+        Authorization: "Bearer " + cookieUser.token,
       },
       success: function (response) {
         console.log("Personaje desbloqueado con éxito:", response);
@@ -235,25 +231,24 @@ function llenarOferts(data) {
   }
 });
 
-
 function crearPreferencia(id) {
-  const valor1 = JSON.parse(Cookies.get("claveSeguridad"));
+  const cookieUser = JSON.parse(Cookies.get("claveSeguridad"));
   requestData = {
-    userId: valor1.id,
-    clave: valor1.clave
-  }
+    userId: cookieUser.id,
+    clave: cookieUser.clave,
+  };
   ofert = diamodOfertList.find((ofert) => ofert.id === id);
   $.ajax({
-    url: "https://localhost:7116/api/MercadoPago/crear-preferencia/"+ofert.id, // Endpoint en tu backend
+    url: "https://localhost:7116/api/MercadoPago/crear-preferencia/" + ofert.id, // Endpoint en tu backend
     type: "POST", // Método HTTP
     contentType: "application/json", // Tipo de contenido JSON
     data: JSON.stringify(requestData), // Convertimos el objeto a JSON
     headers: {
-      "Authorization": "Bearer " + valor1.token 
+      Authorization: "Bearer " + cookieUser.token,
     },
     success: function (response) {
       console.log(response);
-      console.log("lista de ofertas "+diamodOfertList);
+      console.log("lista de ofertas " + diamodOfertList);
       Swal.fire({
         title: ofert.nombre,
         text: `Pagar ${ofert.precioEnPesos} ARS por ${ofert.montoDeDiamantes} diamantes`,
@@ -263,10 +258,10 @@ function crearPreferencia(id) {
         },
         showCancelButton: true,
         confirmButtonText: "Pagar con Mercado Pago",
-        cancelButtonText: "Cancelar"
+        cancelButtonText: "Cancelar",
       }).then((result) => {
         if (result.isConfirmed) {
-          window.location.href = response.initPoint; 
+          window.location.href = response.initPoint;
         }
       });
     },
@@ -280,4 +275,4 @@ function crearPreferencia(id) {
       });
     },
   });
-  }
+}

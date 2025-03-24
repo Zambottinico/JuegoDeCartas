@@ -4,6 +4,7 @@
     {
         
 
+        public string Email { get; set; }
         public string Username { get; set; }
         public int? MaxDays { get; set; }
         public int Gold { get; set; }

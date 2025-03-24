@@ -29,7 +29,8 @@ namespace Juego_Sin_Nombre.Bussines.UserBussines.Queries
                     if (user!=null)
                     {
                         UserResponseDto dto = new UserResponseDto();
-                        dto.Username = user.Email;
+                        dto.Email = user.Email;
+                        dto.Username = user.Username;
                         dto.MaxDays = user.Maxdays;
                         dto.Gold = (int)user.Gold;
                         dto.Diamonds = (int)user.Diamonds;

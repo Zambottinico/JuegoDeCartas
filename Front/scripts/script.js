@@ -3,16 +3,16 @@ $(document).ready(function () {
 
   //cargar datos
   //Cambiar links cartas/acerca de
-  const valor1 = JSON.parse(Cookies.get("claveSeguridad"));
-  if (valor1.rol === "Admin") {
+  const cookieUser = JSON.parse(Cookies.get("claveSeguridad"));
+  if (cookieUser.rol === "Admin") {
     $("#NavCards").attr("href", "Cards/cards.html");
     $("#NavCards").text("Cartas");
   }
 
-  console.log(valor1);
+  console.log(cookieUser);
   let postRequest = {
-    userid: valor1.id,
-    clave: valor1.clave,
+    userid: cookieUser.id,
+    clave: cookieUser.clave,
   };
   let character = "";
   // constants
@@ -28,7 +28,7 @@ $(document).ready(function () {
       contentType: "application/json",
       data: JSON.stringify(postRequest),
       headers: {
-        "Authorization": "Bearer " + valor1.token 
+        Authorization: "Bearer " + cookieUser.token,
       },
       success: function (response) {
         Respuesta = response;
@@ -39,16 +39,14 @@ $(document).ready(function () {
         appendNewCard(url);
       },
       error: function (error) {
-       
-        
         DrawError(error);
       },
     });
 
     const PlayGame = (decision) => {
       let playRequest = {
-        userid: valor1.id,
-        clave: valor1.clave,
+        userid: cookieUser.id,
+        clave: cookieUser.clave,
         decision: decision,
       };
       //PLAY GAME
@@ -59,13 +57,13 @@ $(document).ready(function () {
         contentType: "application/json",
         data: JSON.stringify(playRequest),
         headers: {
-          "Authorization": "Bearer " + valor1.token 
+          Authorization: "Bearer " + cookieUser.token,
         },
         success: function (response) {
           Respuesta = response;
           console.log(Respuesta);
           let url2 = "../../img/" + response.lastCard.character + ".png";
-         
+
           if (response.characterUnlocked) {
             Swal.fire({
               title: "Felicidades!",
@@ -120,7 +118,5 @@ $(document).ready(function () {
         card.style.setProperty("--i", index);
       });
     }
-
-    
   });
 });

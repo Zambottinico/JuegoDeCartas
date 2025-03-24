@@ -1,11 +1,14 @@
 $(document).ready(function () {
   //Cambiar links cartas/acerca de
-  const valor1 = JSON.parse(Cookies.get("claveSeguridad"));
-  console.log(valor1);
-  if (valor1.rol === "Admin") {
+  const cookieUser = JSON.parse(Cookies.get("claveSeguridad"));
+  console.log(cookieUser.email);
+  if (cookieUser.rol === "Admin") {
     $("#NavCards").attr("href", "../Cards/cards.html");
     $("#NavCards").text("Cartas");
   }
+  $("#username").text(cookieUser.username);
+
+  $("#emailUser").text(cookieUser.email);
 
   $("#btn-CerrarSesion").click(function () {
     Swal.fire({
@@ -23,14 +26,12 @@ $(document).ready(function () {
     });
   });
 
-
-
   $.ajax({
-    url: "https://localhost:7116/api/User/GetUserById/" + valor1.id,
+    url: "https://localhost:7116/api/User/GetUserById/" + cookieUser.id,
     method: "GET",
     dataType: "json",
     headers: {
-      "Authorization": "Bearer " + valor1.token 
+      Authorization: "Bearer " + cookieUser.token,
     },
     success: function (response) {
       showUserInfo(response);
@@ -43,41 +44,41 @@ $(document).ready(function () {
   function showUserInfo(data) {
     console.log(data);
     const pCoins = $("#coins");
-    pCoins.append(` <img src="../../../img/items/gold.png" alt="" style="width: 35px;"> ${data.gold} <img src="../../../img/items/diamond.png" alt="" style="width: 30px;"> ${data.diamonds}`);
+    pCoins.append(
+      ` <img src="../../../img/items/gold.png" alt="" style="width: 35px;"> ${data.gold} <img src="../../../img/items/diamond.png" alt="" style="width: 30px;"> ${data.diamonds}`
+    );
     const pLifes = $("#lives");
     pLifes.append(`${data.lives} de ${data.maxLives} Vidas`);
 
     if (data.maxLives != data.lives) {
       const pNextLive = $("#nextLive");
       const date = new Date(data.lastLifeRecharge); // Convierte el string en un objeto Date
-       // Sumar 30 minutos a la fecha
-       date.setMinutes(date.getMinutes() + 30);
+      // Sumar 30 minutos a la fecha
+      date.setMinutes(date.getMinutes() + 30);
       // Si hay segundos, sumar un minuto
       if (date.getSeconds() !== 0) {
         date.setMinutes(date.getMinutes() + 1); // Suma 1 minuto
       }
-    
+
       // Formato para mostrar solo la hora y los minutos
       const formattedTime = date.toLocaleTimeString("es-AR", {
-        hour: "2-digit",    // Hora en formato de 2 dígitos
-        minute: "2-digit",  // Minutos en formato de 2 dígitos
+        hour: "2-digit", // Hora en formato de 2 dígitos
+        minute: "2-digit", // Minutos en formato de 2 dígitos
       });
-    
+
       // Muestra solo la hora formateada
       pNextLive.append(formattedTime + " obtienes una vida");
     }
-    
-    
   }
 
-  $("#username").text(valor1.username);
   $.ajax({
     url:
-      "https://localhost:7116/api/Character/GetCharactersByUserId/" + valor1.id,
+      "https://localhost:7116/api/Character/GetCharactersByUserId/" +
+      cookieUser.id,
     method: "GET",
     dataType: "json",
     headers: {
-      "Authorization": "Bearer " + valor1.token 
+      Authorization: "Bearer " + cookieUser.token,
     },
     success: function (response) {
       showData(response);

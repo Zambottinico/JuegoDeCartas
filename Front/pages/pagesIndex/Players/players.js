@@ -1,7 +1,7 @@
 $(document).ready(function () {
   //Cambiar links cartas/acerca de
-  const valor1 = JSON.parse(Cookies.get("claveSeguridad"));
-  if (valor1.rol === "Admin") {
+  const cookieUser = JSON.parse(Cookies.get("claveSeguridad"));
+  if (cookieUser.rol === "Admin") {
     $("#NavCards").attr("href", "../Cards/cards.html");
     $("#NavCards").text("Cartas");
   }
@@ -11,7 +11,7 @@ $(document).ready(function () {
     method: "GET",
     dataType: "json",
     headers: {
-      "Authorization": "Bearer " + valor1.token 
+      Authorization: "Bearer " + cookieUser.token,
     },
     success: function (response) {
       console.log(response);
@@ -40,7 +40,9 @@ $(document).ready(function () {
         var row = `<tbody class="bg-success enchanted" id="localPlayer">
       <th>${i + 1}</th>
       <td>${user.username}</td>
-      <td><img src="../../../img/items/day.png" alt="" style="width: 30px;"> ${user.maxDays}  ${user.maxDays === 1 ? "Día" : "Días"}</td>
+      <td><img src="../../../img/items/day.png" alt="" style="width: 30px;"> ${
+        user.maxDays
+      }  ${user.maxDays === 1 ? "Día" : "Días"}</td>
 
 
      </tbody>
@@ -49,7 +51,9 @@ $(document).ready(function () {
         var row = `<tbody class=" enchanted">
       <th>${i + 1}</th>
       <td>${user.username}</td>
-      <td> <img src="../../../img/items/day.png" alt="" style="width: 30px;"> ${user.maxDays}  ${user.maxDays === 1 ? "Día" : "Días"}</td>
+      <td> <img src="../../../img/items/day.png" alt="" style="width: 30px;"> ${
+        user.maxDays
+      }  ${user.maxDays === 1 ? "Día" : "Días"}</td>
 
 
      </tbody>

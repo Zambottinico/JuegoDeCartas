@@ -46,7 +46,8 @@ namespace Juego_Sin_Nombre.Bussines.UserBussines.Commands
                         var token = _jwtService.GenerateToken(user.Email,user.Rol);
                         loginResponse.Token = token;
                         loginResponse.Clave = clave;
-                        loginResponse.Username = user.Email;
+                        loginResponse.Email = user.Email;
+                        loginResponse.Username = user.Username;
                         loginResponse.id = user.Id;
 
                         if (user.Rol != null)

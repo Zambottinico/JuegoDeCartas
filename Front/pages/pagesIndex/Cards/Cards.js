@@ -63,7 +63,7 @@ $(document).ready(function () {
     method: "GET",
     dataType: "json",
     headers: {
-      "Authorization": "Bearer " + valor1.token
+      Authorization: "Bearer " + cookieUser.token,
     },
     success: function (response) {
       console.log(response);
@@ -114,11 +114,11 @@ $(document).ready(function () {
         decision2.unlockableCharacter = null;
       }
       // Construir el objeto JSON
-      const valor1 = JSON.parse(Cookies.get("claveSeguridad"));
+      const cookieUser = JSON.parse(Cookies.get("claveSeguridad"));
       var jsonData = {
         typeid: parseInt(typeid),
-        playerId: valor1.id,
-        clave: valor1.clave,
+        playerId: cookieUser.id,
+        clave: cookieUser.clave,
         description: description,
         characterId: parseInt(characterId),
         decision1: decision1,
@@ -135,7 +135,7 @@ $(document).ready(function () {
         contentType: "application/json",
         data: JSON.stringify(jsonData),
         headers: {
-          "Authorization": "Bearer " + valor1.token // Aquí agregas tu token Bearer
+          Authorization: "Bearer " + cookieUser.token, // Aquí agregas tu token Bearer
         },
         success: function (response) {
           console.log(response);
@@ -173,7 +173,7 @@ function llenarSelect(selectElement, data) {
   for (var i = 0; i < data.length; i++) {
     var option = document.createElement("option");
     option.value = data[i].id;
-    option.text = data[i].name + " | " + data[i].cantidadCartas + " cartas" ;
+    option.text = data[i].name + " | " + data[i].cantidadCartas + " cartas";
     select.appendChild(option);
   }
 }

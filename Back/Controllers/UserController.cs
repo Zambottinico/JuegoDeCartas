@@ -67,10 +67,6 @@ namespace Juego_Sin_Nombre.Controllers
                 // Verifica y valida el token de Google
                 var payload = await VerifyGoogleToken(idToken);
                return await _userService.LoginGoogleAsync(payload);
-                // Si el token es válido, puedes autenticar al usuario o crear un nuevo usuario en tu base de datos
-                // Aquí puedes personalizar la lógica para autenticar al usuario en tu sistema
-
-                
             }
             catch (Exception ex)
             {

@@ -63,8 +63,8 @@ namespace Juego_Sin_Nombre.Bussines.UserBussines.Commands
                     await _context.Usuarios.AddAsync(user);
                     await _context.SaveChangesAsync();
                     UserResponseDto userResponse = new UserResponseDto();
-                    userResponse.Username = user.Email;
-
+                    userResponse.Email = user.Email;
+                    userResponse.Username = user.Username;
                     if (userResponse != null)
                     {
 
