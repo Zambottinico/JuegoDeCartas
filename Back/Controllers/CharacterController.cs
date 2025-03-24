@@ -1,7 +1,7 @@
 ﻿using Juego_Sin_Nombre.Dtos;
 
 using MediatR;
-
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static Juego_Sin_Nombre.Bussines.CharacterBussines.Queries.GetCharacterByPlayerId;
 using static Juego_Sin_Nombre.Bussines.CharacterBussines.Queries.GetCharacters;
@@ -29,6 +29,7 @@ namespace Juego_Sin_Nombre.Controllers
 
         [HttpGet]
         [Route("GetCharactersByUserId/{id}")]
+        [Authorize(Policy = "UserOrAdmin")]
         public async Task<List<CharacterResponse>> GetCharacterByUserId(int id)
         {
             return await _mediator.Send(new GetCharacterByPlayerIdCommand { idPlayer = id });

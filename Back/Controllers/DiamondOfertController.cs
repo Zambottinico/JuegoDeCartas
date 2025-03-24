@@ -1,6 +1,7 @@
 ﻿using Juego_Sin_Nombre.Dtos;
 using Juego_Sin_Nombre.Models;
 using Juego_Sin_Nombre.Services.interfacez;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Juego_Sin_Nombre.Controllers
@@ -17,6 +18,7 @@ namespace Juego_Sin_Nombre.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> CreateDiamondOfert([FromBody] DiamondOfertRequest request)
         {
             if (request == null)
@@ -34,6 +36,7 @@ namespace Juego_Sin_Nombre.Controllers
             return CreatedAtAction(nameof(CreateDiamondOfert), new { id = createdOfert.Id }, createdOfert);
         }
         [HttpPut("{id}")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> UpdateDiamondOfert(int id, [FromBody] DiamondOfertRequest request)
         {
             if (request == null)
@@ -62,6 +65,7 @@ namespace Juego_Sin_Nombre.Controllers
             return Ok(ofertas);
         }
         [HttpDelete("{id}")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> DeleteDiamondOfert(int id, [FromBody] UserCredentials request)
         {
             var deleted = await _diamondOfertService.SoftDeleteDiamondOfertAsync(request,id);

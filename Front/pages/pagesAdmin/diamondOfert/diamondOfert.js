@@ -87,6 +87,9 @@ function llenarOferts(data) {
             userId: userId,
             clave: clave
         }),
+        headers: {
+          "Authorization": "Bearer " + valor1.token 
+        },
         success: function(response) {
             alert("Oferta eliminada correctamente");
             location.reload(); 
@@ -140,7 +143,8 @@ function llenarOferts(data) {
     fetch('https://localhost:7116/api/DiamondOfert', {  
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        "Authorization": "Bearer " + valor1.token
       },
       body: JSON.stringify(offerData)
     })
@@ -162,7 +166,8 @@ function llenarOferts(data) {
     fetch(`https://localhost:7116/api/DiamondOfert/`+id, {  
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        "Authorization": "Bearer " + valor1.token
       },
       body: JSON.stringify(offerData)
     })
@@ -178,4 +183,5 @@ function llenarOferts(data) {
       alert('Hubo un error al actualizar la oferta');
     });
   }
+  
   

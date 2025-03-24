@@ -71,6 +71,9 @@ $(document).ready(function () {
       "https://localhost:7116/api/Character/GetCharactersByUserId/" + valor1.id,
     method: "GET",
     dataType: "json",
+    headers: {
+      "Authorization": "Bearer " + valor1.token 
+    },
     success: function (response) {
       showData(response);
     },

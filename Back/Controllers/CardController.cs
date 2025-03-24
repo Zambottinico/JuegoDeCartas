@@ -1,6 +1,7 @@
 ﻿using Juego_Sin_Nombre.Dtos;
 using Juego_Sin_Nombre.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using static Juego_Sin_Nombre.Bussines.CardBussines.PostCard;
@@ -22,6 +23,7 @@ namespace Juego_Sin_Nombre.Controllers
 
         [HttpPost]
         [Route("Post")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<CardResponse> CreateCard([FromBody] PostCardCommand postCardCommand)
         {
             return await _mediator.Send(postCardCommand);
@@ -32,13 +34,6 @@ namespace Juego_Sin_Nombre.Controllers
         public async Task<List<Card>> GetCard()
         {
             return await _mediator.Send(new GetCardsCommand());
-        }
-
-        [HttpGet]
-        [Route("Ping")]
-        public string PingPong()
-        {
-            return "pong";
         }
     }
 }

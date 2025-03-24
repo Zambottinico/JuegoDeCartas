@@ -131,6 +131,9 @@ $(document).ready(function () {
         dataType: "json",
         contentType: "application/json",
         data: JSON.stringify(jsonData),
+        headers: {
+          "Authorization": "Bearer " + valor1.token // Aquí agregas tu token Bearer
+        },
         success: function (response) {
           console.log(response);
           Swal.fire("Exito", "Se a creado la carta con exito", "success");
