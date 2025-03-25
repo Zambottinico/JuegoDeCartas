@@ -5,6 +5,7 @@
         Pending = 1,
         Paid = 2,
         Rejected = 3,
-        Unknown = 4
+        Unknown = 4,
+        Cancelled = 5
     }
 }

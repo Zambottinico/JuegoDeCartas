@@ -4,15 +4,10 @@ $(document).ready(function () {
   const swiperEl = document.querySelectorAll("swiper-container");
 
   function checkScreenSize() {
-
     for (let i = 0; i < swiperEl.length; i++) {
-     
       if (window.innerWidth < 700) {
-        
         swiperEl[i].setAttribute("navigation", "false");
-      }
-      else{
-       
+      } else {
         swiperEl[i].setAttribute("navigation", "true");
       }
     }
@@ -24,11 +19,20 @@ $(document).ready(function () {
   // Ejecutar la función cada vez que se cambia el tamaño de la ventana
   window.addEventListener("resize", checkScreenSize);
   //Cambiar links cartas/acerca de
-  const cookieUser = JSON.parse(Cookies.get("claveSeguridad"));
-  if (cookieUser.rol === "Admin") {
-    $("#NavCards").attr("href", "../Cards/cards.html");
-    $("#NavCards").text("Cartas");
+  let cookieUser = Cookies.get("claveSeguridad");
+
+  if (!cookieUser) {
+      // Redirigir al usuario a la página de inicio de sesión si no está autenticado
+      window.location.href = "../../pagesLogin/login.html";
+  } else {
+      cookieUser = JSON.parse(cookieUser);
+      
+      if (cookieUser.rol === "Admin") {
+          $("#NavCards").attr("href", "Cards/cards.html");
+          $("#NavCards").text("Cartas");
+      }
   }
+  
 
   var jsonData = {
     userid: cookieUser.id,
@@ -99,10 +103,10 @@ $(document).ready(function () {
                 alt="..."
               />
               <div class="card-body">
-                <h5 class="card-title">${oferta.nombre}</h5>
-                <p>${oferta.montoDeDiamantes}</p>
+                <h5 class="card-title enchanted">${oferta.nombre}</h5>
+                <p><img width="20px" src="../../../img/items/diamond.png">${oferta.montoDeDiamantes}</p>
                 <p class="mb-1">$ ${oferta.precioEnPesos}</p>
-                <button class="btn btn-success" onclick="crearPreferencia(${oferta.id})">Obtener</button>
+                <button id="btn-${oferta.id}" class="btn btn-success" onclick="crearPreferencia(${oferta.id})">Obtener</button>
               </div>
             </div>
   `;
@@ -263,6 +267,8 @@ $(document).ready(function () {
 
 function crearPreferencia(id) {
   const cookieUser = JSON.parse(Cookies.get("claveSeguridad"));
+  btnOfertId = document.getElementById("btn-" + id);
+  btnOfertId.disabled = true; 
   requestData = {
     userId: cookieUser.id,
     clave: cookieUser.clave,
@@ -278,7 +284,7 @@ function crearPreferencia(id) {
     },
     success: function (response) {
       console.log(response);
-      console.log("lista de ofertas " + diamodOfertList);
+      
       Swal.fire({
         title: ofert.nombre,
         text: `Pagar ${ofert.precioEnPesos} ARS por ${ofert.montoDeDiamantes} diamantes`,
@@ -293,6 +299,12 @@ function crearPreferencia(id) {
         if (result.isConfirmed) {
           window.location.href = response.initPoint;
         }
+        else{
+          btnOfertId.disabled = false;
+
+          cancelInvoice(response.invoiceId);
+          location.reload();
+        }
       });
     },
     error: function (error) {
@@ -303,6 +315,30 @@ function crearPreferencia(id) {
         title: "¡Error!",
         text: error.responseJSON.details,
       });
+    },
+  });
+}
+
+function cancelInvoice(id) {
+  console.log(id);
+  const cookieUser = JSON.parse(Cookies.get("claveSeguridad"));
+  requestData = {
+    userId: cookieUser.id,
+    clave: cookieUser.clave,
+  };
+  $.ajax({
+    url: "https://localhost:7116/api/MercadoPago/cancelInvoice/" + id, 
+    type: "POST",
+    contentType: "application/json", 
+    data: JSON.stringify(requestData), 
+    headers: {
+      Authorization: "Bearer " + cookieUser.token,
+    },
+    success: function (response) {
+      console.log(response);
+    },
+    error: function (error) {
+      console.error("Error al realizar la compra:", error);
     },
   });
 }

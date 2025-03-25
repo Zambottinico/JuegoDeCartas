@@ -1,4 +1,5 @@
 ﻿using Juego_Sin_Nombre.Dtos;
+using Juego_Sin_Nombre.Models;
 using Juego_Sin_Nombre.Services;
 using MercadoPago.Client.MerchantOrder;
 using MercadoPago.Client.Payment;
@@ -37,16 +38,23 @@ namespace Juego_Sin_Nombre.Controllers
            
 
             // Llamar al servicio para crear la preferencia con el ID de la oferta y las credenciales
-            var preference = await _mercadoPagoService.CrearPreferenciaAsync(diamondOfertId, userCredentials);
+            var response = await _mercadoPagoService.CrearPreferenciaAsync(diamondOfertId, userCredentials);
 
-            if (preference == null)
+            if (response == null)
             {
                 return StatusCode(500, new { message = "No se pudo generar la preferencia de pago." });
             }
 
-            return Ok(new { preferenceId = preference.Id, initPoint = preference.InitPoint });
+            return Ok(new { preferenceId = response.Preference.Id, initPoint = response.Preference.InitPoint,invoiceId = response.InvoiceId });
         }
-
+        [HttpPost("cancelInvoice/{invoiceId}")]
+        [Authorize(Policy = "UserOrAdmin")]
+        public async Task<IActionResult> CancelInvoice(int invoiceId, [FromBody] UserCredentials userCredentials)
+        {
+            Usuario user = await _userService.ValidateCredentialsAsync(userCredentials);
+            await _invoiceService.CancelInvoiceAsync(invoiceId, user);
+            return Ok();
+        }
 
         [HttpPost("webhook")]
         public async Task<IActionResult> Webhook([FromBody] JsonElement payload)

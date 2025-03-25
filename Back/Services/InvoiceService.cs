@@ -37,9 +37,23 @@ namespace Juego_Sin_Nombre.Services
             }
         }
 
+        internal async Task CancelInvoiceAsync(int invoiceId, Usuario user)
+        {
 
+            
+            var invoice = await _context.Invoices.FindAsync(invoiceId);
 
-
-
+            if (invoice == null)
+            {
+                throw new KeyNotFoundException("Invoice not found.");
+            }
+            if (user.Id !=invoice.UsuarioId)
+            {
+                throw new InvalidOperationException("la invoice "+invoiceId+" no le pertenece al usuario "+user.Id);
+            }
+            invoice.Status = InvoiceStatus.Cancelled; 
+            await _context.SaveChangesAsync();
+            return;
+        }
     }
 }

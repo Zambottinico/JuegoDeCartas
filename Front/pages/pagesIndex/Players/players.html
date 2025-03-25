@@ -44,19 +44,28 @@
         background-color: transparent;
       }
       #goToMyPosition {
-        
         position: fixed;
-        bottom: 0;
-        left: 0;
-        
-        padding: 5px;
-        
-        z-index: 9999;
+        bottom: 20px;
+        left: 20px;
+        width: 50px;
+        height: 50px;
+        background-color: #007bff; /* Cambia el color si lo deseas */
+        color: white;
+        border: none;
+        border-radius: 50%; /* Hace que el botón sea redondo */
+        font-size: 24px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      #goToMyPosition:hover {
+        background-color: #0056b3; /* Cambia el color al pasar el cursor */
       }
       #goToMyPosition a {
         text-decoration: none;
       }
-      
     </style>
     <title>Jugadores</title>
   </head>
@@ -96,7 +105,7 @@
       data-bs-placement="left"
       title="Ir a mi posicion"
     >
-      <a class="bg-success p-2 text-white rounded" href="#localPlayer"
+      <a class=" p-2 text-white rounded" href="#localPlayer"
         ><i class="fa fa-location-arrow"></i
       ></a>
     </h1>

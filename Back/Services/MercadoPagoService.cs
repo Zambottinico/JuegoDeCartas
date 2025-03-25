@@ -53,7 +53,9 @@ namespace Juego_Sin_Nombre.Services
             return await client.CreateAsync(request);
         }
 
-        internal async Task<Preference> CrearPreferenciaAsync(int diamondOfertId, UserCredentials userCredentials)
+        
+
+        internal async Task<CreatePreferenceResponse> CrearPreferenciaAsync(int diamondOfertId, UserCredentials userCredentials)
         {
             Usuario user = await _userService.ValidateCredentialsAsync(userCredentials);
 
@@ -85,8 +87,10 @@ namespace Juego_Sin_Nombre.Services
 
             var client = new PreferenceClient();
             Preference preference = await client.CreateAsync(request);
-            
-            return preference;
+            CreatePreferenceResponse response = new CreatePreferenceResponse();
+            response.Preference = preference;
+            response.InvoiceId = invoice.Id;
+            return response;
         }
     }
     }
