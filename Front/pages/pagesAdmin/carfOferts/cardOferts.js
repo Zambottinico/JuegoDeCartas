@@ -9,7 +9,7 @@ if (!cookieUser) {
     cookieUser = JSON.parse(cookieUser);
     
     if (cookieUser.rol === "Admin") {
-        $("#NavCards").attr("href", "Cards/cards.html");
+        $("#NavCards").attr("href", "../../pagesIndex/Cards/cards.html");
         $("#NavCards").text("Cartas");
     }
 }

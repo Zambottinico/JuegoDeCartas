@@ -1,4 +1,6 @@
 ﻿using Juego_Sin_Nombre.Dtos;
+using Juego_Sin_Nombre.Models;
+using Juego_Sin_Nombre.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -13,10 +15,12 @@ namespace Juego_Sin_Nombre.Controllers
     public class GameController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly GameService _gameService;
 
-        public GameController(IMediator mediator)
+        public GameController(IMediator mediator,GameService gameService)
         {
             _mediator = mediator;
+            _gameService = gameService;
         }
 
         [HttpPost]
@@ -34,5 +38,36 @@ namespace Juego_Sin_Nombre.Controllers
              return await _mediator.Send(playGameCommand); 
         }
 
+
+        [HttpPut]
+        [Route("config")]
+        [Authorize(Policy = "AdminOnly")]
+        public async Task<IActionResult> UpdateOrCreateGameConfig([FromBody] GameConfig gameConfig)
+        {
+            if (gameConfig == null)
+            {
+                return BadRequest("Invalid GameConfig data.");
+            }
+
+            var updatedConfig = await _gameService.UpdateOrCreateGameConfigAsync(gameConfig);
+
+            return Ok(updatedConfig);
+        }
+
+        [HttpGet]
+        [Route("config")]
+        public async Task<IActionResult> GetGameConfig()
+        {
+            try
+            {
+                var config = await _gameService.GetGameConfigAsync();
+                return Ok(config);
+            }
+            catch (InvalidOperationException ex)
+            {
+                
+                return NotFound(ex.Message);
+            }
+        }
     }
 }

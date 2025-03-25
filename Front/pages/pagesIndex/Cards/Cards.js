@@ -58,6 +58,19 @@ $(document).ready(function () {
     debugger: true,
   });
 
+  let cookieUser = Cookies.get("claveSeguridad");
+
+  if (!cookieUser) {
+    // Redirigir al usuario a la página de inicio de sesión si no está autenticado
+    window.location.href = "../../pagesLogin/login.html";
+  } else {
+    cookieUser = JSON.parse(cookieUser);
+
+    if (cookieUser.rol === "Admin") {
+      $("#NavCards").attr("href", "Cards/cards.html");
+      $("#NavCards").text("Cartas");
+    }
+  }
   $.ajax({
     url: "https://localhost:7116/api/Character/GetCharacters",
     method: "GET",

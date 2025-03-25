@@ -29,6 +29,7 @@ public partial class ApplicationContext : DbContext
     public virtual DbSet<Models.Type> Types { get; set; }
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
+    public virtual DbSet<GameConfig> GameConfig { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseNpgsql("Name=ConnectionString");

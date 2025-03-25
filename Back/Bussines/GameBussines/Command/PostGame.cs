@@ -43,7 +43,7 @@ namespace Juego_Sin_Nombre.Bussines.GameBussines.Command
                     if (gameSaved!=null && gameSaved.Gamestate!= "FINISHED")
                     {
                         
-                        return gameService.MapperGameToGameResponse(gameSaved,false);
+                        return await gameService.MapperGameToGameResponseAsync(gameSaved,false);
                     }
                     else
                     {
@@ -52,7 +52,7 @@ namespace Juego_Sin_Nombre.Bussines.GameBussines.Command
                         await _context.AddAsync(game);
                         await _context.SaveChangesAsync();
 
-                        return gameService.MapperGameToGameResponse(game, false);
+                        return await gameService.MapperGameToGameResponseAsync(game, false);
                     }
                 }
                 catch (Exception ex)

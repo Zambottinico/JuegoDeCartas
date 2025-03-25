@@ -28,7 +28,7 @@ $(document).ready(function () {
       cookieUser = JSON.parse(cookieUser);
       
       if (cookieUser.rol === "Admin") {
-          $("#NavCards").attr("href", "Cards/cards.html");
+          $("#NavCards").attr("href", "../Cards/cards.html");
           $("#NavCards").text("Cartas");
       }
   }
@@ -79,6 +79,21 @@ $(document).ready(function () {
         console.log(error);
       },
     });
+  });
+  $.ajax({
+    url: "https://localhost:7116/api/Game/config",
+    type: "GET",
+    headers: {
+      Authorization: "Bearer " + cookieUser.token,
+    },
+    success: function (response) {
+      // Rellenar los campos con los datos obtenidos
+      $("#rechargeLives").append(response.lifeRechargePrice);
+    },
+    error: function (xhr, status, error) {
+      alert("Hubo un error al obtener los datos.");
+      console.error(error);
+    },
   });
 
   function llenarOferts(data) {

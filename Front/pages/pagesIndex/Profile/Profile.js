@@ -9,7 +9,7 @@ $(document).ready(function () {
     cookieUser = JSON.parse(cookieUser);
 
     if (cookieUser.rol === "Admin") {
-      $("#NavCards").attr("href", "Cards/cards.html");
+      $("#NavCards").attr("href", "../Cards/cards.html");
       $("#NavCards").text("Cartas");
     }
   }
@@ -49,7 +49,7 @@ $(document).ready(function () {
   });
 
   function showUserInfo(data) {
-    console.log(data);
+    
     const pCoins = $("#coins");
     pCoins.append(
       ` <img src="../../../img/items/gold.png" alt="" style="width: 35px;"> ${data.gold} <img src="../../../img/items/diamond.png" alt="" style="width: 30px;"> ${data.diamonds}`
@@ -58,23 +58,40 @@ $(document).ready(function () {
     pLifes.append(`${data.lives} de ${data.maxLives} Vidas`);
 
     if (data.maxLives != data.lives) {
-      const pNextLive = $("#nextLive");
-      const date = new Date(data.lastLifeRecharge); // Convierte el string en un objeto Date
-      // Sumar 30 minutos a la fecha
-      date.setMinutes(date.getMinutes() + 30);
-      // Si hay segundos, sumar un minuto
-      if (date.getSeconds() !== 0) {
-        date.setMinutes(date.getMinutes() + 1); // Suma 1 minuto
-      }
+      $.ajax({
+        url: "https://localhost:7116/api/Game/config",
+        method: "GET",
+        dataType: "json",
+        headers: {
+          Authorization: "Bearer " + cookieUser.token,
+        },
+        success: function (config) {
+          const pNextLive = $("#nextLive");
+          const date = new Date(data.lastLifeRecharge); // Convierte el string en un objeto Date
+          console.log(date);
+          date.setMinutes(date.getMinutes() + config.minutesToEarnLife);
+          // Si hay segundos, sumar un minuto
+          if (date.getSeconds() !== 0) {
+            date.setMinutes(date.getMinutes() + 1); // Suma 1 minuto
+          }
+    
+          // Formato para mostrar solo la hora y los minutos
+          const formattedTime = date.toLocaleTimeString("es-AR", {
+            hour: "2-digit", // Hora en formato de 2 dígitos
+            minute: "2-digit", // Minutos en formato de 2 dígitos
+          });
+    
+          // Muestra solo la hora formateada
+          pNextLive.append(formattedTime + " obtienes una vida");
 
-      // Formato para mostrar solo la hora y los minutos
-      const formattedTime = date.toLocaleTimeString("es-AR", {
-        hour: "2-digit", // Hora en formato de 2 dígitos
-        minute: "2-digit", // Minutos en formato de 2 dígitos
+        },
+        error: function (error) {
+          console.log(error);
+        },
       });
 
-      // Muestra solo la hora formateada
-      pNextLive.append(formattedTime + " obtienes una vida");
+
+
     }
   }
 

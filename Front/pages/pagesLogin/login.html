@@ -31,7 +31,7 @@
     <div class="container papiro paper-left mt-5">
       <form id="form">
         <div class="mb-3">
-          <label for="username" class="form-label">Usuario</label>
+          <label for="username" class="form-label">Email</label>
           <input
             type="text"
             class="form-control"
@@ -53,7 +53,9 @@
           />
         </div>
         <div class="mb-3">
-          <button type="submit" class="btn btn-primary">Ingresar</button>
+          <button type="submit" class="btn btn-primary" id="login">
+            Ingresar
+          </button>
           <br />
           <a href="../pagesLogin/crearCuenta.html">No tengo cuenta</a>
         </div>
@@ -72,6 +74,11 @@
         $("#form").validate();
 
         $("#form").submit(function (event) {
+          btn = document.getElementById("login");
+          btn.disabled = true;
+          btn.innerHTML = `<div class="spinner-border spinner-border-sm" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                 </div> Cargando...`;
           event.preventDefault();
           if (!$("#form").valid()) return;
 
@@ -94,6 +101,8 @@
             },
             error: function (error) {
               console.error("Error en login:", error.responseText);
+              btn.disabled = false;
+              btn.innerHTML = "Iniciar sesión";
             },
           });
         });

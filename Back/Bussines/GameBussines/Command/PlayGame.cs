@@ -53,7 +53,7 @@ namespace Juego_Sin_Nombre.Bussines.GameBussines.Command
                         Game game1 = await gameService.CreateGame(request.Userid);
                         await _context.AddAsync(game1);
                         await _context.SaveChangesAsync();
-                        return gameService.MapperGameToGameResponse(game1,false);
+                        return await gameService.MapperGameToGameResponseAsync(game1,false);
                     }
                 }
                 catch (Exception ex)

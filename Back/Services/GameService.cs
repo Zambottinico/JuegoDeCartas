@@ -55,7 +55,7 @@ namespace Juego_Sin_Nombre.Services
             gameResponse.LastCard = cardResponse;
             return gameResponse;
         }
-        public GameResponse MapperGameToGameResponse(Game game, Boolean characterUnlocked)
+        public async Task<GameResponse> MapperGameToGameResponseAsync(Game game, Boolean characterUnlocked)
         {
             
 
@@ -72,32 +72,32 @@ namespace Juego_Sin_Nombre.Services
             gameResponse.Gamestate = game.Gamestate;
             gameResponse.Day = (int)game.Day;
 
-            Usuario user = _context.Usuarios.FirstOrDefault(u => u.Id == game.Userid);
+            Usuario user = await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == game.Userid);
             gameResponse.UserName = user.Email;
             gameResponse.Gold = user.Gold;
             gameResponse.Diamonds = user.Diamonds;
             gameResponse.Lives = user.Lives;
 
-            UpdateLives(user);
-            _context.SaveChanges();
+            await UpdateLivesAsync(user);
+            await _context.SaveChangesAsync();
 
             if (user.Lives < 1)
             {
                 throw new ArgumentException("No tiene suficientes vidas para jugar");
             }
 
-            Card card = _context.Cards.Include(u => u.Character).FirstOrDefault(c => c.Id == game.Lastcardid);
+            Card card = await _context.Cards.Include(u => u.Character).FirstOrDefaultAsync(c => c.Id == game.Lastcardid);
             CardResponse cardResponse = new CardResponse();
             cardResponse.Typeid = (int)card.Typeid;
             cardResponse.Character = card.Character.Name;
             cardResponse.Description = card.Description;
 
-            Decision decision = _context.Decisions.FirstOrDefault(d => d.Id == card.Decision1);
+            Decision decision = await _context.Decisions.FirstOrDefaultAsync(d => d.Id == card.Decision1);
             PostDecisionDto decisionResponse1 = new PostDecisionDto();
             decisionResponse1.Convert(decision);
             cardResponse.Decision1 = decisionResponse1;
 
-            Decision decision2 = _context.Decisions.FirstOrDefault(d => d.Id == card.Decision2);
+            Decision decision2 = await _context.Decisions.FirstOrDefaultAsync(d => d.Id == card.Decision2);
             PostDecisionDto decisionResponse2 = new PostDecisionDto();
             decisionResponse2.Convert(decision2);
             cardResponse.Decision2 = decisionResponse2;
@@ -115,7 +115,7 @@ namespace Juego_Sin_Nombre.Services
                 throw new Exception("El Juego esta acabado");
             }
             Usuario user = await _context.Usuarios.Include(u=>u.Characters).FirstOrDefaultAsync(u => u.Id == game.Userid);
-            UpdateLives(user);
+            await UpdateLivesAsync(user);
             _context.SaveChanges();
 
             if (user.Lives < 1)
@@ -176,11 +176,19 @@ namespace Juego_Sin_Nombre.Services
             }
             else
             {
+                var config = await this.GetGameConfigAsync();
                 game.Day += 1;
                 //TODO
                 user.Gold += 1;
+                //El dia es múltiplo de 50 gana 1 diamante
+                if (game.Day % config.DaysToEarnDiamond == 0)
+                {
+                    user.Diamonds++;
+                    await _context.SaveChangesAsync();
+                }
                 if (game.Day > user.Maxdays ||user.Maxdays==null)
                 {
+                    
                     user.Maxdays = game.Day;
                     await _context.SaveChangesAsync();
                 }
@@ -224,7 +232,7 @@ namespace Juego_Sin_Nombre.Services
         {
             Usuario user = await _context.Usuarios.Include(u => u.Characters).FirstOrDefaultAsync(u => u.Id == playerId);
 
-            UpdateLives(user);
+            await UpdateLivesAsync(user);
             _context.SaveChanges();
             if (user.Lives < 1)
             {
@@ -260,10 +268,11 @@ namespace Juego_Sin_Nombre.Services
         }
 
 
-        private const int LifeRechargeTimeMinutes = 30;
+       
 
-        public void UpdateLives(Usuario player)
+        public async Task UpdateLivesAsync(Usuario player)
         {
+            var config = await this.GetGameConfigAsync();
             if (player.Lives < 0)
             {
                 player.Lives = 0;  
@@ -283,7 +292,7 @@ namespace Juego_Sin_Nombre.Services
             }
 
             TimeSpan timeElapsed = DateTime.UtcNow - player.LastLifeRecharge.Value;
-            int livesToAdd = (int)(timeElapsed.TotalMinutes / LifeRechargeTimeMinutes);
+            int livesToAdd = (int)(timeElapsed.TotalMinutes / config.MinutesToEarnLife);
 
             if (livesToAdd > 0)
             {
@@ -319,6 +328,42 @@ namespace Juego_Sin_Nombre.Services
             usuario.Lives = usuario.MaxLives;
             _context.SaveChanges();
             return;
+        }
+
+
+        public async Task<GameConfig> UpdateOrCreateGameConfigAsync(GameConfig gameConfig)
+        {
+            // Verifica si existe un GameConfig
+            var existingConfig = await _context.GameConfig.FirstOrDefaultAsync();
+            if (existingConfig != null)
+            {
+                // Si existe, actualiza el registro
+                existingConfig.LifeRechargePrice = gameConfig.LifeRechargePrice;
+                existingConfig.DaysToEarnDiamond = gameConfig.DaysToEarnDiamond;
+                existingConfig.MinutesToEarnLife = gameConfig.MinutesToEarnLife;
+
+                _context.GameConfig.Update(existingConfig);
+            }
+            else
+            {
+                // Si no existe, crea uno nuevo
+                _context.GameConfig.Add(gameConfig);
+            }
+
+            // Guarda los cambios
+            await _context.SaveChangesAsync();
+
+            return gameConfig;
+        }
+
+        public async Task<GameConfig> GetGameConfigAsync()
+        {
+            var config = await _context.GameConfig.FirstOrDefaultAsync();
+            if (config == null)
+            {
+                throw new InvalidOperationException("Game configuration not found.");
+            }
+            return config;
         }
     }
 }

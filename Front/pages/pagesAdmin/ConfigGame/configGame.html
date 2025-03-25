@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
+    <link rel="stylesheet" href="../../../style.css" />
+    <link rel="stylesheet" href="../diamondOfert/diamondOfert.css" />
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <link
+      rel="shortcut icon"
+      href="../../../img/favicon.ico"
+      type="image/x-icon"
+    />
+    <title>Ofertas de Diamantes</title>
+  </head>
+  <body class="bgPattern">
+    <nav class="navbar navbar-expand bg-dark text-white shadow">
+      <div class="container-fluid d-flex justify-content-center">
+        <div class="row">
+          <div class="col active">
+            <a href="../../pagesIndex/index.html" class="nav-link active"
+              >Juego</a
+            >
+          </div>
+          <div class="col">
+            <a
+              href="../../pagesIndex/Players/players.html"
+              class="nav-link active"
+              >Jugadores</a
+            >
+          </div>
+          <div class="col">
+            <a
+              href="../../pagesIndex/Profile/profile.html"
+              class="nav-link active"
+              >Perfil</a
+            >
+          </div>
+          <div class="col">
+            <a
+              href="../../pagesIndex/Tienda/tienda.html"
+              class="nav-link active"
+              >Tienda</a
+            >
+          </div>
+          <div class="col-auto">
+            <a
+              href="../../pagesIndex/Acerca de/AcercaDe.html"
+              class="nav-link active"
+              id="NavCards"
+              >Acerca de</a
+            >
+          </div>
+        </div>
+      </div>
+    </nav>
+    <nav class="navbar navbar-expand bg-dark text-white shadow">
+      <div class="container-fluid d-flex justify-content-center">
+        <div class="row">
+          <div class="col active">
+            <a href="../carfOferts/cardsOferts.html" class="nav-link active"
+              >ofertas</a
+            >
+          </div>
+          <div class="col active">
+            <a href="../diamondOfert/diamondOfert.html" class="nav-link active">Diamantes</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="container mt-5 bg-white p-3 rounded shadow">
+      <div class="row">
+        <h1>Configuracion</h1>
+        <form id="lifeRechargeForm">
+          <div class="mb-3">
+            <label for="id" class="form-label">ID</label>
+            <input
+              type="number"
+              class="form-control"
+              id="id"
+              name="id"
+              value="0"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="lifeRechargePrice" class="form-label"
+              >Precio de Recarga de Vida</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              id="lifeRechargePrice"
+              name="lifeRechargePrice"
+              value="0"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="daysToEarnDiamond" class="form-label"
+              >Días para Ganar Diamantes</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              id="daysToEarnDiamond"
+              name="daysToEarnDiamond"
+              value="0"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="minutesToEarnLife" class="form-label"
+              >Minutos para Ganar Vida</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              id="minutesToEarnLife"
+              name="minutesToEarnLife"
+              value="0"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-primary">Actualizar</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        let cookieUser = Cookies.get("claveSeguridad");
+
+        if (!cookieUser) {
+          // Redirigir al usuario a la página de inicio de sesión si no está autenticado
+          window.location.href = "../../pagesLogin/login.html";
+        } else {
+          cookieUser = JSON.parse(cookieUser);
+
+          if (cookieUser.rol === "Admin") {
+            $("#NavCards").attr("href", "../../pagesIndex/Cards/cards.html");
+            $("#NavCards").text("Cartas");
+          }
+        }
+
+        // Obtener los datos de la API y rellenar el formulario
+        $.ajax({
+          url: "https://localhost:7116/api/Game/config",
+          type: "GET",
+          headers: {
+            Authorization: "Bearer " + cookieUser.token,
+          },
+          success: function (response) {
+            // Rellenar los campos con los datos obtenidos
+            $("#id").val(response.id);
+            $("#lifeRechargePrice").val(response.lifeRechargePrice);
+            $("#daysToEarnDiamond").val(response.daysToEarnDiamond);
+            $("#minutesToEarnLife").val(response.minutesToEarnLife);
+          },
+          error: function (xhr, status, error) {
+            alert("Hubo un error al obtener los datos.");
+            console.error(error);
+          },
+        });
+
+        // Enviar los datos del formulario al hacer submit
+        $("#lifeRechargeForm").on("submit", function (event) {
+          event.preventDefault();
+
+          // Obtener los valores del formulario
+          const formData = {
+            id: $("#id").val(),
+            lifeRechargePrice: $("#lifeRechargePrice").val(),
+            daysToEarnDiamond: $("#daysToEarnDiamond").val(),
+            minutesToEarnLife: $("#minutesToEarnLife").val(),
+          };
+
+          $.ajax({
+            url: "https://localhost:7116/api/Game/config",
+            type: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify(formData),
+            headers: {
+              Authorization: "Bearer " + cookieUser.token,
+            },
+            success: function (response) {
+              alert("Datos actualizados correctamente.");
+              console.log(response);
+            },
+            error: function (xhr, status, error) {
+              alert("Hubo un error al actualizar los datos.");
+              console.error(error);
+            },
+          });
+        });
+      });
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
