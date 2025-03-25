@@ -183,9 +183,11 @@ body {
 @media (max-width: 380px) {
   #decision2 {
     padding: 0px;
+    font-size: 20px;
   }
   #decision1 {
     padding: 0px;
+    font-size: 20px;
   }
 }
 .logo {

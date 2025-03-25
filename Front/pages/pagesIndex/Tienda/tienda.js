@@ -1,26 +1,28 @@
-//ajustar tamaño del slider
-const swiperEl = document.querySelector("swiper-container");
-
-function checkScreenSize() {
-  if (window.innerWidth < 700) {
-    swiperEl.setAttribute("slides-per-view", "1");
-  } else if (window.innerWidth < 920) {
-    swiperEl.setAttribute("slides-per-view", "2");
-  } else if (window.innerWidth < 1400) {
-    swiperEl.setAttribute("slides-per-view", "3");
-  } else {
-    swiperEl.setAttribute("slides-per-view", "4");
-  }
-}
-
-// Ejecutar la función cuando la página se carga
-window.addEventListener("load", checkScreenSize);
-
-// Ejecutar la función cada vez que se cambia el tamaño de la ventana
-window.addEventListener("resize", checkScreenSize);
-
 let diamodOfertList = [];
 $(document).ready(function () {
+  //ajustar tamaño del slider
+  const swiperEl = document.querySelectorAll("swiper-container");
+
+  function checkScreenSize() {
+
+    for (let i = 0; i < swiperEl.length; i++) {
+     
+      if (window.innerWidth < 700) {
+        
+        swiperEl[i].setAttribute("navigation", "false");
+      }
+      else{
+       
+        swiperEl[i].setAttribute("navigation", "true");
+      }
+    }
+  }
+
+  // Ejecutar la función cuando la página se carga
+  window.addEventListener("load", checkScreenSize);
+
+  // Ejecutar la función cada vez que se cambia el tamaño de la ventana
+  window.addEventListener("resize", checkScreenSize);
   //Cambiar links cartas/acerca de
   const cookieUser = JSON.parse(Cookies.get("claveSeguridad"));
   if (cookieUser.rol === "Admin") {
@@ -88,8 +90,6 @@ $(document).ready(function () {
       var ofertaDiv = document.createElement("swiper-slide");
       ofertaDiv.classList.add("d-flex", "justify-content-center");
 
-      
-
       ofertaDiv.innerHTML = `
             <div class="card" style="width: 18rem">
               <img
@@ -148,13 +148,16 @@ $(document).ready(function () {
       Authorization: "Bearer " + cookieUser.token,
     },
     success: function (response) {
-      const content = $("#cardOferts");
-      if (response.length > 0) {
-        content.append(
-          ` <h2 style="font-size: 50px;" class="enchanted">Cartas</h2>`
-        );
-      }
+      var content = document.getElementById("cardOferts");
+      //if (response.length > 0) {
+      //  content.append(
+      //    ` <h2 style="font-size: 50px;" class="enchanted">Cartas</h2>`
+      // );
+      // }
       for (let i = 0; i < response.length; i++) {
+        if (response.length > 0) {
+          $("#ofertCardsTitle").text("Cartas");
+        }
         let price =
           response[i].diamondPrice > 0
             ? response[i].diamondPrice
@@ -162,17 +165,19 @@ $(document).ready(function () {
         let currencyImage =
           response[i].diamondPrice > 0 ? "diamond.png" : "gold.png";
 
-        var row = `
-        <div class="col-md-2 col-sm-4">
-          <div class="d-flex flex-column align-items-center">
-            <!-- Imagen en la parte superior -->
-            <img
+        // Crear el contenedor de la oferta
+        var ofertaDiv = document.createElement("swiper-slide");
+        ofertaDiv.classList.add("d-flex", "justify-content-center");
+
+        ofertaDiv.innerHTML = `
+            <div class="card" style="width: 18rem">
+              <img
               src="../../../img/${response[i].characterName}.png"
               alt="Imagen del personaje ${response[i].characterName}"
               class="img-fluid card-shadow cardImage"
             />
-            <!-- Botón en la parte inferior -->
-            <button class="btn-ofertCard w-100 d-flex justify-content-center align-items-center mt-2" 
+              <div class="card-body">
+                 <button class="btn-ofertCard w-100 d-flex justify-content-center align-items-center mt-2" 
                     data-id="${response[i].id}" 
                     data-charactername="${response[i].characterName}" 
                     data-goldprice="${response[i].goldPrice}" 
@@ -186,10 +191,11 @@ $(document).ready(function () {
               />
               ${price}
             </button>
-          </div>
-        </div>
-      `;
-        content.append(row);
+              </div>
+            </div>
+  `;
+        // Agregar al contenedor principal
+        content.appendChild(ofertaDiv);
       }
 
       // Agregar el event listener después de cargar los botones en el DOM

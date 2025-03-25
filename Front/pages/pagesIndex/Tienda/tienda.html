@@ -63,7 +63,9 @@
       </div>
     </nav>
     <div class="container mt-5 papiro2 paper-left">
-      <h1 id="title" class="enchanted h1">Tienda</h1>
+      <h1 id="title" class="enchanted h1" style="font-size: 50px">
+        <i class="fas fa-shopping-cart me-1"></i> Tienda
+      </h1>
       <div class="row">
         <p class="enchanted m-0" id="lives">
           <img src="../../../img/items/vida.png" alt="" style="width: 30px" />
@@ -74,8 +76,8 @@
         <p class="enchanted" id="coins"></p>
       </div>
 
-      <section id="cardOfertsSection" class="container-fluid mt-5">
-        <h1 class="text-center pb-5 enchanted" style="font-size: 50px">
+      <section id="cardOfertsSection" class="container-fluid">
+        <h1 class="text-center pb-2 enchanted" style="font-size: 50px">
           Paquetes de Diamantes
         </h1>
         <swiper-container
@@ -88,33 +90,17 @@
           grab-cursor="true"
           keyboard="true"
           initial-slide="2"
-          loop="true"
         >
-          <swiper-slide class="d-flex justify-content-center">
-            <div class="card" style="width: 18rem">
-              <img
-                src="../../../img/items/vida.png"
-                class="card-img-top img-fluid"
-                width="100px"
-                alt="..."
-              />
-              <div class="card-body">
-                <h5 class="card-title">DreamDuckVevo</h5>
-                <p class="card-text">Contenido y videos de minecraft</p>
-                <a href="#" class="btn">Visitar</a>
-              </div>
-            </div>
-          </swiper-slide>
         </swiper-container>
       </section>
-      <div class="row enchanted">
+
+      <div class="row enchanted mt-4 d-flex justify-content-center">
+        <h2 class="text-center pb-2 enchanted" style="font-size: 50px">
+          Utiles
+        </h2>
         <div class="col-auto">
-          <div class="border p-2">
-            <img
-              src="../../../img/items/vida.png"
-              alt=""
-              style="width: 100px"
-            />
+          <div class="border p-2" style="width: 18rem">
+            <img src="../../../img/items/vida.png" alt="" class="img-fluid" />
             <p>Rellenar vidas</p>
             <button id="rechargeLives" class="w-100">
               <img
@@ -126,27 +112,28 @@
             </button>
           </div>
         </div>
-        <div class="col-auto">
-          <div class="border p-2">
-            <img
-              src="../../../img/items/vida.png"
-              alt=""
-              style="width: 100px"
-            />
-            <p>Aumentar vida maxima</p>
-            <button class="w-100">
-              <img
-                src="../../../img/items/gold.png"
-                style="width: 30px"
-                alt=""
-              />
-              5000
-            </button>
-          </div>
-        </div>
       </div>
 
-      <div class="row" id="cardOferts"></div>
+      <section id="cardOfertsSection" class="container-fluid">
+        <h1
+          id="ofertCardsTitle"
+          class="text-center pb-2 enchanted"
+          style="font-size: 50px"
+        ></h1>
+        <swiper-container
+          class="swiper-container mySwiper d-flex justify-content-center"
+          id="cardOferts"
+          pagination="true"
+          pagination-clickable="true"
+          centered-slides="true"
+          space-between="10"
+          grab-cursor="true"
+          keyboard="true"
+          initial-slide="2"
+          
+        >
+        </swiper-container>
+      </section>
     </div>
 
     <script
