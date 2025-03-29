@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
+    <link rel="stylesheet" href="../../../style.css" />
+    <style>
+      .papiro2 {
+        background-color: #f2eeea; /* Color del pergamino */
+        padding: 1.25rem;
+        border: 1px solid #c0c0c0; /* Borde del pergamino */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Sombra del pergamino */
+        font-family: Georgia, "Times New Roman", Times, serif; /* Fuente similar a la de un pergamino */
+        font-size: 1.125rem;
+        max-width: 50rem; /* Ancho máximo del pergamino */
+        text-align: center;
+        line-height: 1.5;
+      }
+    </style>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <link
+      rel="shortcut icon"
+      href="../../../img/favicon.ico"
+      type="image/x-icon"
+    />
+    <title>Perfil</title>
+  </head>
+  <body class="bgPattern">
+    <nav class="navbar navbar-expand bg-dark text-white shadow">
+      <div class="container-fluid d-flex justify-content-center">
+        <div class="row">
+          <div class="col active">
+            <a href="../../pagesIndex/index.html" class="nav-link active"
+              >Juego</a
+            >
+          </div>
+          <div class="col">
+            <a
+              href="../../pagesIndex/Players/players.html"
+              class="nav-link active"
+              >Jugadores</a
+            >
+          </div>
+          <div class="col">
+            <a
+              href="../../pagesIndex/Profile/profile.html"
+              class="nav-link active"
+              >Perfil</a
+            >
+          </div>
+          <div class="col">
+            <a
+              href="../../pagesIndex/Tienda/tienda.html"
+              class="nav-link active"
+              >Tienda</a
+            >
+          </div>
+          <div class="col-auto">
+            <a
+              href="../../pagesIndex/Acerca de/AcercaDe.html"
+              class="nav-link active"
+              id="NavCards"
+              >Acerca de</a
+            >
+          </div>
+        </div>
+      </div>
+    </nav>
+    <nav class="navbar navbar-expand bg-dark text-white shadow">
+      <div class="container-fluid d-flex justify-content-center">
+        <div class="row">
+          <div class="col active lined-bottom">
+            <a href="../carfOferts/cardsOferts.html" class="nav-link active"
+              >ofertas</a
+            >
+          </div>
+          <div class="col active">
+            <a href="../diamondOfert/diamondOfert.html" class="nav-link active"
+              >Diamantes</a
+            >
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-auto papiro2 paper-left">
+          <h1>Ofertas</h1>
+          <div id="cardOferts"></div>
+        </div>
+        <div class="col papiro2 mx-2">
+          <form id="form">
+            <div class="row">
+              <label class="form-label">Id de la oferta</label>
+              <input
+                type="text"
+                class="form-control"
+                name="ofertId"
+                id="ofertId"
+                readonly
+                disabled
+              />
+            </div>
+            <div class="row">
+              <div class="mb-3">
+                <label class="form-label">Codigo</label>
+                <input
+                  type="text"
+                  name="codigo"
+                  id="codigo"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <label for="" class="form-label">Gold Price</label>
+                <input
+                  type="number"
+                  name="goldPrice"
+                  id="goldPrice"
+                  class="form-control"
+                  value="0"
+                  min="0"
+                />
+              </div>
+              <div class="col">
+                <label for="" class="form-label">Diamond Price</label>
+                <input
+                  type="number"
+                  name="diamondPrice"
+                  id="diamondPrice"
+                  class="form-control"
+                  value="0"
+                  min="0"
+                />
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col">
+                <input
+                  type="button"
+                  value="Cancelar"
+                  id="cancel"
+                  class="btn btn-danger w-100"
+                />
+              </div>
+              <div class="col">
+                <input
+                  type="button"
+                  value="Crear Oferta"
+                  id="create"
+                  class="btn btn-success w-100"
+                />
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script src="cupones.js"></script>
+  </body>
+</html>

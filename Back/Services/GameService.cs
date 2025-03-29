@@ -280,18 +280,18 @@ namespace Juego_Sin_Nombre.Services
 
             if (player.Lives >= player.MaxLives) {
 
-                player.LastLifeRecharge = DateTime.UtcNow;
+                player.LastLifeRecharge = DateTime.Now;
                 return; // No necesita más vidas
             } 
             
 
             if (player.LastLifeRecharge == null)
             {
-                player.LastLifeRecharge = DateTime.UtcNow;
+                player.LastLifeRecharge = DateTime.Now;
                 return;
             }
 
-            TimeSpan timeElapsed = DateTime.UtcNow - player.LastLifeRecharge.Value;
+            TimeSpan timeElapsed = DateTime.Now - player.LastLifeRecharge.Value;
             int livesToAdd = (int)(timeElapsed.TotalMinutes / config.MinutesToEarnLife);
 
             if (livesToAdd > 0)
@@ -304,7 +304,7 @@ namespace Juego_Sin_Nombre.Services
                     player.Lives = player.MaxLives;
                 }
 
-                player.LastLifeRecharge = DateTime.UtcNow; // Reiniciar el tiempo de regeneración
+                player.LastLifeRecharge = DateTime.Now; // Reiniciar el tiempo de regeneración
             }
         }
 
@@ -320,11 +320,12 @@ namespace Juego_Sin_Nombre.Services
             {
                 throw new InvalidOperationException("Ya tienes la vida al maximo");
             }
-            if (usuario.Gold<1000)
+            var existingConfig = await _context.GameConfig.FirstOrDefaultAsync();
+            if (usuario.Gold<existingConfig.LifeRechargePrice)
             {
                 throw new InvalidOperationException("No tienes suficiente oro para realizar la compra");
             }
-            usuario.Gold = usuario.Gold - 1000;
+            usuario.Gold = usuario.Gold - existingConfig.LifeRechargePrice;
             usuario.Lives = usuario.MaxLives;
             _context.SaveChanges();
             return;
@@ -365,5 +366,86 @@ namespace Juego_Sin_Nombre.Services
             }
             return config;
         }
+        public async Task<Cupon> CrearCupon(CrearCuponRequest request)
+        {
+            var cupon = new Cupon
+            {
+                NumeroDiamantes = request.NumeroDiamantes,
+                NumeroOro = request.NumeroOro,
+                Codigo = request.Codigo,
+                IsDeleted = false
+                
+            };
+
+            _context.Cupones.Add(cupon); 
+            await _context.SaveChangesAsync(); 
+
+            return cupon; 
+        }
+
+        internal async Task<CanjearCuponResponse> CanjearCupon(string codigo, Usuario usuario)
+        {
+            Cupon cupon =await _context.Cupones.Include(c => c.Players).Where(c=>c.IsDeleted==false).FirstOrDefaultAsync(c=>c.Codigo==codigo);
+            if (cupon==null)
+            {
+                return new CanjearCuponResponse
+                {
+                    Codigo = codigo,
+                    message = "el cupón no existe o ya no es valido",
+                    Ok = false,
+                    NumeroDiamantes = 0,
+                    NumeroOro = 0
+                };
+            }
+            if (cupon.Players.Contains(usuario))
+            {
+                return new CanjearCuponResponse
+                {
+                    Codigo = codigo,
+                    message = "No se puede canjear el mismo cupón 2 veces",
+                    Ok = false,
+                    NumeroDiamantes = 0,
+                    NumeroOro = 0
+                }; 
+            }
+            usuario.Diamonds = usuario.Diamonds + cupon.NumeroDiamantes;
+            usuario.Gold = usuario.Gold + cupon.NumeroOro;
+            cupon.Players.Add(usuario);
+            await _context.SaveChangesAsync();
+            return new CanjearCuponResponse
+            {
+                Codigo=codigo,
+                message="Cupón canjeado con éxito",
+                Ok=true,
+                NumeroDiamantes=cupon.NumeroDiamantes,
+                NumeroOro=cupon.NumeroOro
+
+
+            };
+        }
+
+        internal async Task updateCupon(Cupon request)
+        {
+            
+            var cupon = await _context.Cupones.FirstOrDefaultAsync(c => c.Id == request.Id);
+
+            if (cupon == null)
+            {
+                throw new Exception("Cupón no encontrado");
+            }
+            cupon.NumeroDiamantes = request.NumeroDiamantes;
+            cupon.NumeroOro = request.NumeroOro;
+            cupon.Codigo = request.Codigo;
+            cupon.IsDeleted = request.IsDeleted;
+
+            // Guardar cambios
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<Cupon>> GetAllCupons()
+        {
+            return await _context.Cupones.ToListAsync();
+        }
+
     }
 }

@@ -49,7 +49,7 @@ $(document).ready(function () {
   });
 
   function showUserInfo(data) {
-    
+    console.log(data);
     const pCoins = $("#coins");
     pCoins.append(
       ` <img src="../../../img/items/gold.png" alt="" style="width: 35px;"> ${data.gold} <img src="../../../img/items/diamond.png" alt="" style="width: 30px;"> ${data.diamonds}`
@@ -67,31 +67,36 @@ $(document).ready(function () {
         },
         success: function (config) {
           const pNextLive = $("#nextLive");
-          const date = new Date(data.lastLifeRecharge); // Convierte el string en un objeto Date
-          console.log(date);
-          date.setMinutes(date.getMinutes() + config.minutesToEarnLife);
+          const dateUtc = new Date(data.lastLifeRecharge); // Recibe la fecha en UTC
+          console.log("Fecha en UTC:", dateUtc);
+          
+          // Convierte la fecha UTC a la zona horaria de Argentina
+          const dateInArgentina = new Date(dateUtc.toLocaleString("en-US", { timeZone: "America/Argentina/Buenos_Aires" }));
+          console.log("Fecha convertida a Argentina:", dateInArgentina);
+          
+          // Suma los minutos para la recarga de vida
+          dateInArgentina.setMinutes(dateInArgentina.getMinutes() + config.minutesToEarnLife);
+          
           // Si hay segundos, sumar un minuto
-          if (date.getSeconds() !== 0) {
-            date.setMinutes(date.getMinutes() + 1); // Suma 1 minuto
+          if (dateInArgentina.getSeconds() !== 0) {
+            dateInArgentina.setMinutes(dateInArgentina.getMinutes() + 1); // Suma 1 minuto
           }
-    
-          // Formato para mostrar solo la hora y los minutos
-          const formattedTime = date.toLocaleTimeString("es-AR", {
+          
+          // Formato para mostrar solo la hora y los minutos en la zona horaria de Argentina
+          const formattedTime = dateInArgentina.toLocaleTimeString("es-AR", {
             hour: "2-digit", // Hora en formato de 2 dígitos
             minute: "2-digit", // Minutos en formato de 2 dígitos
+            hour12: false // Deshabilita el formato de 12 horas (usando 24 horas)
           });
-    
+          
           // Muestra solo la hora formateada
           pNextLive.append(formattedTime + " obtienes una vida");
-
+          
         },
         error: function (error) {
           console.log(error);
         },
       });
-
-
-
     }
   }
 

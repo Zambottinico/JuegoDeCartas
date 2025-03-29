@@ -38,10 +38,10 @@ namespace Juego_Sin_Nombre.Bussines.UserBussines.Commands
                 try
                 {
                     //Validar que no exista un usuario con el mismo username
-                    if (_context.Usuarios.Any(c=> c.Email==request.Username))
+                    if (_context.Usuarios.Any(c=> c.Email==request.Email))
                     {
                         // El usuario ya existe, manejar el error
-                        throw new InvalidOperationException("El nombre de usuario ya está en uso.");
+                        throw new InvalidOperationException("El Email ya está en uso.");
                     }
                     Usuario user = new Usuario();
                     List<Character> characters = await _context.Characters

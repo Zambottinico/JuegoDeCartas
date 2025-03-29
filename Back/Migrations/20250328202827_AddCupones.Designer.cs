@@ -3,17 +3,17 @@ using System;
 using Juego_Sin_Nombre.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace Juego_Sin_Nombre.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20250323192216_UpdateInvoiceModel3")]
-    partial class UpdateInvoiceModel3
+    [Migration("20250328202827_AddCupones")]
+    partial class AddCupones
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,43 +21,58 @@ namespace Juego_Sin_Nombre.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.9")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.HasSequence("games_id_seq");
+
+            modelBuilder.Entity("CuponUsuario", b =>
+                {
+                    b.Property<int>("CuponsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlayersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CuponsId", "PlayersId");
+
+                    b.HasIndex("PlayersId");
+
+                    b.ToTable("CuponUsuario");
+                });
 
             modelBuilder.Entity("Juego_Sin_Nombre.Models.Card", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("CharacterId")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("character_id");
 
                     b.Property<int?>("Decision1")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("decision1");
 
                     b.Property<int?>("Decision2")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("decision2");
 
                     b.Property<string>("Description")
-                        .HasColumnType("text")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("description");
 
                     b.Property<bool?>("IsPlayable")
-                        .HasColumnType("boolean")
+                        .HasColumnType("bit")
                         .HasColumnName("is_playable");
 
                     b.Property<int?>("Typeid")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("typeid");
 
                     b.HasKey("Id")
@@ -78,22 +93,22 @@ namespace Juego_Sin_Nombre.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CharacterId")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<string>("CharacterName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("DiamondPrice")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<int>("GoldPrice")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -104,18 +119,18 @@ namespace Juego_Sin_Nombre.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Lore")
-                        .HasColumnType("text")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("lore");
 
                     b.Property<string>("Name")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
+                        .HasColumnType("nvarchar(255)")
                         .HasColumnName("name");
 
                     b.HasKey("Id")
@@ -124,37 +139,60 @@ namespace Juego_Sin_Nombre.Migrations
                     b.ToTable("characters", (string)null);
                 });
 
+            modelBuilder.Entity("Juego_Sin_Nombre.Models.Cupon", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Codigo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NumeroDiamantes")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumeroOro")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cupones");
+                });
+
             modelBuilder.Entity("Juego_Sin_Nombre.Models.Decision", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("Army")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("army");
 
                     b.Property<string>("Description")
-                        .HasColumnType("text")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("description");
 
                     b.Property<int?>("Economy")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("economy");
 
                     b.Property<int?>("Magic")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("magic");
 
                     b.Property<int?>("Population")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("population");
 
                     b.Property<int?>("UnlockableCharacter")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("unlockable_character");
 
                     b.HasKey("Id")
@@ -167,19 +205,19 @@ namespace Juego_Sin_Nombre.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("bit");
 
                     b.Property<int>("MontoDeDiamantes")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("PrecioEnPesos")
                         .HasColumnType("decimal(18,2)");
@@ -193,42 +231,42 @@ namespace Juego_Sin_Nombre.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("Armystate")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("armystate");
 
                     b.Property<int?>("Day")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("day");
 
                     b.Property<int?>("Economystate")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("economystate");
 
                     b.Property<string>("Gamestate")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
+                        .HasColumnType("nvarchar(255)")
                         .HasColumnName("gamestate");
 
                     b.Property<int?>("Lastcardid")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("lastcardid");
 
                     b.Property<int?>("Magicstate")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("magicstate");
 
                     b.Property<int?>("Populationstate")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("populationstate");
 
                     b.Property<int?>("Userid")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("userid");
 
                     b.HasKey("Id")
@@ -241,29 +279,56 @@ namespace Juego_Sin_Nombre.Migrations
                     b.ToTable("games", (string)null);
                 });
 
+            modelBuilder.Entity("Juego_Sin_Nombre.Models.GameConfig", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DaysToEarnDiamond")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LifeRechargePrice")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MinutesToEarnLife")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GameConfig");
+                });
+
             modelBuilder.Entity("Juego_Sin_Nombre.Models.Invoice", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("DiamondOfferId")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("PaidAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Status")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("DiamondOfferId");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Invoices");
                 });
@@ -272,14 +337,14 @@ namespace Juego_Sin_Nombre.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Type1")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
+                        .HasColumnType("nvarchar(255)")
                         .HasColumnName("type");
 
                     b.HasKey("Id")
@@ -292,53 +357,60 @@ namespace Juego_Sin_Nombre.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Clave")
                         .HasMaxLength(250)
-                        .HasColumnType("character varying(250)")
+                        .HasColumnType("nvarchar(250)")
                         .HasColumnName("clave");
 
                     b.Property<int?>("Diamonds")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("diamonds");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("Email");
+
                     b.Property<int?>("Gold")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("gold");
 
                     b.Property<DateTime?>("LastLifeRecharge")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("datetime2")
                         .HasColumnName("last_life_recharge");
 
                     b.Property<int?>("Lives")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("lives");
 
                     b.Property<int?>("MaxLives")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("maxlives");
 
                     b.Property<int?>("Maxdays")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("maxdays");
 
                     b.Property<string>("Password")
+                        .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
+                        .HasColumnType("nvarchar(255)")
                         .HasColumnName("password");
 
                     b.Property<string>("Rol")
                         .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Username")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
-                        .HasColumnName("username");
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("Username");
 
                     b.HasKey("Id")
                         .HasName("usuarios_pkey");
@@ -349,11 +421,11 @@ namespace Juego_Sin_Nombre.Migrations
             modelBuilder.Entity("PlayerCharacter", b =>
                 {
                     b.Property<int>("PlayerId")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("player_id");
 
                     b.Property<int>("CharacterId")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("character_id");
 
                     b.HasKey("PlayerId", "CharacterId")
@@ -362,6 +434,21 @@ namespace Juego_Sin_Nombre.Migrations
                     b.HasIndex("CharacterId");
 
                     b.ToTable("player_characters", (string)null);
+                });
+
+            modelBuilder.Entity("CuponUsuario", b =>
+                {
+                    b.HasOne("Juego_Sin_Nombre.Models.Cupon", null)
+                        .WithMany()
+                        .HasForeignKey("CuponsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Juego_Sin_Nombre.Models.Usuario", null)
+                        .WithMany()
+                        .HasForeignKey("PlayersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Juego_Sin_Nombre.Models.Card", b =>
@@ -420,7 +507,15 @@ namespace Juego_Sin_Nombre.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Juego_Sin_Nombre.Models.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("DiamondOfert");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("PlayerCharacter", b =>

@@ -26,4 +26,6 @@ public partial class Usuario
     public virtual ICollection<Game> Games { get; set; } = new List<Game>();
 
     public virtual ICollection<Character> Characters { get; set; } = new List<Character>();
+
+    public virtual ICollection<Cupon> Cupons { get; set; } = new List<Cupon>();
 }

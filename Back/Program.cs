@@ -66,7 +66,7 @@ var configuration = new ConfigurationBuilder()
 
 // Agregar configuración del DbContext
 builder.Services.AddDbContext<ApplicationContext>(options =>
-    options.UseNpgsql(configuration.GetConnectionString("ConnectionString")),
+    options.UseSqlServer(configuration.GetConnectionString("ConnectionString")),
     ServiceLifetime.Scoped);
 
 // Registra las clases con sus dependencias
