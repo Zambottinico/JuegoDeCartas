@@ -424,7 +424,7 @@ namespace Juego_Sin_Nombre.Services
             };
         }
 
-        internal async Task updateCupon(Cupon request)
+        internal async Task updateCupon(UpdateCuponRequest request)
         {
             
             var cupon = await _context.Cupones.FirstOrDefaultAsync(c => c.Id == request.Id);

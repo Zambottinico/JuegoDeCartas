@@ -93,7 +93,7 @@ namespace Juego_Sin_Nombre.Controllers
         }
         [HttpPut("cupon/actualizar")]
         [Authorize(Policy = "AdminOnly")]
-        public async Task<IActionResult> updateCupon([FromBody] Cupon request)
+        public async Task<IActionResult> updateCupon([FromBody] UpdateCuponRequest request)
         {
             if (request == null)
             {

@@ -53,6 +53,7 @@ function llenarOferts(data) {
             <h5 class="mb-1">Codigo:${cupon.codigo}</h5>
             <p class="mb-1">ID: ${cupon.id}</p>
             <p class="mb-1">Gold: ${cupon.numeroOro} | Diamond: ${cupon.numeroDiamantes}</p>
+            <p class="mb-1">isDeleted: ${cupon.isDeleted}</p>
           </div>
           <button class="btn btn-primary ms-auto" onclick="editarOferta(${cupon.id})">Editar</button>
         </div>
@@ -77,7 +78,7 @@ function editarOferta(id) {
   document.getElementById("codigo").value = oferta.codigo;
   document.getElementById("goldPrice").value = oferta.numeroOro;
   document.getElementById("diamondPrice").value = oferta.numeroDiamantes;
-
+  document.getElementById("isDeleted").checked = oferta.isDeleted;
   // Mostrar el formulario (en caso de que esté oculto)
   document.getElementById("form").style.display = "block";
 }
@@ -95,22 +96,24 @@ document.getElementById("create").addEventListener("click", function () {
   const codigo = document.getElementById("codigo").value;
   const numeroOro = document.getElementById("goldPrice").value;
   const numeroDiamantes = document.getElementById("diamondPrice").value;
+  const isDeleted = document.getElementById("isDeleted").checked;
+  console.log(isDeleted);
   if (id === "") {
     const offerData = {
       codigo: codigo,
       numeroOro: numeroOro,
-      numeroDiamantes:numeroDiamantes,
+      numeroDiamantes: numeroDiamantes,
     };
     postOffer(offerData);
   } else {
     const offerData = {
-        id: id,
-        codigo: codigo,
-        numeroOro: numeroOro,
-        numeroDiamantes:numeroDiamantes,
-        isDeleted: false
-      };
-    offerData.id = ofertId;
+      id: Number(id), // Asegura que sea un número
+      codigo: codigo,
+      numeroOro: Number(numeroOro), // Convertir a número
+      numeroDiamantes: Number(numeroDiamantes), // Convertir a número
+      isDeleted: isDeleted === true, // Convertir a booleano
+    };
+    console.log(JSON.stringify(offerData));
     updateOffer(offerData);
   }
 });
@@ -147,9 +150,7 @@ function updateOffer(offerData) {
     },
     body: JSON.stringify(offerData),
   })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Oferta actualizada:", data);
+    .then(() => {
       alert("Oferta actualizada correctamente");
       location.reload();
     })
