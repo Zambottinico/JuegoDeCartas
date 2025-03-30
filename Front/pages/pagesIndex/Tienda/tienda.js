@@ -22,17 +22,16 @@ $(document).ready(function () {
   let cookieUser = Cookies.get("claveSeguridad");
 
   if (!cookieUser) {
-      // Redirigir al usuario a la página de inicio de sesión si no está autenticado
-      window.location.href = "../../pagesLogin/login.html";
+    // Redirigir al usuario a la página de inicio de sesión si no está autenticado
+    window.location.href = "../../pagesLogin/login.html";
   } else {
-      cookieUser = JSON.parse(cookieUser);
-      
-      if (cookieUser.rol === "Admin") {
-          $("#NavCards").attr("href", "../Cards/cards.html");
-          $("#NavCards").text("Cartas");
-      }
+    cookieUser = JSON.parse(cookieUser);
+
+    if (cookieUser.rol === "Admin") {
+      $("#NavCards").attr("href", "../Cards/cards.html");
+      $("#NavCards").text("Cartas");
+    }
   }
-  
 
   var jsonData = {
     userid: cookieUser.id,
@@ -278,12 +277,58 @@ $(document).ready(function () {
       },
     });
   }
+
+  $("#canjearCodigo").click(function () {
+    let codigo = $("#codigo").val().trim();
+    requestData = {
+      userId: cookieUser.id,
+      clave: cookieUser.clave,
+    };
+    if (codigo) {
+      $.ajax({
+        url: "https://localhost:7116/api/Game/canjear/" + codigo,
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(requestData),
+        headers: {
+          Authorization: "Bearer " + cookieUser.token,
+        },
+        success: function (response) {
+          if (response.ok) {
+            Swal.fire({
+              icon: "success",
+              title: "codigo: " + response.codigo,
+              text: `${response.message}, obtuviste ${response.numeroDiamantes} diamantes y ${response.numeroOro} monedas de oro`,
+              confirmButtonText: "Ok",
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "codigo: " + response.codigo,
+              text: `${response.message}`,
+              confirmButtonText: "Ok",
+            });
+          }
+          console.log(response);
+        },
+        error: function (error) {
+          console.log(error);
+          console.error("Error al realizar la compra:", error);
+          Swal.fire({
+            icon: "error",
+            title: "¡Error!",
+            text: error.responseJSON.details,
+          });
+        },
+      });
+    }
+  });
 });
 
 function crearPreferencia(id) {
   const cookieUser = JSON.parse(Cookies.get("claveSeguridad"));
   btnOfertId = document.getElementById("btn-" + id);
-  btnOfertId.disabled = true; 
+  btnOfertId.disabled = true;
   requestData = {
     userId: cookieUser.id,
     clave: cookieUser.clave,
@@ -299,7 +344,7 @@ function crearPreferencia(id) {
     },
     success: function (response) {
       console.log(response);
-      
+
       Swal.fire({
         title: ofert.nombre,
         text: `Pagar ${ofert.precioEnPesos} ARS por ${ofert.montoDeDiamantes} diamantes`,
@@ -313,8 +358,7 @@ function crearPreferencia(id) {
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.href = response.initPoint;
-        }
-        else{
+        } else {
           btnOfertId.disabled = false;
 
           cancelInvoice(response.invoiceId);
@@ -342,10 +386,10 @@ function cancelInvoice(id) {
     clave: cookieUser.clave,
   };
   $.ajax({
-    url: "https://localhost:7116/api/MercadoPago/cancelInvoice/" + id, 
+    url: "https://localhost:7116/api/MercadoPago/cancelInvoice/" + id,
     type: "POST",
-    contentType: "application/json", 
-    data: JSON.stringify(requestData), 
+    contentType: "application/json",
+    data: JSON.stringify(requestData),
     headers: {
       Authorization: "Bearer " + cookieUser.token,
     },
