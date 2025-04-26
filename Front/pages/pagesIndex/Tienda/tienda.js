@@ -39,7 +39,8 @@ $(document).ready(function () {
   };
   console.log(jsonData);
   $.ajax({
-    url: "https://localhost:7116/api/User/GetUserById/" + cookieUser.id,
+    url:
+      "https://barajareal.online/juego/api/User/GetUserById/" + cookieUser.id,
     method: "GET",
     dataType: "json",
     headers: {
@@ -64,7 +65,7 @@ $(document).ready(function () {
 
   $(document).ready(function () {
     $.ajax({
-      url: "https://localhost:7116/api/DiamondOfert",
+      url: "https://barajareal.online/juego/api/DiamondOfert",
       method: "GET",
       dataType: "json",
       headers: {
@@ -80,7 +81,7 @@ $(document).ready(function () {
     });
   });
   $.ajax({
-    url: "https://localhost:7116/api/Game/config",
+    url: "https://barajareal.online/juego/api/Game/config",
     type: "GET",
     headers: {
       Authorization: "Bearer " + cookieUser.token,
@@ -111,15 +112,14 @@ $(document).ready(function () {
       ofertaDiv.innerHTML = `
             <div class="card" style="width: 18rem">
               <img
-                src="../../../img/items/vida.png"
+                src="../../../img/oferts/${oferta.nombre}.png"
                 class="card-img-top img-fluid"
                 width="100px"
                 alt="..."
               />
               <div class="card-body">
                 <h5 class="card-title enchanted">${oferta.nombre}</h5>
-                <p><img width="20px" src="../../../img/items/diamond.png">${oferta.montoDeDiamantes}</p>
-                <p class="mb-1">$ ${oferta.precioEnPesos}</p>
+                <p>Contiene <img width="20px" src="../../../img/items/diamond.png"> ${oferta.montoDeDiamantes}</p>
                 <button id="btn-${oferta.id}" class="btn btn-success" onclick="crearPreferencia(${oferta.id})">Obtener</button>
               </div>
             </div>
@@ -131,7 +131,34 @@ $(document).ready(function () {
 
   $("#rechargeLives").click(function () {
     $.ajax({
-      url: "https://localhost:7116/api/lives/recharge",
+      url: "https://barajareal.online/juego/api/lives/recharge",
+      method: "POST",
+      dataType: "json",
+      contentType: "application/json",
+      data: JSON.stringify(jsonData),
+      headers: {
+        Authorization: "Bearer " + cookieUser.token,
+      },
+      success: function (response) {
+        console.log(response);
+        Swal.fire("Exito", "Se a realizado la compra", "success").then(
+          (result) => {
+            if (result.isConfirmed) {
+              location.reload();
+            }
+          }
+        );
+      },
+      error: function (error) {
+        Swal.fire("Error", `${error.responseJSON.details}`, "error");
+        console.log(error);
+      },
+    });
+  });
+
+  $("#buyGold").click(function () {
+    $.ajax({
+      url: "https://barajareal.online/juego/api/tienda/BuyGold",
       method: "POST",
       dataType: "json",
       contentType: "application/json",
@@ -159,7 +186,7 @@ $(document).ready(function () {
   //Cargar cartas en venta
 
   $.ajax({
-    url: "https://localhost:7116/api/cardoferts", // URL del endpoint
+    url: "https://barajareal.online/juego/api/cardoferts", // URL del endpoint
     type: "GET", // Método HTTP
     data: { userId: cookieUser.id }, // Parámetros de consulta
     headers: {
@@ -244,7 +271,7 @@ $(document).ready(function () {
     };
 
     $.ajax({
-      url: "https://localhost:7116/api/cardoferts/UnlockCharacter", // Endpoint en tu backend
+      url: "https://barajareal.online/juego/api/cardoferts/UnlockCharacter", // Endpoint en tu backend
       type: "POST", // Método HTTP
       contentType: "application/json", // Tipo de contenido JSON
       data: JSON.stringify(requestData), // Convertimos el objeto a JSON
@@ -286,7 +313,7 @@ $(document).ready(function () {
     };
     if (codigo) {
       $.ajax({
-        url: "https://localhost:7116/api/Game/canjear/" + codigo,
+        url: "https://barajareal.online/juego/api/Game/canjear/" + codigo,
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify(requestData),
@@ -335,7 +362,9 @@ function crearPreferencia(id) {
   };
   ofert = diamodOfertList.find((ofert) => ofert.id === id);
   $.ajax({
-    url: "https://localhost:7116/api/MercadoPago/crear-preferencia/" + ofert.id, // Endpoint en tu backend
+    url:
+      "https://barajareal.online/juego/api/MercadoPago/crear-preferencia/" +
+      ofert.id, // Endpoint en tu backend
     type: "POST", // Método HTTP
     contentType: "application/json", // Tipo de contenido JSON
     data: JSON.stringify(requestData), // Convertimos el objeto a JSON
@@ -386,7 +415,7 @@ function cancelInvoice(id) {
     clave: cookieUser.clave,
   };
   $.ajax({
-    url: "https://localhost:7116/api/MercadoPago/cancelInvoice/" + id,
+    url: "https://barajareal.online/juego/api/MercadoPago/cancelInvoice/" + id,
     type: "POST",
     contentType: "application/json",
     data: JSON.stringify(requestData),

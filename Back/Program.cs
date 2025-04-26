@@ -82,6 +82,9 @@ builder.Services.AddScoped<PaymentClient>();
 builder.Services.AddScoped<IDiamondOfertService, DiamondOfertService>();
 builder.Services.AddSingleton<JwtService>();
 
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddTransient<IEmailService, EmailService>();
+
 
 builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 

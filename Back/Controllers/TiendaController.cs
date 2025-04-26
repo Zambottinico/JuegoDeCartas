@@ -124,6 +124,25 @@ namespace Juego_Sin_Nombre.Controllers {
 
             return Ok(result);
         }
+
+        [HttpPost("api/tienda/BuyGold")]
+        [Authorize(Policy = "AdminOnly")]
+        public async Task<IActionResult> BuyGold([FromBody] UserCredentials request)
+        {
+            try
+            {
+                bool result = await _tiendaService.BuyGold(request);
+                if (result)
+                {
+                    return Ok(new { message = "Compra realizada correctamente" });
+                }
+                return BadRequest(new { message = "No se realizar la compra" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
     }
 
 

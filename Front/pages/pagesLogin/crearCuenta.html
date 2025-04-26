@@ -26,12 +26,7 @@
       <form action="" id="form">
         <div class="mb-3">
           <label for="exampleInputEmail1" class="form-label">Email</label>
-          <input
-            type="email"
-            class="form-control"
-            id="email"
-            name="email"
-          />
+          <input type="email" class="form-control" id="email" name="email" />
         </div>
         <div class="mb-3">
           <label for="exampleInputEmail1" class="form-label">Usuario</label>
@@ -79,54 +74,58 @@
     <script>
       $(document).ready(function () {
         $("#form").validate({
-  rules: {
-    username: {
-      required: true,
-      maxlength: 30,
-      minlength: 3,
-    },
-    email: {
-      required: true,
-      maxlength: 50,
-      email: true,
-    },
-    password: {
-      required: true,
-      maxlength: 50,
-    },
-    password2: {
-      required: true,
-      maxlength: 50,
-      equalTo: "#password",
-    },
-  },
+          rules: {
+            username: {
+              required: true,
+              maxlength: 30,
+              minlength: 3,
+            },
+            email: {
+              required: true,
+              maxlength: 50,
+              email: true,
+            },
+            password: {
+              required: true,
+              maxlength: 50,
+            },
+            password2: {
+              required: true,
+              maxlength: 50,
+              equalTo: "#password",
+            },
+          },
 
-  messages: {
-    username: {
-      required: "Este campo es obligatorio.",
-      minlength: "El nombre de usuario debe tener al menos 3 caracteres.",
-      maxlength: "El nombre de usuario no puede tener más de 50 caracteres.",
-    },
-    email: {
-      required: "Este campo es obligatorio.",
-      email: "Por favor, ingresa un correo electrónico válido.",
-      maxlength: "El correo electrónico no puede tener más de 50 caracteres.",
-    },
-    password: {
-      required: "Este campo es obligatorio.",
-      maxlength: "La contraseña no puede tener más de 50 caracteres.",
-    },
-    password2: {
-      required: "Este campo es obligatorio.",
-      maxlength: "La contraseña de confirmación no puede tener más de 50 caracteres.",
-      equalTo: "Las contraseñas no coinciden.",
-    },
-  },
+          messages: {
+            username: {
+              required: "Este campo es obligatorio.",
+              minlength:
+                "El nombre de usuario debe tener al menos 3 caracteres.",
+              maxlength:
+                "El nombre de usuario no puede tener más de 50 caracteres.",
+            },
+            email: {
+              required: "Este campo es obligatorio.",
+              email: "Por favor, ingresa un correo electrónico válido.",
+              maxlength:
+                "El correo electrónico no puede tener más de 50 caracteres.",
+            },
+            password: {
+              required: "Este campo es obligatorio.",
+              maxlength: "La contraseña no puede tener más de 50 caracteres.",
+            },
+            password2: {
+              required: "Este campo es obligatorio.",
+              maxlength:
+                "La contraseña de confirmación no puede tener más de 50 caracteres.",
+              equalTo: "Las contraseñas no coinciden.",
+            },
+          },
 
-  errorClass: "is-invalid",
-  successClass: "is-valid",
-  debugger: true,
-});
+          errorClass: "is-invalid",
+          successClass: "is-valid",
+          debugger: true,
+        });
 
         $("#form").submit(function () {
           if ($("#form").valid()) {
@@ -137,7 +136,7 @@
             request.email = $("#email").val();
             console.log(JSON.stringify(request));
             $.ajax({
-              url: "https://localhost:7116/api/User/Post",
+              url: "https://barajareal.online/juego/api/User/Post",
               method: "POST",
               dataType: "json",
               contentType: "application/json",

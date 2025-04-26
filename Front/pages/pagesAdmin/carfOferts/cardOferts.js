@@ -3,20 +3,20 @@ let ofertsList;
 let cookieUser = Cookies.get("claveSeguridad");
 
 if (!cookieUser) {
-    // Redirigir al usuario a la página de inicio de sesión si no está autenticado
-    window.location.href = "../../pagesLogin/login.html";
+  // Redirigir al usuario a la página de inicio de sesión si no está autenticado
+  window.location.href = "../../pagesLogin/login.html";
 } else {
-    cookieUser = JSON.parse(cookieUser);
-    
-    if (cookieUser.rol === "Admin") {
-        $("#NavCards").attr("href", "../../pagesIndex/Cards/cards.html");
-        $("#NavCards").text("Cartas");
-    }
+  cookieUser = JSON.parse(cookieUser);
+
+  if (cookieUser.rol === "Admin") {
+    $("#NavCards").attr("href", "../../pagesIndex/Cards/cards.html");
+    $("#NavCards").text("Cartas");
+  }
 }
 
 $(document).ready(function () {
   $.ajax({
-    url: "https://localhost:7116/api/Character/GetCharacters",
+    url: "https://barajareal.online/juego/api/Character/GetCharacters",
     method: "GET",
     dataType: "json",
     headers: {
@@ -35,7 +35,7 @@ $(document).ready(function () {
   });
 
   $.ajax({
-    url: "https://localhost:7116/api/cardoferts/all",
+    url: "https://barajareal.online/juego/api/cardoferts/all",
     method: "GET",
     dataType: "json",
     headers: {
@@ -121,7 +121,7 @@ function eliminarOferta(id) {
   var clave = cookieUser.clave;
 
   $.ajax({
-    url: `https://localhost:7116/api/tienda/deleteCardOfert/${id}`,
+    url: `https://barajareal.online/juego/api/tienda/deleteCardOfert/${id}`,
     type: "DELETE",
     contentType: "application/json",
     data: JSON.stringify({
@@ -187,7 +187,7 @@ document.getElementById("create").addEventListener("click", function () {
 
 // Función para realizar el POST
 function postOffer(offerData) {
-  fetch("https://localhost:7116/api/tienda/createCardOfert", {
+  fetch("https://barajareal.online/juego/api/tienda/createCardOfert", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -209,7 +209,7 @@ function postOffer(offerData) {
 
 // Función para realizar el PUT
 function updateOffer(offerData) {
-  fetch(`https://localhost:7116/api/tienda/updateCardOfert`, {
+  fetch(`https://barajareal.online/juego/api/tienda/updateCardOfert`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",

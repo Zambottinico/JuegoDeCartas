@@ -34,34 +34,50 @@
     <title>Tienda</title>
   </head>
   <body class="bgPattern">
-    <nav class="navbar navbar-expand bg-dark text-white shadow">
-      <div class="container-fluid d-flex justify-content-center">
-        <div class="row">
-          <div class="col active">
-            <a href="../index.html" class="nav-link active">Juego</a>
-          </div>
-          <div class="col">
-            <a href="../Players/players.html" class="nav-link active"
-              >Jugadores</a
-            >
-          </div>
-          <div class="col">
-            <a href="../Profile/profile.html" class="nav-link active">Perfil</a>
-          </div>
-          <div class="col lined-bottom">
-            <a href="#" class="nav-link active">Tienda</a>
-          </div>
-          <div class="col-auto">
-            <a
-              href="../Acerca de/AcercaDe.html"
-              class="nav-link active"
-              id="NavCards"
-              >Acerca de</a
-            >
-          </div>
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark shadow">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="../index.html"
+          ><i class="fa-solid fa-hat-wizard"></i> Juego</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="../Players/players.html"
+                >Jugadores</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="../Profile/profile.html"
+                >Perfil</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="../Tienda/tienda.html">Tienda</a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                href="../Acerca de/AcercaDe.html"
+                id="NavCards"
+                >Acerca de</a
+              >
+            </li>
+          </ul>
         </div>
       </div>
     </nav>
+
     <div class="container mt-5 papiro2 paper-left">
       <h1 id="title" class="enchanted h1" style="font-size: 50px">
         <i class="fas fa-shopping-cart me-1"></i> Tienda
@@ -78,7 +94,7 @@
 
       <section id="cardOfertsSection" class="container-fluid">
         <h1 class="text-center pb-2 enchanted" style="font-size: 50px">
-          Paquetes de Diamantes
+          Paquetes de Gemas
         </h1>
         <swiper-container
           class="swiper-container mySwiper d-flex justify-content-center"
@@ -98,19 +114,63 @@
         <h2 class="text-center pb-2 enchanted" style="font-size: 50px">
           Utiles
         </h2>
-        <div class="col-auto">
-          <div class="border p-2" style="width: 18rem">
-            <img src="../../../img/items/vida.png" alt="" class="img-fluid" />
-            <p>Rellenar vidas</p>
-            <button id="rechargeLives" class="w-100">
-              <img
-                src="../../../img/items/gold.png"
-                style="width: 30px"
-                alt=""
-              />
-            </button>
-          </div>
-        </div>
+        <swiper-container
+          class="swiper-container mySwiper d-flex justify-content-center"
+          id="utiles"
+          pagination="true"
+          pagination-clickable="true"
+          centered-slides="true"
+          space-between="10"
+          grab-cursor="true"
+          keyboard="true"
+          initial-slide="2"
+        >
+          <swiper-slide class="d-flex justify-content-center">
+            <div class="col-auto">
+              <div class="border p-2" style="width: 18rem">
+                <img
+                  src="../../../img/items/vida.png"
+                  alt=""
+                  class="img-fluid"
+                />
+                <p>Rellenar vidas</p>
+                <button id="rechargeLives" class="w-100">
+                  <img
+                    src="../../../img/items/gold.png"
+                    style="width: 30px"
+                    alt=""
+                  />
+                </button>
+              </div></div
+          ></swiper-slide>
+          <swiper-slide class="d-flex justify-content-center">
+            <div class="col-auto ">
+              <div class="border p-2" style="width: 18rem">
+                <img
+                  src="../../../img/oferts/buyGold.png"
+                  alt=""
+                  class="img-fluid"
+                />
+                <p>
+                  10
+                  <img
+                    src="../../../img/items/diamond.png"
+                    width="20px"
+                    alt=""
+                  />
+                  por 250
+                  <img src="../../../img/items/gold.png" width="20px" alt="" />
+                </p>
+                <button id="buyGold" class="w-100 mb-4">
+                  <img
+                    src="../../../img/items/gold.png"
+                    style="width: 30px"
+                    alt=""
+                  />
+                </button>
+              </div></div
+          ></swiper-slide>
+        </swiper-container>
       </div>
 
       <section id="cardOfertsSection" class="container-fluid">

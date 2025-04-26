@@ -59,6 +59,7 @@ namespace Juego_Sin_Nombre.Controllers
             return Ok(updatedOfert);
         }
         [HttpGet]
+        [Authorize(Policy = "UserOrAdmin")]
         public async Task<IActionResult> GetAllDiamondOferts()
         {
             var ofertas = await _diamondOfertService.GetAllDiamondOfertsAsync();

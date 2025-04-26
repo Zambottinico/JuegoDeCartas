@@ -72,7 +72,7 @@ $(document).ready(function () {
     }
   }
   $.ajax({
-    url: "https://localhost:7116/api/Character/GetCharacters",
+    url: "https://barajareal.online/juego/api/Character/GetCharacters",
     method: "GET",
     dataType: "json",
     headers: {
@@ -94,6 +94,11 @@ $(document).ready(function () {
   $("#form").submit(function () {
     console.log("asad");
     if ($("#form").valid()) {
+      btn = document.getElementById("create");
+      btn.disabled = true;
+      btn.innerHTML = `<div class="spinner-border spinner-border-sm" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                 </div> Cargando...`;
       event.preventDefault();
       // Obtener los valores del formulario
       var typeid = 1;
@@ -142,7 +147,7 @@ $(document).ready(function () {
       console.log(JSON.stringify(jsonData));
 
       $.ajax({
-        url: "https://localhost:7116/api/Card/Post",
+        url: "https://barajareal.online/juego/api/Card/Post",
         method: "POST",
         dataType: "json",
         contentType: "application/json",
@@ -152,11 +157,15 @@ $(document).ready(function () {
         },
         success: function (response) {
           console.log(response);
+          btn.disabled = false;
+          btn.innerHTML = "Crear Carta";
           Swal.fire("Exito", "Se a creado la carta con exito", "success");
           clearForm();
         },
         error: function (error) {
           console.log(error);
+          btn.disabled = false;
+          btn.innerHTML = "Crear Carta";
         },
       });
     }

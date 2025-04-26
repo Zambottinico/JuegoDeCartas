@@ -34,7 +34,8 @@ $(document).ready(function () {
   });
 
   $.ajax({
-    url: "https://localhost:7116/api/User/GetUserById/" + cookieUser.id,
+    url:
+      "https://barajareal.online/juego/api/User/GetUserById/" + cookieUser.id,
     method: "GET",
     dataType: "json",
     headers: {
@@ -59,7 +60,7 @@ $(document).ready(function () {
 
     if (data.maxLives != data.lives) {
       $.ajax({
-        url: "https://localhost:7116/api/Game/config",
+        url: "https://barajareal.online/juego/api/Game/config",
         method: "GET",
         dataType: "json",
         headers: {
@@ -69,29 +70,34 @@ $(document).ready(function () {
           const pNextLive = $("#nextLive");
           const dateUtc = new Date(data.lastLifeRecharge); // Recibe la fecha en UTC
           console.log("Fecha en UTC:", dateUtc);
-          
+
           // Convierte la fecha UTC a la zona horaria de Argentina
-          const dateInArgentina = new Date(dateUtc.toLocaleString("en-US", { timeZone: "America/Argentina/Buenos_Aires" }));
+          const dateInArgentina = new Date(
+            dateUtc.toLocaleString("en-US", {
+              timeZone: "America/Argentina/Buenos_Aires",
+            })
+          );
           console.log("Fecha convertida a Argentina:", dateInArgentina);
-          
+
           // Suma los minutos para la recarga de vida
-          dateInArgentina.setMinutes(dateInArgentina.getMinutes() + config.minutesToEarnLife);
-          
+          dateInArgentina.setMinutes(
+            dateInArgentina.getMinutes() + config.minutesToEarnLife
+          );
+
           // Si hay segundos, sumar un minuto
           if (dateInArgentina.getSeconds() !== 0) {
             dateInArgentina.setMinutes(dateInArgentina.getMinutes() + 1); // Suma 1 minuto
           }
-          
+
           // Formato para mostrar solo la hora y los minutos en la zona horaria de Argentina
           const formattedTime = dateInArgentina.toLocaleTimeString("es-AR", {
             hour: "2-digit", // Hora en formato de 2 dígitos
             minute: "2-digit", // Minutos en formato de 2 dígitos
-            hour12: false // Deshabilita el formato de 12 horas (usando 24 horas)
+            hour12: false, // Deshabilita el formato de 12 horas (usando 24 horas)
           });
-          
+
           // Muestra solo la hora formateada
           pNextLive.append(formattedTime + " obtienes una vida");
-          
         },
         error: function (error) {
           console.log(error);
@@ -102,7 +108,7 @@ $(document).ready(function () {
 
   $.ajax({
     url:
-      "https://localhost:7116/api/Character/GetCharactersByUserId/" +
+      "https://barajareal.online/juego/api/Character/GetCharactersByUserId/" +
       cookieUser.id,
     method: "GET",
     dataType: "json",
@@ -120,7 +126,7 @@ $(document).ready(function () {
   function showData(data) {
     const content = $("#cards-container");
 
-    let TotalCartas = 31;
+    let TotalCartas = 52;
     for (let i = 0; i < data.length; i++) {
       contadorCartas++;
       const user = data[i];

@@ -42,9 +42,9 @@ namespace Juego_Sin_Nombre.Services
             },
                 BackUrls = new PreferenceBackUrlsRequest
                 {
-                    Success = "https://tu-sitio.com/success",
-                    Failure = "https://tu-sitio.com/failure",
-                    Pending = "https://tu-sitio.com/pending"
+                    Success = _configuration["MercadoPagoSettings:BackUrlSuccess"],
+                    Failure = _configuration["MercadoPagoSettings:BackUrlFailure"],
+                    Pending = _configuration["MercadoPagoSettings:BackUrlPending"],
                 },
                 AutoReturn = "approved"
             };

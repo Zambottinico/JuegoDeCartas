@@ -136,17 +136,7 @@ namespace Juego_Sin_Nombre.Services
                  decision1 = await _context.Decisions.FirstOrDefaultAsync(d => d.Id == card.Decision2);
             }
 
-            //Comprobar si desbloquea Personaje
-            if (decision1.UnlockableCharacter!=null)
-            {
-                if (!charactersId.Contains((int)decision1.UnlockableCharacter))
-                {
-                    Character unlockableCharacter = await _context.Characters.FirstOrDefaultAsync(c => c.Id == decision1.UnlockableCharacter);
-                    user.Characters.Add(unlockableCharacter);
-                    characterUnlocked = true;
-                    unlockableCharacterName = unlockableCharacter.Name;
-                }
-            }
+           
 
             game.Populationstate += decision1.Population;
             game.Economystate += decision1.Economy;
@@ -176,6 +166,19 @@ namespace Juego_Sin_Nombre.Services
             }
             else
             {
+                //Comprobar si desbloquea Personaje
+                if (decision1.UnlockableCharacter != null)
+                {
+                    if (!charactersId.Contains((int)decision1.UnlockableCharacter))
+                    {
+                        Character unlockableCharacter = await _context.Characters.FirstOrDefaultAsync(c => c.Id == decision1.UnlockableCharacter);
+                        user.Characters.Add(unlockableCharacter);
+                        characterUnlocked = true;
+                        unlockableCharacterName = unlockableCharacter.Name;
+                    }
+                }
+
+
                 var config = await this.GetGameConfigAsync();
                 game.Day += 1;
                 //TODO

@@ -33,7 +33,7 @@
         <div class="mb-3">
           <label for="username" class="form-label">Email</label>
           <input
-            type="text"
+            type="email"
             class="form-control"
             id="username"
             name="username"
@@ -60,6 +60,7 @@
           <a href="../pagesLogin/crearCuenta.html">No tengo cuenta</a>
         </div>
       </form>
+      <p id="mensaje" class="text-danger"></p>
       <button onclick="oauthSignIn()" class="btn btn-danger">
         <i class="fab fa-google"></i> Iniciar sesión con Google
       </button>
@@ -71,40 +72,73 @@
         console.log(token);
         if (token) sendTokenToBackend(token);
 
-        $("#form").validate();
+        $("#form").validate({
+          errorClass: "is-invalid",
+          validClass: "is-valid",
+          rules: {
+            username: {
+              required: true,
+              email: true,
+              maxlength: 50,
+            },
+            password: {
+              required: true,
+              maxlength: 50,
+            },
+          },
+          messages: {
+            username: {
+              required: "El email es obligatorio.",
+              email: "Por favor, ingresa un email válido.",
+              maxlength: "El email no puede tener más de 50 caracteres.",
+            },
+            password: {
+              required: "La contraseña es obligatoria.",
+              maxlength: "La contraseña no puede tener más de 50 caracteres.",
+            },
+          },
+        });
 
         $("#form").submit(function (event) {
-          btn = document.getElementById("login");
-          btn.disabled = true;
-          btn.innerHTML = `<div class="spinner-border spinner-border-sm" role="status">
+          if ($("#form").valid()) {
+            btn = document.getElementById("login");
+            btn.disabled = true;
+            btn.innerHTML = `<div class="spinner-border spinner-border-sm" role="status">
                     <span class="visually-hidden">Loading...</span>
                  </div> Cargando...`;
-          event.preventDefault();
-          if (!$("#form").valid()) return;
+            event.preventDefault();
+            if (!$("#form").valid()) return;
 
-          let login = {
-            Email: $("#username").val(),
-            Password: $("#password").val(),
-          };
+            let login = {
+              Email: $("#username").val(),
+              Password: $("#password").val(),
+            };
 
-          $.ajax({
-            url: "https://localhost:7116/api/User/Login",
-            method: "POST",
-            contentType: "application/json",
-            data: JSON.stringify(login),
-            success: function (response) {
-              Cookies.set("claveSeguridad", JSON.stringify(response), {
-                expires: 30,
-              });
-              Cookies.set("username", login.Username, { expires: 30 });
-              window.location = "../pagesIndex/index.html";
-            },
-            error: function (error) {
-              console.error("Error en login:", error);
-              btn.disabled = false;
-              btn.innerHTML = "Iniciar sesión";
-            },
-          });
+            $.ajax({
+              url: "https://barajareal.online/juego/api/User/Login",
+              method: "POST",
+              contentType: "application/json",
+              data: JSON.stringify(login),
+              success: function (response) {
+                if (response.ok) {
+                  Cookies.set("claveSeguridad", JSON.stringify(response), {
+                    expires: 30,
+                  });
+                  Cookies.set("username", login.Username, { expires: 30 });
+                  window.location = "../pagesIndex/index.html";
+                } else {
+                  btn.disabled = false;
+                  btn.innerHTML = "Iniciar sesión";
+                  $("#mensaje").text("Usuario o contraseña incorrectos");
+                }
+              },
+              error: function (error) {
+                console.error("Error en login:", error);
+                btn.disabled = false;
+                btn.innerHTML = "Iniciar sesión";
+              },
+            });
+          }
         });
       });
 
@@ -134,7 +168,7 @@
         if (!accessToken) return;
 
         $.ajax({
-          url: "https://localhost:7116/api/User/google",
+          url: "https://barajareal.online/juego/api/User/google",
           method: "POST",
           contentType: "application/json",
           data: JSON.stringify({ token: accessToken }),

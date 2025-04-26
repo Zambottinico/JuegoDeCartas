@@ -89,11 +89,22 @@
               >Diamantes</a
             >
           </div>
+          <div class="col active">
+            <a
+              href="../../pagesAdmin/Cupones/cupones.html"
+              class="nav-link active"
+              >Cupones</a
+            >
+          </div>
         </div>
       </div>
     </nav>
     <div class="container papiro paper-left mt-4">
-      <a href="../../pagesAdmin/ConfigGame/configGame.html" class="btn btn-primary float-end"><i class="fas fa-cogs"></i> </a>
+      <a
+        href="../../pagesAdmin/ConfigGame/configGame.html"
+        class="btn btn-primary float-end"
+        ><i class="fas fa-cogs"></i>
+      </a>
       <form id="form">
         <div class="row">
           <div class="mb-3">
@@ -124,6 +135,7 @@
                 class="form-control"
                 name="decision1-description"
                 id="decision1-description"
+                maxlength="50"
               />
               <div class="row">
                 <div class="col">
@@ -187,6 +199,7 @@
                 class="form-control"
                 name="decision2-description"
                 id="decision2-description"
+                maxlength="50"
               />
               <div class="row">
                 <div class="col">
@@ -246,6 +259,7 @@
         <div class="">
           <input
             type="submit"
+            id="create"
             value="Crear Carta"
             class="btn btn-success mt-2"
           />

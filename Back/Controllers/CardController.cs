@@ -31,6 +31,7 @@ namespace Juego_Sin_Nombre.Controllers
 
         [HttpGet]
         [Route("GetCards")]
+        [Authorize(Policy = "UserOrAdmin")]
         public async Task<List<Card>> GetCard()
         {
             return await _mediator.Send(new GetCardsCommand());

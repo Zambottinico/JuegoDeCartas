@@ -16,7 +16,7 @@ if (!cookieUser) {
 
 $(document).ready(function () {
   $.ajax({
-    url: "https://localhost:7116/api/Game/cupon/getAll",
+    url: "https://barajareal.online/juego/api/Game/cupon/getAll",
     method: "GET",
     dataType: "json",
     headers: {
@@ -120,7 +120,7 @@ document.getElementById("create").addEventListener("click", function () {
 
 // Función para realizar el POST
 function postOffer(offerData) {
-  fetch("https://localhost:7116/api/Game/cupon/crear", {
+  fetch("https://barajareal.online/juego/api/Game/cupon/crear", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -142,7 +142,7 @@ function postOffer(offerData) {
 
 // Función para realizar el PUT
 function updateOffer(offerData) {
-  fetch(`https://localhost:7116/api/Game/cupon/actualizar`, {
+  fetch(`https://barajareal.online/juego/api/Game/cupon/actualizar`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",

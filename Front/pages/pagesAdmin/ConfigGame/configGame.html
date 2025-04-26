@@ -78,7 +78,9 @@
             >
           </div>
           <div class="col active">
-            <a href="../diamondOfert/diamondOfert.html" class="nav-link active">Diamantes</a>
+            <a href="../diamondOfert/diamondOfert.html" class="nav-link active"
+              >Diamantes</a
+            >
           </div>
         </div>
       </div>
@@ -160,7 +162,7 @@
 
         // Obtener los datos de la API y rellenar el formulario
         $.ajax({
-          url: "https://localhost:7116/api/Game/config",
+          url: "https://barajareal.online/juego/api/Game/config",
           type: "GET",
           headers: {
             Authorization: "Bearer " + cookieUser.token,
@@ -191,7 +193,7 @@
           };
 
           $.ajax({
-            url: "https://localhost:7116/api/Game/config",
+            url: "https://barajareal.online/juego/api/Game/config",
             type: "PUT",
             contentType: "application/json",
             data: JSON.stringify(formData),

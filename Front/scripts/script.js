@@ -5,18 +5,17 @@ $(document).ready(function () {
   //Cambiar links cartas/acerca de
   let cookieUser = Cookies.get("claveSeguridad");
 
-if (!cookieUser) {
+  if (!cookieUser) {
     // Redirigir al usuario a la página de inicio de sesión si no está autenticado
     window.location.href = "../pagesLogin/login.html";
-} else {
+  } else {
     cookieUser = JSON.parse(cookieUser);
-    
-    if (cookieUser.rol === "Admin") {
-        $("#NavCards").attr("href", "Cards/cards.html");
-        $("#NavCards").text("Cartas");
-    }
-}
 
+    if (cookieUser.rol === "Admin") {
+      $("#NavCards").attr("href", "Cards/cards.html");
+      $("#NavCards").text("Cartas");
+    }
+  }
 
   console.log(cookieUser);
   let postRequest = {
@@ -31,7 +30,7 @@ if (!cookieUser) {
 
   $(document).ready(function () {
     $.ajax({
-      url: "https://localhost:7116/api/Game/Post",
+      url: "https://barajareal.online/juego/api/Game/Post",
       method: "POST",
       dataType: "json",
       contentType: "application/json",
@@ -60,7 +59,7 @@ if (!cookieUser) {
       };
       //PLAY GAME
       $.ajax({
-        url: "https://localhost:7116/api/Game/Play",
+        url: "https://barajareal.online/juego/api/Game/Play",
         method: "PUT",
         dataType: "json",
         contentType: "application/json",

@@ -9,8 +9,11 @@ namespace Juego_Sin_Nombre.Services
     public class TiendaService
     {
         private readonly Data.ApplicationContext _context;
-        public TiendaService(Data.ApplicationContext context) {
+        private readonly IEmailService _emailService;
+        public TiendaService(Data.ApplicationContext context, IEmailService emailService)
+        {
             _context = context;
+            _emailService = emailService;
         }
         public async Task<bool> createCardOfert(CreateCardOfertRequest request)
         {
@@ -194,13 +197,15 @@ namespace Juego_Sin_Nombre.Services
                         invoice.Status = InvoiceStatus.Paid;
                         invoice.Usuario.Diamonds += invoice.DiamondOfert.MontoDeDiamantes;
                         invoice.PaidAt = DateTime.Now;
-                        await _context.SaveChangesAsync();
 
+                        await _context.SaveChangesAsync();
+                        await _emailService.SendPurchaseConfirmationAsync(invoice.Usuario.Username,invoice.DiamondOfert.Nombre,invoice.DiamondOfert.MontoDeDiamantes);
                     }
                     catch(Exception ex)
                     {
                         Console.WriteLine(ex);
                     }
+
                 }
             }
             else if (status == "rejected" || status == "cancelled")
@@ -218,5 +223,25 @@ namespace Juego_Sin_Nombre.Services
             return true;
         }
 
+        internal async Task<bool> BuyGold(UserCredentials request)
+        {
+            Usuario user = await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == request.UserId);
+            if (user == null)
+            {
+                throw new Exception("El usuario no existe");
+            }
+            if (user.Clave != request.Clave)
+            {
+                throw new Exception("Clave incorrecta");
+            }
+            if (user.Diamonds<1)
+            {
+                throw new Exception("No tienes suficientes recursos");
+            }
+            user.Diamonds -= 10;
+            user.Gold += 250;
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }
