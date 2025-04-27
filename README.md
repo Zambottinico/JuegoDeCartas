@@ -31,4 +31,5 @@ Crea cartas personalizadas!
 - **Desbloquear Personajes**: Dependiendo de tus decisiones podras desbloquear nuevos personajes con nuevas cartas.
 - **Interfaz Interactiva**: La interfaz de usuario es intuitiva y permite a los jugadores interactuar con las cartas y ver cómo cambian los estados en respuesta a sus decisiones.
 
+- **Pasarela de pagos**: compras integradas con Mercado Pago 
 
